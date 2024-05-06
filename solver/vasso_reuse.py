@@ -68,7 +68,7 @@ class VASSORE(torch.optim.Optimizer):
                     self.state[p]['e'] = e_w.clone()
                 elif self.randomPerturbationComponent:
                     e_size = self.state[p]['e'].size()
-                    uniform_noise = torch.rand(e_size).to(shared_device) * 0.001
+                    uniform_noise = torch.rand(e_size).to(shared_device) * 1e-3
                     e_w = self.state[p]['e'] + uniform_noise
                 else:
                     e_w = self.state[p]['e']

@@ -44,7 +44,7 @@ class default_parser:
 
     def base_opt_parser(self):
         parser = argparse.ArgumentParser(add_help=False)
-        parser.add_argument('--opt', type=str, default='sgd', help='sgd, sam-sgd, vasso-sgd, sam-adam, vasso-adam')
+        parser.add_argument('--opt', type=str, default='sgd', help='sgd, sam-sgd, vasso-sgd, sam-adam, vasso-adam, vassore-sgd, vassore-adam')
         parser.add_argument('--lr', type=float, default=0.05)
         parser.add_argument('--weight_decay', type=float, default=5e-4)
         # sgd
