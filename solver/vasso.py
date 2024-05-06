@@ -78,7 +78,7 @@ class VASSO(torch.optim.Optimizer):
         self.normdiff = self._normdiff('w_t', 'w_{t-1}')
         self.cos_sim = self._cosine_similarity('e_t', 'e_{t-1}')
 
-        self.w_t_normdiff_evolution.append(self.normdiff)
+        self.w_t_normdiff_evolution.append(self.normdiff.item())
         self.cos_sim_evolution.append(self.cos_sim)
 
         if zero_grad: self.zero_grad()
@@ -106,15 +106,17 @@ class VASSO(torch.optim.Optimizer):
         self.logger.wandb_log_batch(**{'||w_t - w_{t-1}||': self.normdiff, 'global_batch_counter': self.iteration_step_counter})
         self.logger.wandb_log_batch(**{'cosSim(e_t, e_{t-1})': self.cos_sim, 'global_batch_counter': self.iteration_step_counter})
 
-        if self.iteration_step_counter % 1000 == 0:
+        if self.iteration_step_counter % 100 == 0:
+            self.cos_sim_evolution.pop(0)
+            self.w_t_normdiff_evolution.pop(0)
             et_values_arr = np.array(self.cos_sim_evolution)
             wt_norm_values_arr = np.array(self.w_t_normdiff_evolution)
             pearson_corr, _ = pearsonr(et_values_arr, wt_norm_values_arr)
-            self.logger.log(f'=====*****===== PEARSON_CORR={pearson_corr}')
+            self.logger.log(f'=====*****===== PEARSON_CORR=  {pearson_corr}')
             self.logger.wandb_log_batch(**{'PEARSON_CORR': pearson_corr, 'global_batch_counter': self.iteration_step_counter})
 
             spearman_corr, _ = spearmanr(et_values_arr, wt_norm_values_arr)
-            self.logger.log(f'=====*****===== SPEARMAN_CORR={spearman_corr}')
+            self.logger.log(f'=====*****===== SPEARMAN_CORR=  {spearman_corr}')
             self.logger.wandb_log_batch(**{'SPEARMAN_CORR': spearman_corr, 'global_batch_counter': self.iteration_step_counter})
 
 

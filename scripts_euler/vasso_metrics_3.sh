@@ -4,7 +4,7 @@
 #SBATCH --gpus=1
 #SBATCH --time=4:00:00
 #SBATCH --job-name="metrics_3"
-#SBATCH --mem-per-cpu=16384
+#SBATCH --mem-per-cpu=6500
 #SBATCH --output="metrics_3.txt"
 #SBATCH --error="error_3.txt"
 #SBATCH --open-mode=append
