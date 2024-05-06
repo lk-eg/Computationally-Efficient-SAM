@@ -101,12 +101,12 @@ class VASSO(torch.optim.Optimizer):
         with torch.enable_grad():
             closure()
         self.second_step()
-                
+
         self.iteration_step_counter += 1
         self.logger.wandb_log_batch(**{'||w_t - w_{t-1}||': self.normdiff, 'global_batch_counter': self.iteration_step_counter})
         self.logger.wandb_log_batch(**{'cosSim(e_t, e_{t-1})': self.cos_sim, 'global_batch_counter': self.iteration_step_counter})
 
-        if self.iteration_step_counter == 77900:
+        if self.iteration_step_counter % 1000 == 0:
             et_values_arr = np.arr(self.cos_sim_evolution)
             wt_norm_values_arr = np.arr(self.w_t_normdiff_evolution)
             pearson_corr, _ = pearsonr(et_values_arr, wt_norm_values_arr)
