@@ -34,6 +34,9 @@ class Logger():
             wandb_step = 0
         else:
             self.run = None
+        
+        wandb.define_metric('global_batch_counter')
+        wandb.define_metric('epoch')
             
     @classmethod
     def from_config(cls, args):
@@ -47,7 +50,16 @@ class Logger():
             "distributed": args.distributed,
             "args": args,
         }
-
+    
+    # called from within the constructor of the optimization algorithm class,
+    # so from class VaSSO, class SAM, etc.
+    def wandb_define_metrics_per_batch(self, custom_metrics):
+        for metric in custom_metrics:
+            wandb.define_metric(metric, step_metric='epoch')
+    
+    def wandb_define_metrics_per_epoch(self, custom_metrics):
+        for metric in custom_metrics:
+            wandb.define_metric(metric, step_metric='epoch')
 
     @is_main_process
     def log(self, info, printf=True):
@@ -60,7 +72,13 @@ class Logger():
 
         if printf: print(header + str(info) + '\n')
 
-    def wandb_log(self, **stats):
+    def wandb_log_epoch(self, **stats):
+        if self.enable_wandb:
+            self.run.log(stats)
+        else:
+            return
+
+    def wandb_log_batch(self, **stats):
         if self.enable_wandb:
             self.run.log(stats)
         else:

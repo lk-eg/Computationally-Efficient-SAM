@@ -6,10 +6,13 @@ import torch
 import torch.distributed as dist
 from utils.dist import is_dist_avail_and_initialized
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+# device = 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
+
 def train_one_epoch(
     model: torch.nn.Module,
     train_loader : Iterable,
-    criterion, optimizer, epoch, logger, log_freq, use_closure
+    criterion, optimizer, epoch, logger, log_freq, closure, k, double_backprop_calculation
 ):
     model.train()
 
@@ -19,20 +22,26 @@ def train_one_epoch(
     _memory.add_meter('train_acc5', Metric())
     for batch_idx, (images, targets) in enumerate(train_loader):
         batch_start = time.time()
-        images = images.cuda(non_blocking=True)
-        targets = targets.cuda(non_blocking=True)
+
+        images = images.to(device, non_blocking=True)
+        targets = targets.to(device, non_blocking=True)
 
         def closure():
             output = model(images)
             loss = criterion(output, targets)
             loss.backward()
+            # loss L(w_t + e_t) value (from the perturbed parameter position)
+            return loss.item()
 
-        output = model(images)
-        loss = criterion(output, targets)
+        if double_backprop_calculation or batch_idx % k == 0:
+            output = model(images)
+            loss = criterion(output, targets)
+            optimizer.zero_grad()
+            loss.backward()
+            # loss L(w_t) value (from the current parameter position step)
+            loss_w_t = loss.item()
         
-        optimizer.zero_grad()
-        loss.backward()
-        if use_closure: 
+        if closure: 
             optimizer.step(
                 closure, 
                 epoch=epoch,
@@ -90,8 +99,8 @@ def evaluate(
     _memory.add_meter('test_acc5', Metric())
 
     for images, targets in val_loader:
-        images = images.cuda(non_blocking=True)
-        targets = targets.cuda(non_blocking=True)
+        images = images.to(device, non_blocking=True)
+        targets = targets.to(device, non_blocking=True)
 
         output = model(images)
         loss = criterion(output, targets)

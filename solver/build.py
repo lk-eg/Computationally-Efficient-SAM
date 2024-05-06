@@ -36,14 +36,14 @@ def build_base_optimizer(args, parameters):
     
     return base_optimizer
 
-def build_optimizer(args, model):
+def build_optimizer(args, model, logger):
     base_optimizer = build_base_optimizer(args, model.parameters())
     args_opt = args.opt.split('-') # vasso-sgd
     if len(args_opt) == 1:
         optimizer = base_optimizer
     elif len(args_opt) == 2:
         sam_opt, base_opt = args_opt[0], args_opt[1]
-        optimizer = OPTIMIZER_REGISTRY.get(sam_opt.upper())(params=model.parameters(), base_optimizer=base_optimizer, args=args)
+        optimizer = OPTIMIZER_REGISTRY.get(sam_opt.upper())(params=model.parameters(), base_optimizer=base_optimizer, logger=logger, args=args)
     return optimizer, base_optimizer
 
 def build_lr_scheduler(args, optimizer):

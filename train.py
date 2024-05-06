@@ -49,10 +49,23 @@ def main(args):
     criterion = torch.nn.CrossEntropyLoss()
 
     # build solver
-    optimizer, base_optimizer = build_optimizer(args, model=model_without_ddp)
+    optimizer, base_optimizer = build_optimizer(args, model=model_without_ddp, logger=logger)
     lr_scheduler = build_lr_scheduler(args, optimizer=base_optimizer)
     logger.log(f'Optimizer: {type(optimizer)}')
     logger.log(f'LR Scheduler: {type(lr_scheduler)}')
+
+    # check if we need a closure
+    need_closure = (
+        args.opt[:3] == 'sam' 
+        or args.opt[:5] == 'vasso' 
+        or args.opt[:7] == 'vassore'
+    )
+    
+    # check if we need two backprop calculations
+    need_double_backprop = (
+        args.opt[:3] == 'sam'
+        or args.opt[:5] == 'vasso'
+    )
 
     # resume
     if args.resume:
@@ -82,7 +95,9 @@ def main(args):
             epoch=epoch, 
             logger=logger,
             log_freq=args.log_freq,
-            use_closure=(args.opt[:3] == 'sam' or args.opt[:5] == 'vasso'),
+            closure=need_closure,
+            k=args.k,
+            double_backprop_calculation=need_double_backprop
         )
         lr_scheduler.step(epoch)
         val_stats = evaluate(model, val_loader)
@@ -98,8 +113,11 @@ def main(args):
                     'args': args,
                 }, os.path.join(args.output_dir, args.output_name, 'checkpoint.pth'))
         
-        logger.wandb_log(epoch=epoch, **train_stats)
-        logger.wandb_log(epoch=epoch, **val_stats)
+        custom_metrics_per_epoch = ['train_loss', 'train_acc1', 'train_acc5', 'test_loss', 'test_acc1', 'test_acc5']
+        logger.wandb_define_metrics_per_epoch(custom_metrics_per_epoch)
+        
+        logger.wandb_log_epoch(**train_stats, epoch=epoch)
+        logger.wandb_log_epoch(**val_stats, epoch=epoch)
         msg = ' '.join([
             'Epoch:{epoch}',
             'Train Loss:{train_loss:.4f}',

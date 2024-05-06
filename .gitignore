@@ -1,3 +1,14 @@
 .DS_Store
 .idea
 *.pyc
+
+__pycache__/
+*.py[cod]
+*.info
+*.log
+*.wandb
+*.json
+*.yaml
+*.txt
+wandb/
+*.pth
