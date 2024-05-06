@@ -107,13 +107,16 @@ class VASSO(torch.optim.Optimizer):
         self.logger.wandb_log_batch(**{'cosSim(e_t, e_{t-1})': self.cos_sim, 'global_batch_counter': self.iteration_step_counter})
 
         if self.iteration_step_counter % 1000 == 0:
-            et_values_arr = np.arr(self.cos_sim_evolution)
-            wt_norm_values_arr = np.arr(self.w_t_normdiff_evolution)
+            et_values_arr = np.array(self.cos_sim_evolution)
+            wt_norm_values_arr = np.array(self.w_t_normdiff_evolution)
             pearson_corr, _ = pearsonr(et_values_arr, wt_norm_values_arr)
             self.logger.log(f'=====*****===== PEARSON_CORR={pearson_corr}')
+            self.logger.wandb_log_batch(**{'PEARSON_CORR': pearson_corr, 'global_batch_counter': self.iteration_step_counter})
 
             spearman_corr, _ = spearmanr(et_values_arr, wt_norm_values_arr)
             self.logger.log(f'=====*****===== SPEARMAN_CORR={spearman_corr}')
+            self.logger.wandb_log_batch(**{'SPEARMAN_CORR': spearman_corr, 'global_batch_counter': self.iteration_step_counter})
+
 
     def _avg_grad_norm(self):
         norm = torch.norm(
