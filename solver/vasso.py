@@ -118,10 +118,12 @@ class VASSO(torch.optim.Optimizer):
         self.iteration_step_counter += 1
         self.logger.wandb_log_batch(**{'||w_t - w_{t-1}||': self.normdiff, 'global_batch_counter': self.iteration_step_counter})
         self.logger.wandb_log_batch(**{'cosSim(e_t, e_{t-1})': self.cos_sim, 'global_batch_counter': self.iteration_step_counter})
-        current_gradient_norm = self._avg_grad_norm('grad')
+
+        current_gradient_norm = self._avg_grad_norm('grad').item()
         self.logger.wandb_log_batch(**{'||g_t||': current_gradient_norm, 'global_batch_counter': self.iteration_step_counter})
         self.w_t_normdiff_evolution.append(current_gradient_norm)
-        current_b_t_norm = self._avg_grad_norm('b_t')
+
+        current_b_t_norm = self._avg_grad_norm('b_t').item()
         self.logger.wandb_log_batch(**{'||b_t||': current_b_t_norm, 'global_batch_counter': self.iteration_step_counter})
         self.b_t_norm_evolution.append(current_b_t_norm)
 
@@ -134,19 +136,19 @@ class VASSO(torch.optim.Optimizer):
             et_values_arr = np.array(self.cos_sim_evolution)
             wt_norm_values_arr = np.array(self.w_t_normdiff_evolution)
             b_t_norm_values_arr = np.array(self.b_t_norm_evolution)
-            pearson_corr_1, _ = pearsonr(et_values_arr, wt_norm_values_arr)
-            self.logger.log(f'=====*****===== PEARSON_CORR_1=  {pearson_corr_1}')
-            self.logger.wandb_log_batch(**{'PEARSON_CORR_CUM(||g_t||, cosSim)': pearson_corr_1, 'global_batch_counter': self.iteration_step_counter})
-            pearson_corr_2, _ = pearsonr(et_values_arr, b_t_norm_values_arr)
-            self.logger.log(f'=====*****===== PEARSON_CORR_2=  {pearson_corr_2}')
-            self.logger.wandb_log_batch(**{'PEARSON_CORR_CUM(||b_t||, cosSim)': pearson_corr_2, 'global_batch_counter': self.iteration_step_counter})
+            pearson_corr_1, p1 = pearsonr(et_values_arr, wt_norm_values_arr)
+            self.logger.log(f'=====*****===== PEARSON_CORR_1=  {pearson_corr_1}, p-value={p1}')
+            self.logger.wandb_log_batch(**{'PEARSON_CORR_CUM(||g_t||, cosSim)': pearson_corr_1, 'p-value_||g_t||': p1, 'global_batch_counter': self.iteration_step_counter})
+            pearson_corr_2, p2 = pearsonr(et_values_arr, b_t_norm_values_arr)
+            self.logger.log(f'=====*****===== PEARSON_CORR_2=  {pearson_corr_2}, p-value={p2}')
+            self.logger.wandb_log_batch(**{'PEARSON_CORR_CUM(||b_t||, cosSim)': pearson_corr_2, 'p-value_||b_t||': p2, 'global_batch_counter': self.iteration_step_counter})
 
-            spearman_corr_1, _ = spearmanr(et_values_arr, wt_norm_values_arr)
+            spearman_corr_1, q1 = spearmanr(et_values_arr, wt_norm_values_arr)
             self.logger.log(f'=====*****===== SPEARMAN_CORR_1=  {spearman_corr_1}')
-            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_CUM(||g_t||, cosSim)': spearman_corr_1, 'global_batch_counter': self.iteration_step_counter})
-            spearman_corr_2, _ = spearmanr(et_values_arr, b_t_norm_values_arr)
+            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_CUM(||g_t||, cosSim)': spearman_corr_1, 'q-value_||g_t||': q1, 'global_batch_counter': self.iteration_step_counter})
+            spearman_corr_2, q2 = spearmanr(et_values_arr, b_t_norm_values_arr)
             self.logger.log(f'=====*****===== SPEARMAN_CORR_2=  {spearman_corr_2}')
-            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_CUM(|b_t||, cosSim)': spearman_corr_2, 'global_batch_counter': self.iteration_step_counter})
+            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_CUM(|b_t||, cosSim)': spearman_corr_2, 'q-value_||b_t||': q2, 'global_batch_counter': self.iteration_step_counter})
 
 
     def _avg_grad_norm(self, key):

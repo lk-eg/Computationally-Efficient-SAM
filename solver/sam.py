@@ -10,12 +10,13 @@ from solver.build import OPTIMIZER_REGISTRY
 @OPTIMIZER_REGISTRY.register()
 class SAM(torch.optim.Optimizer):
     @configurable()
-    def __init__(self, params, base_optimizer, rho) -> None:
+    def __init__(self, params, base_optimizer, logger, rho) -> None:
         assert isinstance(base_optimizer, torch.optim.Optimizer), f"base_optimizer must be an `Optimizer`"
         self.base_optimizer = base_optimizer
 
         assert 0 <= rho, f"rho should be non-negative:{rho}"
         self.rho = rho
+        self.logger=logger
         super(SAM, self).__init__(params, dict(rho=rho))
 
         self.param_groups = self.base_optimizer.param_groups

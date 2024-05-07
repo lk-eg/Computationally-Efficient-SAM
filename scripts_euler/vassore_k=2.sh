@@ -2,6 +2,7 @@
 #SBATCH -n 1
 #SBATCH --cpus-per-task=1
 #SBATCH --gpus=1
+#SBATCH --time=6:00:00
 #SBATCH --job-name="vassore_k=2"
 #SBATCH --mem-per-cpu=16384
 #SBATCH --output="vassore_k=2.txt"

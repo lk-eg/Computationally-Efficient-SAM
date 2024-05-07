@@ -2,6 +2,7 @@
 #SBATCH -n 1
 #SBATCH --cpus-per-task=1
 #SBATCH --gpus=1
+#SBATCH --time=8:00:00
 #SBATCH --job-name="metrics_refined_7"
 #SBATCH --mem-per-cpu=16000
 #SBATCH --output="metrics_refined_7.txt"

@@ -2,6 +2,7 @@
 #SBATCH -n 1
 #SBATCH --cpus-per-task=1
 #SBATCH --gpus=1
+#SBATCH --time=6:00:00
 #SBATCH --job-name="sam_1"
 #SBATCH --mem-per-cpu=16384
 #SBATCH --output="sam_1.txt"
