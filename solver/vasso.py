@@ -12,7 +12,7 @@ from solver.build import OPTIMIZER_REGISTRY
 @OPTIMIZER_REGISTRY.register()
 class VASSO(torch.optim.Optimizer):
     @configurable()
-    def __init__(self, params, base_optimizer, logger, rho, theta, momentum) -> None:
+    def __init__(self, params, base_optimizer, logger, rho, theta, momentum, max_epochs) -> None:
         assert isinstance(base_optimizer, torch.optim.Optimizer), f"base_optimizer must be an `Optimizer`"
         self.base_optimizer = base_optimizer
         self.logger = logger
@@ -22,6 +22,7 @@ class VASSO(torch.optim.Optimizer):
         self.rho = rho
         self.theta = theta
         self.momentum = momentum
+        self.max_epochs = max_epochs
         self.iteration_step_counter = 0
         self.normdiff = 0
         self.cos_sim = 0
@@ -30,37 +31,53 @@ class VASSO(torch.optim.Optimizer):
 
         self.param_groups = self.base_optimizer.param_groups
         for group in self.param_groups:
-            group["rho"] = rho
+            group['rho'] = rho
             group['theta'] = theta
 
             for p in group['params']:
-                self.state[p]['e_t'] = torch.zeros_like(p, requires_grad=False).to(p)
-                self.state[p]['e_{t-1}'] = torch.zeros_like(p, requires_grad=False).to(p)
-                self.state[p]['w_t'] = torch.zeros_like(p, requires_grad=False).to(p)
-                self.state[p]['w_{t-1}'] = torch.zeros_like(p, requires_grad=False).to(p)
-                self.state[p]['grad'] = torch.zeros_like(p, requires_grad=False).to(p)
-                self.state[p]['b_t'] = torch.zeros_like(p, requires_grad=False)
-        self.cos_sim_evolution = []
-        self.w_t_normdiff_evolution = []
-        self.b_t_norm_evolution = []
+                itr_metric_keys = ['e_t', 'e_{t-1}', 'w_t', 'w_{t-1}', 'g_t', 'g_{t-1}', 'pert_t', 'pert_{t-1}']
+                for key in itr_metric_keys:
+                    self.state[p][key] = torch.zeros_like(p, requires_grad=False).to(p)
+
+        self.cos_sim_evolution_all_epochs = []
+        self.cos_sim_evolution_training_stage = []
+
+        self.w_normdiff_evolution_all_epochs = []
+        self.w_normdiff_evolution_training_stage = []
+
+        self.pert_normdiff_evolution_all_epochs = []
+        self.pert_normdiff_evolution_training_stage = []
+
+        self.g_prev_norm_evolution_all_epochs = []
+        self.g_prev_norm_evolution_training_stage = []
 
         # define here the custom metrics that will be tracked per batch
-        custom_metrics = ['cosSim(e_t, e_{t-1})', '||w_t - w_{t-1}||']
-        self.logger.wandb_define_metrics_per_batch(custom_metrics)
+        custom_metrics_per_batch = ['cosSim(e_t, e_{t-1})', '||w_t - w_{t-1}||', '||g_{t-1}||', '||pert_t - pert_{t-1}||']
+        self.logger.wandb_define_metrics_per_batch(custom_metrics_per_batch)
+
+        # define here the custom metrics that will be tracked per training stage
+        custom_metrics_per_training_stage = ['PEARSON_CORR_STAGE(||g_{t-1}||, cosSim)', 'SPEARMAN_CORR_STAGE(||g_{t-1}||, cosSim)', 
+                                             'p-value_||g_{t-1}||', 'q-value_||g_{t-1}||',
+                                             'PEARSON_CORR_STAGE(||w_t - w_{t-1}||, cosSim)', 'SPEARMAN_CORR_STAGE(||w_t - w_{t-1}||, cosSim)', 
+                                             'r-value_||w_t - w_{t-1}||', 's-value_||w_t - w_{t-1}||'
+                                             ]
+        self.logger.wandb_define_metrics_per_training_stage(custom_metrics_per_training_stage)
+
 
     @classmethod
     def from_config(cls, args):
         return {
-            "rho": args.rho,
+            'rho': args.rho,
             'theta': args.theta,
             'momentum': args.momentum, # only for sgd. If I want to make it more general, I will have to remove this at some point. Or maybe I don't have to remove it.
+            'max_epochs': args.epochs
         }
 
     @torch.no_grad()
     def first_step(self, zero_grad=False):
         for group in self.param_groups:
             theta = group['theta']
-            for p in group["params"]:
+            for p in group['params']:
                 if p.grad is None: continue
                 if 'ema' not in self.state[p]:
                     self.state[p]['ema'] = p.grad.clone().detach()
@@ -68,7 +85,7 @@ class VASSO(torch.optim.Optimizer):
                     self.state[p]['ema'].mul_(1 - theta)
                     self.state[p]['ema'].add_(p.grad, alpha=theta)
 
-                self.state[p]['w_{t-1}'] = self.state[p]['w_t'].clone()           
+                self.state[p]['w_{t-1}'] = self.state[p]['w_t'].clone()
                 self.state[p]['w_t'] = p.clone().detach()
 
         avg_grad_norm = self._avg_grad_norm('ema')
@@ -81,13 +98,23 @@ class VASSO(torch.optim.Optimizer):
 
                 self.state[p]['e_{t-1}'] = self.state[p]['e_t'].clone()
                 self.state[p]['e_t'] = e_w.clone()
+
+                self.state[p]['pert_{t-1}'] = self.state[p]['pert_t'].clone()
+                self.state[p]['pert_t'] = p.clone().detach()
         
         self.normdiff = self._normdiff('w_t', 'w_{t-1}')
+        self.pert_normdiff = self._normdiff('pert_t', 'pert_{t-1}')
         self.cos_sim = self._cosine_similarity('e_t', 'e_{t-1}')
 
-        # this here is not scaled by learning rate
-        # self.w_t_normdiff_evolution.append(self.normdiff.item())
-        self.cos_sim_evolution.append(self.cos_sim)
+        # update the lists that will be used for measuring correlations
+        self.cos_sim_evolution_all_epochs.append(self.cos_sim)
+        self.cos_sim_evolution_training_stage.append(self.cos_sim)
+
+        self.w_normdiff_evolution_all_epochs.append(self.normdiff.item())
+        self.w_normdiff_evolution_training_stage.append(self.normdiff.item())
+
+        self.pert_normdiff_evolution_all_epochs.append(self.pert_normdiff.item())
+        self.pert_normdiff_evolution_training_stage.append(self.pert_normdiff.item())
 
         if zero_grad: self.zero_grad()
 
@@ -97,11 +124,14 @@ class VASSO(torch.optim.Optimizer):
             for p in group["params"]:
                 if p.grad is None: continue
                 p.sub_(self.state[p]['e_t'])
-                self.state[p]['grad'] = p.grad.clone().detach()
 
-                if 'momentum_buffer' in self.base_optimizer.state[p]:
-                    momentum_buffer = self.base_optimizer.state[p]['momentum_buffer']
-                    self.state[p]['b_t'] = self.momentum * momentum_buffer + self.state[p]['grad']
+                # I am running here an analysis on the outer gradient, g_{SAM}, not the inner gradient.
+                self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
+                self.state[p]['g_t'] = p.grad.clone().detach()
+
+                # if 'momentum_buffer' in self.base_optimizer.state[p]:
+                #     momentum_buffer = self.base_optimizer.state[p]['momentum_buffer']
+                #     self.state[p]['b_t'] = self.momentum * momentum_buffer + self.state[p]['grad']
 
         self.base_optimizer.step()
         if zero_grad: self.zero_grad()
@@ -109,48 +139,21 @@ class VASSO(torch.optim.Optimizer):
     @torch.no_grad()
     def step(self, closure=None, **kwargs):
         assert closure is not None, "SAM requires closure, which is not provided."
-        logger = kwargs['logger']
+        epoch = kwargs['epoch']
+
         self.first_step(True)
         with torch.enable_grad():
             closure()
         self.second_step()
 
         self.iteration_step_counter += 1
-        self.logger.wandb_log_batch(**{'||w_t - w_{t-1}||': self.normdiff, 'global_batch_counter': self.iteration_step_counter})
-        self.logger.wandb_log_batch(**{'cosSim(e_t, e_{t-1})': self.cos_sim, 'global_batch_counter': self.iteration_step_counter})
 
-        current_gradient_norm = self._avg_grad_norm('grad').item()
-        self.logger.wandb_log_batch(**{'||g_t||': current_gradient_norm, 'global_batch_counter': self.iteration_step_counter})
-        self.w_t_normdiff_evolution.append(current_gradient_norm)
+        # logging I am interested in
+        self._metrics_logging()
+        self._correlation_logging(epoch) 
 
-        current_b_t_norm = self._avg_grad_norm('b_t').item()
-        self.logger.wandb_log_batch(**{'||b_t||': current_b_t_norm, 'global_batch_counter': self.iteration_step_counter})
-        self.b_t_norm_evolution.append(current_b_t_norm)
-
-        if self.iteration_step_counter % 100 == 0:
-            if self.iteration_step_counter == 100:
-                self.cos_sim_evolution.pop(0)
-                self.w_t_normdiff_evolution.pop(0)
-                self.b_t_norm_evolution.pop(0)
-
-            et_values_arr = np.array(self.cos_sim_evolution)
-            wt_norm_values_arr = np.array(self.w_t_normdiff_evolution)
-            b_t_norm_values_arr = np.array(self.b_t_norm_evolution)
-            pearson_corr_1, p1 = pearsonr(et_values_arr, wt_norm_values_arr)
-            self.logger.log(f'=====*****===== PEARSON_CORR_1=  {pearson_corr_1}, p-value={p1}')
-            self.logger.wandb_log_batch(**{'PEARSON_CORR_CUM(||g_t||, cosSim)': pearson_corr_1, 'p-value_||g_t||': p1, 'global_batch_counter': self.iteration_step_counter})
-            pearson_corr_2, p2 = pearsonr(et_values_arr, b_t_norm_values_arr)
-            self.logger.log(f'=====*****===== PEARSON_CORR_2=  {pearson_corr_2}, p-value={p2}')
-            self.logger.wandb_log_batch(**{'PEARSON_CORR_CUM(||b_t||, cosSim)': pearson_corr_2, 'p-value_||b_t||': p2, 'global_batch_counter': self.iteration_step_counter})
-
-            spearman_corr_1, q1 = spearmanr(et_values_arr, wt_norm_values_arr)
-            self.logger.log(f'=====*****===== SPEARMAN_CORR_1=  {spearman_corr_1}')
-            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_CUM(||g_t||, cosSim)': spearman_corr_1, 'q-value_||g_t||': q1, 'global_batch_counter': self.iteration_step_counter})
-            spearman_corr_2, q2 = spearmanr(et_values_arr, b_t_norm_values_arr)
-            self.logger.log(f'=====*****===== SPEARMAN_CORR_2=  {spearman_corr_2}')
-            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_CUM(|b_t||, cosSim)': spearman_corr_2, 'q-value_||b_t||': q2, 'global_batch_counter': self.iteration_step_counter})
-
-
+            
+    
     def _avg_grad_norm(self, key):
         norm = torch.norm(
             torch.stack([
@@ -190,3 +193,80 @@ class VASSO(torch.optim.Optimizer):
         cosine_similarity = dot_product/(norm_a * norm_b)
         
         return cosine_similarity.item()
+    
+    def _metrics_logging(self):
+        self.logger.wandb_log_batch(**{'||w_t - w_{t-1}||': self.normdiff.item(), 'global_batch_counter': self.iteration_step_counter})
+        self.logger.wandb_log_batch(**{'cosSim(e_t, e_{t-1})': self.cos_sim, 'global_batch_counter': self.iteration_step_counter})
+        self.logger.wandb_log_batch(**{'||pert_t - pert_{t-1}||': self.pert_normdiff.item(), 'global_batch_counter': self.iteration_step_counter})
+
+        previous_sam_gradient_norm = self._avg_grad_norm('g_{t-1}').item()
+        self.logger.wandb_log_batch(**{'||g_{t-1}||': previous_sam_gradient_norm, 'global_batch_counter': self.iteration_step_counter})
+        self.g_prev_norm_evolution_all_epochs.append(previous_sam_gradient_norm)
+        self.g_prev_norm_evolution_training_stage.append(previous_sam_gradient_norm)
+
+    def _correlation_logging(self, epoch):
+        if epoch % 5 == 1:
+            if epoch == 6:
+                self.cos_sim_evolution_all_epochs.pop(0)
+                self.cos_sim_evolution_training_stage.pop(0)
+
+                self.g_prev_norm_evolution_all_epochs.pop(0)
+                self.g_prev_norm_evolution_training_stage.pop(0)
+
+                self.w_normdiff_evolution_all_epochs.pop(0)
+                self.w_normdiff_evolution_training_stage.pop(0)
+
+                self.pert_normdiff_evolution_all_epochs.pop(0)
+                self.pert_normdiff_evolution_training_stage.pop(0)
+            
+            cos_sim_values_arr = np.array(self.cos_sim_evolution_training_stage)
+            g_prev_arr = np.array(self.g_prev_norm_evolution_training_stage)
+            w_normdiff_arr = np.array(self.w_normdiff_evolution_training_stage)
+            pert_normdiff_arr = np.array(self.pert_normdiff_evolution_training_stage)
+
+            pearson_corr_g_prev_cos_sim, p1 = pearsonr(g_prev_arr, cos_sim_values_arr)
+            self.logger.wandb_log_batch(**{'PEARSON_CORR_STAGE(||g_{t-1}||, cosSim)': pearson_corr_g_prev_cos_sim, 'p-value_||g_{t-1}||': p1, 'training_stage_%5': epoch//5})
+
+            spearman_corr_g_prev_cos_sim, q1 = spearmanr(g_prev_arr, cos_sim_values_arr)
+            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_STAGE(||g_{t-1}||, cosSim)': spearman_corr_g_prev_cos_sim, 'q-value_||g_{t-1}||': q1, 'training_stage_%5': epoch//5})
+
+            pearson_corr_w_normdiff_cos_sim, r1 = pearsonr(w_normdiff_arr, cos_sim_values_arr)
+            self.logger.wandb_log_batch(**{'PEARSON_CORR_STAGE(||w_t - w_{t-1}||, cosSim)': pearson_corr_w_normdiff_cos_sim, 'r-value_||w_t - w_{t-1}||': r1, 'training_stage_%5': epoch//5})
+
+            spearman_corr_w_normdiff_cos_sim, s1 = pearsonr(w_normdiff_arr, cos_sim_values_arr)
+            self.logger.wandb_log_batch(**{'SPEARMAN_CORR_STAGE(||w_t - w_{t-1}||, cosSim)': spearman_corr_w_normdiff_cos_sim, 's-value_||w_t - w_{t-1}||': s1, 'training_stage_%5': epoch//5})
+
+            pearson_corr_pert_normdiff_cos_sim, pp1 = pearsonr(pert_normdiff_arr, cos_sim_values_arr)
+            self.logger.wandb_log_batch(**{'PEARSON_CORR_STAGE(||pert_t - pert_{t-1}||, cosSim)': pearson_corr_pert_normdiff_cos_sim, 'pp-value_||pert_t - pert_{t-1}||': pp1, 'training_stage_%5': epoch//5})
+
+            pearson_corr_pert_normdiff_g_prev, qq1 = pearsonr(pert_normdiff_arr, g_prev_arr)
+            self.logger.wandb_log_batch(**{'PEARSON_CORR_STAGE(||pert_t - pert_{t-1}||, ||g_{t-1}||)': pearson_corr_pert_normdiff_g_prev, 'qq-value_||pert_t - pert_{t-1}||': qq1, 'training_stage_%5': epoch//5})
+
+            pearson_corr_pert_normdiff_w_normdiff, rr1 = pearsonr(pert_normdiff_arr, w_normdiff_arr)
+            self.logger.wandb_log_batch(**{'PEARSON_CORR_STAGE(||pert_t - pert_{t-1}||, ||w_t - w_{t-1}||)': pearson_corr_pert_normdiff_w_normdiff, 'rr-value_||pert_t - pert_{t-1}||': rr1, 'training_stage_%5': epoch//5})
+
+            self.cos_sim_evolution_training_stage.clear()
+            self.g_prev_norm_evolution_training_stage.clear()
+            self.w_normdiff_evolution_training_stage.clear()
+            self.pert_normdiff_evolution_training_stage.clear()
+
+        if epoch == self.max_epochs-1:
+            cos_sim_values_all_epochs_arr = np.array(self.cos_sim_evolution_all_epochs)
+            g_prev_all_epochs_arr = np.array(self.g_prev_norm_evolution_all_epochs)
+            w_normdiff_all_epochs_arr = np.array(self.w_normdiff_evolution_all_epochs)
+            pert_normdiff_all_epochs_arr = np.array(self.pert_normdiff_evolution_all_epochs)
+
+            pearson_corr_g_prev_cos_sim_all_epochs, p2 = pearsonr(g_prev_all_epochs_arr, cos_sim_values_all_epochs_arr)
+            self.logger.log(f'=====*****===== PEARSON_CORR_GLOBAL(||g_{{t-1}}||, cosSim) =  {pearson_corr_g_prev_cos_sim_all_epochs}, p-value_||g_{{t-1}}||: {p2}')
+            spearman_corr_g_prev_cos_sim_all_epochs, q2 = spearmanr(g_prev_all_epochs_arr, cos_sim_values_all_epochs_arr)
+            self.logger.log(f'=====*****===== SPEARMAN_CORR_GLOBAL(||g_{{t-1}}||, cosSim) =  {spearman_corr_g_prev_cos_sim_all_epochs}, q-value_||g_{{t-1}}||: {q2}')
+
+            pearson_corr_w_normdiff_cos_sim_all_epochs, r2 = pearsonr(w_normdiff_all_epochs_arr, cos_sim_values_all_epochs_arr)
+            self.logger.log(f'=====*****===== PEARSON_CORR_GLOBAL(||w_t - w_{{t-1}}||, cosSim) =  {pearson_corr_w_normdiff_cos_sim_all_epochs}, r-value_||w_t - w_{{t-1}}||: {r2}')
+            spearman_corr_w_normdiff_cos_sim_all_epochs, s2 = spearmanr(w_normdiff_all_epochs_arr, cos_sim_values_all_epochs_arr)
+            self.logger.log(f'=====*****===== SPEARMAN_CORR_GLOBAL(||w_t - w_{{t-1}}||, cosSim) =  {spearman_corr_w_normdiff_cos_sim_all_epochs}, s-value_||w_t - w_{{t-1}}||: {s2}')
+
+            pearson_corr_pert_normdiff_cos_sim_all_epochs, pp2 = pearsonr(pert_normdiff_all_epochs_arr, cos_sim_values_all_epochs_arr)
+            self.logger.log(f'=====*****===== PEARSON_CORR_GLOBAL(||pert_t - pert_{{t-1}}||, cosSim) =  {pearson_corr_pert_normdiff_cos_sim_all_epochs}, p-value_||pert_t - pert_{{t-1}}||: {pp2}')
+            spearman_corr_pert_normdiff_cos_sim_all_epochs, qq2 = spearmanr(pert_normdiff_all_epochs_arr, cos_sim_values_all_epochs_arr)
+            self.logger.log(f'=====*****===== SPEARMAN_CORR_GLOBAL(||pert_t - pert_{{t-1}}||, cosSim) =  {spearman_corr_pert_normdiff_cos_sim_all_epochs}, q-value_||pert_t - pert_{{t-1}}||: {qq2}')
