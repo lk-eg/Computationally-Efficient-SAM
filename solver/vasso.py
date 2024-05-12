@@ -217,7 +217,7 @@ class VASSO(torch.optim.Optimizer):
 
         previous_sam_gradient_norm = self._avg_grad_norm('g_{t-1}').item()
         self.logger.wandb_log_batch(**{'||g_{t-1}||': previous_sam_gradient_norm, 'global_batch_counter': self.iteration_step_counter})
-        if not self.iteration_step_counter == 0:
+        if not self.iteration_step_counter == 1:
             self.g_prev_norm_evolution_all_epochs.append(previous_sam_gradient_norm)
             self.g_prev_norm_evolution_training_stage.append(previous_sam_gradient_norm)
 
