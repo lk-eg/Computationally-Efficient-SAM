@@ -222,7 +222,9 @@ class VASSO(torch.optim.Optimizer):
             self.g_prev_norm_evolution_training_stage.append(previous_sam_gradient_norm)
 
     def _correlation_logging(self, epoch):
-        if epoch % 5 == 1:
+        if epoch % 5 == 1 and not self.logged_epoch == epoch:
+            self.logged_epoch = epoch
+
             cos_sim_values_arr = np.array(self.cos_sim_evolution_training_stage)
             g_prev_arr = np.array(self.g_prev_norm_evolution_training_stage)
             w_normdiff_arr = np.array(self.w_normdiff_evolution_training_stage)
