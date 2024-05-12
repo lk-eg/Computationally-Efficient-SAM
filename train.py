@@ -55,17 +55,28 @@ def main(args):
     logger.log(f'LR Scheduler: {type(lr_scheduler)}')
 
     # check if we need a closure
+    # for these, the reported loss right now is the PERTURBED loss.
+    # Be AWARE of that
     need_closure = (
         args.opt[:3] == 'sam' 
         or args.opt[:5] == 'vasso' 
         or args.opt[:7] == 'vassore'
+        or args.opt[:9] == 'vassoremu'
+        or args.opt[:12] == 'vassoremucrt'
+        or args.opt[:8] == 'adavasso'
     )
     
     # check if we need two backprop calculations
-    need_double_backprop = (
-        args.opt[:3] == 'sam'
-        or args.opt[:5] == 'vasso'
+    need_own_inner_grad_calc = (
+        args.opt[:5] == 'vasso'
+        or args.opt[:7] == 'vassore'
+        or args.opt[:9] == 'vassoremu'
+        or args.opt[:12] == 'vassoremucrt'
+        or args.opt[:8] == 'adavasso'
     )
+
+    # just for SGD
+    logger.wandb_define_metrics_per_batch(['||g_{SGD}||'])
 
     # resume
     if args.resume:
@@ -95,9 +106,9 @@ def main(args):
             epoch=epoch, 
             logger=logger,
             log_freq=args.log_freq,
-            closure=need_closure,
-            k=args.k,
-            double_backprop_calculation=need_double_backprop
+            need_closure=need_closure,
+            optimizer_argument=args.opt,
+            need_own_inner_grad_calc=need_own_inner_grad_calc
         )
         lr_scheduler.step(epoch)
         val_stats = evaluate(model, val_loader)

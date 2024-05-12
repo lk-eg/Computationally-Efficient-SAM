@@ -9,9 +9,9 @@ from solver.build import OPTIMIZER_REGISTRY
 
 
 @OPTIMIZER_REGISTRY.register()
-class VASSO(torch.optim.Optimizer):
+class ADAVASSO(torch.optim.Optimizer):
     @configurable()
-    def __init__(self, params, base_optimizer, logger, rho, theta, momentum, max_epochs) -> None:
+    def __init__(self, params, base_optimizer, logger, rho, theta, phi, momentum, max_epochs) -> None:
         assert isinstance(base_optimizer, torch.optim.Optimizer), f"base_optimizer must be an `Optimizer`"
         self.base_optimizer = base_optimizer
         self.logger = logger
@@ -20,18 +20,22 @@ class VASSO(torch.optim.Optimizer):
         assert theta <= 1 and theta >= 0, f"theta must live in [0, 1]."
         self.rho = rho
         self.theta = theta
+        self.phi = phi
+
         self.momentum = momentum
         self.max_epochs = max_epochs
         self.iteration_step_counter = 0
         self.normdiff = 0
         self.cos_sim = 0
+        self.logged_epoch = 0
 
-        super(VASSO, self).__init__(params, dict(rho=rho, theta=theta))
+        super(ADAVASSO, self).__init__(params, dict(rho=rho, theta=theta))
 
         self.param_groups = self.base_optimizer.param_groups
         for group in self.param_groups:
             group['rho'] = rho
             group['theta'] = theta
+            group['phi'] = phi
 
             for p in group['params']:
                 itr_metric_keys = ['e_t', 'e_{t-1}', 'w_t', 'w_{t-1}', 'g_t', 'g_{t-1}', 'pert_t', 'pert_{t-1}']
@@ -68,6 +72,7 @@ class VASSO(torch.optim.Optimizer):
         return {
             'rho': args.rho,
             'theta': args.theta,
+            'phi': args.phi,
             'momentum': args.momentum, # only for sgd. If I want to make it more general, I will have to remove this at some point. Or maybe I don't have to remove it.
             'max_epochs': args.epochs
         }
@@ -82,25 +87,47 @@ class VASSO(torch.optim.Optimizer):
 
     @torch.no_grad()
     def first_step(self, zero_grad=False):
+        shared_device = self.param_groups[0]["params"][0].device
         for group in self.param_groups:
             theta = group['theta']
+            phi = group['phi']
             for p in group['params']:
                 if p.grad is None: continue
-                if 'ema' not in self.state[p]:
-                    self.state[p]['ema'] = p.grad.clone().detach()
+                if 'd' not in self.state[p]:
+                    p_grad = p.grad.clone().detach()
+                    p_grad_snd_moment = p_grad * p_grad
+                    self.state[p]['d'] = p_grad.div_(theta)
+                    self.state[p]['c'] = p_grad_snd_moment.div_(phi)
+                    
+                    c_sqrt = torch.sqrt(self.state[p]['c'])
+                    delta = torch.full(c_sqrt.size(), 1e-7, device=shared_device)
+                    self.state[p]['b'] = self.state[p]['d'] / (c_sqrt + delta)
                 else:
-                    self.state[p]['ema'].mul_(1 - theta)
-                    self.state[p]['ema'].add_(p.grad, alpha=theta)
+                    t = self.iteration_step_counter + 1
 
+                    p_grad = p.grad.clone().detach()
+                    self.state[p]['d'].mul_(1 - theta)
+                    self.state[p]['d'].add_(p_grad, alpha=theta)
+                    self.state[p]['d'].div_(1 - (1 - theta)**t)
+
+                    p_grad_snd_moment = p_grad * p_grad
+                    self.state[p]['c'].mul_(1 - phi)
+                    self.state[p]['c'].add_(p_grad_snd_moment, alpha=phi)
+                    self.state[p]['c'].div_(1 - (1 - phi)**t)
+
+                    c_sqrt = torch.sqrt(self.state[p]['c'])
+                    delta = torch.full(c_sqrt.size(), 1e-36, device=shared_device)
+                    self.state[p]['b'] = self.state[p]['d'] / (c_sqrt + delta)
+    
                 self.state[p]['w_{t-1}'] = self.state[p]['w_t'].clone()
                 self.state[p]['w_t'] = p.clone().detach()
 
-        avg_grad_norm = self._avg_grad_norm('ema')
+        avg_grad_norm = self._avg_grad_norm('b')
         for group in self.param_groups:
-            scale = group["rho"] / (avg_grad_norm + 1e-7)
+            scale = group["rho"] / (avg_grad_norm + 1e-36)
             for p in group["params"]:
                 if p.grad is None: continue
-                e_w = self.state[p]['ema'] * scale
+                e_w = self.state[p]['b'] * scale
                 p.add_(e_w)
 
                 self.state[p]['e_{t-1}'] = self.state[p]['e_t'].clone()
@@ -113,8 +140,8 @@ class VASSO(torch.optim.Optimizer):
         self.pert_normdiff = self._normdiff('pert_t', 'pert_{t-1}')
         self.cos_sim = self._cosine_similarity('e_t', 'e_{t-1}')
 
-        # update the lists that will be used for measuring correlations
         if not self.iteration_step_counter == 0:
+        # update the lists that will be used for measuring correlations
             self.cos_sim_evolution_all_epochs.append(self.cos_sim)
             self.cos_sim_evolution_training_stage.append(self.cos_sim)
 
@@ -164,7 +191,7 @@ class VASSO(torch.optim.Optimizer):
 
         # logging I am interested in
         self._metrics_logging()
-        self._correlation_logging(epoch) 
+        self._correlation_logging(epoch)
 
         return output, loss
 
@@ -217,12 +244,16 @@ class VASSO(torch.optim.Optimizer):
 
         previous_sam_gradient_norm = self._avg_grad_norm('g_{t-1}').item()
         self.logger.wandb_log_batch(**{'||g_{t-1}||': previous_sam_gradient_norm, 'global_batch_counter': self.iteration_step_counter})
-        if not self.iteration_step_counter == 0:
+        if not self.iteration_step_counter == 1:
             self.g_prev_norm_evolution_all_epochs.append(previous_sam_gradient_norm)
             self.g_prev_norm_evolution_training_stage.append(previous_sam_gradient_norm)
 
     def _correlation_logging(self, epoch):
-        if epoch % 5 == 1:
+        # To be added soon:
+        # my_array = np.nan_to_num(my_array)
+        if epoch % 5 == 1 and not self.logged_epoch == epoch:
+            self.logged_epoch = epoch
+
             cos_sim_values_arr = np.array(self.cos_sim_evolution_training_stage)
             g_prev_arr = np.array(self.g_prev_norm_evolution_training_stage)
             w_normdiff_arr = np.array(self.w_normdiff_evolution_training_stage)

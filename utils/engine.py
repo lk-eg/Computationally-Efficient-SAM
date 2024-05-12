@@ -12,7 +12,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 def train_one_epoch(
     model: torch.nn.Module,
     train_loader : Iterable,
-    criterion, optimizer, epoch, logger, log_freq, closure, k, double_backprop_calculation
+    criterion, optimizer, epoch, logger, log_freq, need_closure, optimizer_argument, need_own_inner_grad_calc
 ):
     model.train()
 
@@ -26,32 +26,40 @@ def train_one_epoch(
         images = images.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
 
+        # outer gradient calculation, $g_{\text{SAM}}$
         def closure():
             output = model(images)
             loss = criterion(output, targets)
             loss.backward()
-            # loss L(w_t + e_t) value (from the perturbed parameter position)
-            return loss.item()
 
-        if double_backprop_calculation or batch_idx % k == 0:
+            # loss L(w_t + e_t) value (from the perturbed parameter position)
+            return output, loss
+        
+        # for simulatenously checking the norm of SGD gradient
+        if not need_own_inner_grad_calc:
             output = model(images)
             loss = criterion(output, targets)
             optimizer.zero_grad()
             loss.backward()
-            # loss L(w_t) value (from the current parameter position step)
-            loss_w_t = loss.item()
-        
-        if closure: 
-            optimizer.step(
+
+            if optimizer_argument[:3] == 'sgd':
+                total_sgd_norm = sum(p.grad.data.norm(2).item() ** 2 for p in model.parameters()) ** 0.5
+                logger.wandb_log_batch(**{'||g_{SGD}||': total_sgd_norm, 'global_batch_counter': epoch * len(train_loader) + batch_idx})
+
+        if need_closure:
+            output, loss = optimizer.step(
                 closure, 
                 epoch=epoch,
                 step=epoch*len(train_loader)+batch_idx,
                 batch_idx=batch_idx,
-                model=model, 
+                model=model,
+                images=images,
+                targets=targets,
+                criterion=criterion,
                 train_data=train_loader.dataset, 
                 logger=logger,
             ) 
-        else: 
+        else:
             optimizer.step()
 
         acc1, acc5 = accuracy(output, targets, topk=(1, 5))

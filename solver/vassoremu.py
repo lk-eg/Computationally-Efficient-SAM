@@ -1,4 +1,3 @@
-import math
 import torch
 import torch.optim
 
@@ -8,10 +7,11 @@ from solver.build import OPTIMIZER_REGISTRY
 
 
 @OPTIMIZER_REGISTRY.register()
-class VASSORE(torch.optim.Optimizer):
+class VASSOREMU(torch.optim.Optimizer):
     @configurable()
-    def __init__(self, params, base_optimizer, logger, rho, theta, k, reuse_random_perturbation) -> None:
+    def __init__(self, params, base_optimizer, logger, rho, theta, k) -> None:
         assert isinstance(base_optimizer, torch.optim.Optimizer), f"base_optimizer must be an `Optimizer`"
+
         self.base_optimizer = base_optimizer
         self.logger = logger
 
@@ -20,10 +20,10 @@ class VASSORE(torch.optim.Optimizer):
         self.rho = rho
         self.theta = theta
         self.k = k
-        self.randomPerturbationComponent = reuse_random_perturbation
+
         self.iteration_step_counter = 0
-        self.cos_sim = 0
-        super(VASSORE, self).__init__(params, dict(rho=rho, theta=theta))
+
+        super(VASSOREMU, self).__init__(params, dict(rho=rho, theta=theta))
 
         self.param_groups = self.base_optimizer.param_groups
         for group in self.param_groups:
@@ -32,14 +32,14 @@ class VASSORE(torch.optim.Optimizer):
 
             for p in group['params']:
                 self.state[p]['e'] = torch.zeros_like(p, requires_grad=False).to(p)
+                self.state[p]['g_{t-1}'] = torch.zeros_like(p, requires_grad=False).to(p)
 
     @classmethod
     def from_config(cls, args):
         return {
             'rho': args.rho,
             'theta': args.theta,
-            'k': args.k,
-            'reuse_random_perturbation': args.reuse_random_perturbation
+            'k': args.k
         }
     
     @torch.enable_grad()
@@ -53,36 +53,30 @@ class VASSORE(torch.optim.Optimizer):
 
     @torch.no_grad()
     def first_step(self, zero_grad=False):
-        shared_device = self.param_groups[0]["params"][0].device
-        if not self.iteration_step_counter % self.k:
-            for group in self.param_groups:
-                theta = group['theta']
-                for p in group['params']:
-                    if p.grad is None: continue
-                    if 'ema' not in self.state[p]:
-                        self.state[p]['ema'] = p.grad.clone().detach()
+        for group in self.param_groups:
+            theta = group['theta']
+            for p in group['params']:
+                if p.grad is None: continue
+                if 'ema' not in self.state[p]:
+                    self.state[p]['ema'] = p.grad.clone().detach()
+                else:
+                    self.state[p]['ema'].mul_(1 - theta)
+                    gradient = torch.zeros_like(p).to(p)
+                    if self.iteration_step_counter % self.k == 0:
+                        gradient = p.grad
                     else:
-                        self.state[p]['ema'].mul_(1 - theta)
-                        self.state[p]['ema'].add_(p.grad, alpha=theta)
+                        gradient = self.state[p]['g_{t-1}']
+                    self.state[p]['ema'].add_(gradient, alpha=theta)
 
         for group in self.param_groups:
-            if not self.iteration_step_counter % self.k:
-                avg_grad_norm = self._avg_grad_norm()
-                scale = group["rho"] / (avg_grad_norm + 1e-7)
+            avg_grad_norm = self._avg_grad_norm()
+            scale = group["rho"] / (avg_grad_norm + 1e-7)
 
             for p in group["params"]:
-                if not self.iteration_step_counter % self.k:
-                    if p.grad is None: continue
-                    e_w = self.state[p]['ema'] * scale
-                    self.state[p]['e'] = e_w.clone()
-                elif self.randomPerturbationComponent:
-                    e_size = self.state[p]['e'].size()
-                    uniform_noise = torch.rand(e_size).to(shared_device) * 1e-3
-                    e_w = self.state[p]['e'] + uniform_noise
-                else:
-                    e_w = self.state[p]['e']
-
+                e_w = self.state[p]['ema'] * scale
+                self.state[p]['e'] = e_w.clone()
                 p.add_(e_w)
+
         if zero_grad: self.zero_grad()
 
     @torch.no_grad()
@@ -91,6 +85,9 @@ class VASSORE(torch.optim.Optimizer):
             for p in group["params"]:
                 if p.grad is None: continue
                 p.sub_(self.state[p]['e'])
+
+                self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
+                self.state[p]['g_t'] = p.grad.clone().detach()
         
         self.base_optimizer.step()
         if zero_grad: self.zero_grad()
