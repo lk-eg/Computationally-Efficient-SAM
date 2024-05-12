@@ -25,6 +25,7 @@ class VASSO(torch.optim.Optimizer):
         self.iteration_step_counter = 0
         self.normdiff = 0
         self.cos_sim = 0
+        self.logged_epoch = 0
 
         super(VASSO, self).__init__(params, dict(rho=rho, theta=theta))
 
