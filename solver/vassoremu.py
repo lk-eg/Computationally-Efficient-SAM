@@ -32,6 +32,7 @@ class VASSOREMU(torch.optim.Optimizer):
 
             for p in group['params']:
                 self.state[p]['e'] = torch.zeros_like(p, requires_grad=False).to(p)
+                self.state[p]['g_t'] = torch.zeros_like(p, requires_grad=False).to(p)
                 self.state[p]['g_{t-1}'] = torch.zeros_like(p, requires_grad=False).to(p)
 
     @classmethod

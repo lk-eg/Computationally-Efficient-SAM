@@ -49,16 +49,18 @@ class VASSOREMUCRT(torch.optim.Optimizer):
         }
     
     def crt(self):
-        prev_g_norm = self._avg_grad_norm('g_t')
-        return self.tau < prev_g_norm
+        if self.iteration_step_counter > 100:
+            prev_g_norm = self._avg_grad_norm('g_t')
+            return self.tau > prev_g_norm
     
     @torch.enable_grad()
     def inner_gradient_calculation(self, crt, model, images, targets, criterion):
-        if crt:
+        if not crt:
             self.inner_grad_calc_counter += 1
             self.logger.wandb_log_batch(**{'inner_grad_calc_counter': self.inner_grad_calc_counter, 'global_batch_counter': self.iteration_step_counter})
             output = model(images)
             loss = criterion(output, targets)
+            self.base_optimizer.zero_grad()
             loss.backward()
             loss_w_t = loss.item()
 
@@ -74,7 +76,7 @@ class VASSOREMUCRT(torch.optim.Optimizer):
                 else:
                     self.state[p]['ema'].mul_(1 - theta)
                     gradient = torch.zeros_like(p).to(p)
-                    if crt:
+                    if not crt:
                         gradient = p.grad
                     else:
                         gradient = self.state[p]['g_{t-1}']
@@ -98,8 +100,8 @@ class VASSOREMUCRT(torch.optim.Optimizer):
                 if p.grad is None: continue
                 p.sub_(self.state[p]['e'])
 
-                self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
-                self.state[p]['g_t'] = p.grad.clone().detach()
+                self.state[p]['g_{t-1}'] = self.state[p]['g_t']
+                self.state[p]['g_t'] = p.grad.clone()
 
         g_norm = self._avg_grad_norm('g_t')
         self.tau = (1 - self.theta) * self.tau + self.theta * g_norm
@@ -122,7 +124,7 @@ class VASSOREMUCRT(torch.optim.Optimizer):
         self.first_step(crt, True)
         with torch.enable_grad():
             output, loss = closure()
-        self.second_step(True)
+        self.second_step()
 
         self.iteration_step_counter += 1
 

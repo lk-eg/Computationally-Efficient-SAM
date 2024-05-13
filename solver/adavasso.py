@@ -79,6 +79,7 @@ class ADAVASSO(torch.optim.Optimizer):
     
     @torch.enable_grad()
     def inner_gradient_calculation(self, model, images, targets, criterion):
+        
         output = model(images)
         loss = criterion(output, targets)
         self.base_optimizer.zero_grad()
