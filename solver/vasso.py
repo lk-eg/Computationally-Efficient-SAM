@@ -11,7 +11,7 @@ from solver.build import OPTIMIZER_REGISTRY
 @OPTIMIZER_REGISTRY.register()
 class VASSO(torch.optim.Optimizer):
     @configurable()
-    def __init__(self, params, base_optimizer, logger, rho, theta, momentum, max_epochs) -> None:
+    def __init__(self, params, base_optimizer, logger, rho, theta, momentum, max_epochs, log_extensive_metrics) -> None:
         assert isinstance(base_optimizer, torch.optim.Optimizer), f"base_optimizer must be an `Optimizer`"
         self.base_optimizer = base_optimizer
         self.logger = logger
@@ -22,6 +22,8 @@ class VASSO(torch.optim.Optimizer):
         self.theta = theta
         self.momentum = momentum
         self.max_epochs = max_epochs
+        self.log_extensive_metrics = log_extensive_metrics
+
         self.iteration_step_counter = 0
         self.normdiff = 0
         self.cos_sim = 0
@@ -39,29 +41,30 @@ class VASSO(torch.optim.Optimizer):
                 for key in itr_metric_keys:
                     self.state[p][key] = torch.zeros_like(p, requires_grad=False).to(p)
 
-        self.cos_sim_evolution_all_epochs = []
-        self.cos_sim_evolution_training_stage = []
+        if log_extensive_metrics:
+            self.cos_sim_evolution_all_epochs = []
+            self.cos_sim_evolution_training_stage = []
 
-        self.w_normdiff_evolution_all_epochs = []
-        self.w_normdiff_evolution_training_stage = []
+            self.w_normdiff_evolution_all_epochs = []
+            self.w_normdiff_evolution_training_stage = []
 
-        self.pert_normdiff_evolution_all_epochs = []
-        self.pert_normdiff_evolution_training_stage = []
+            self.pert_normdiff_evolution_all_epochs = []
+            self.pert_normdiff_evolution_training_stage = []
 
-        self.g_prev_norm_evolution_all_epochs = []
-        self.g_prev_norm_evolution_training_stage = []
+            self.g_prev_norm_evolution_all_epochs = []
+            self.g_prev_norm_evolution_training_stage = []
 
-        # define here the custom metrics that will be tracked per batch
-        custom_metrics_per_batch = ['cosSim(e_t, e_{t-1})', '||w_t - w_{t-1}||', '||g_{t-1}||', '||pert_t - pert_{t-1}||']
-        self.logger.wandb_define_metrics_per_batch(custom_metrics_per_batch)
+            # define here the custom metrics that will be tracked per batch
+            custom_metrics_per_batch = ['cosSim(e_t, e_{t-1})', '||w_t - w_{t-1}||', '||g_{t-1}||', '||pert_t - pert_{t-1}||']
+            self.logger.wandb_define_metrics_per_batch(custom_metrics_per_batch)
 
-        # define here the custom metrics that will be tracked per training stage
-        custom_metrics_per_training_stage = ['PEARSON_CORR_STAGE(||g_{t-1}||, cosSim)', 'SPEARMAN_CORR_STAGE(||g_{t-1}||, cosSim)', 
-                                             'p-value_||g_{t-1}||', 'q-value_||g_{t-1}||',
-                                             'PEARSON_CORR_STAGE(||w_t - w_{t-1}||, cosSim)', 'SPEARMAN_CORR_STAGE(||w_t - w_{t-1}||, cosSim)', 
-                                             'r-value_||w_t - w_{t-1}||', 's-value_||w_t - w_{t-1}||'
-                                             ]
-        self.logger.wandb_define_metrics_per_training_stage(custom_metrics_per_training_stage)
+            # define here the custom metrics that will be tracked per training stage
+            custom_metrics_per_training_stage = ['PEARSON_CORR_STAGE(||g_{t-1}||, cosSim)', 'SPEARMAN_CORR_STAGE(||g_{t-1}||, cosSim)', 
+                                                'p-value_||g_{t-1}||', 'q-value_||g_{t-1}||',
+                                                'PEARSON_CORR_STAGE(||w_t - w_{t-1}||, cosSim)', 'SPEARMAN_CORR_STAGE(||w_t - w_{t-1}||, cosSim)', 
+                                               'r-value_||w_t - w_{t-1}||', 's-value_||w_t - w_{t-1}||'
+                                                ]
+            self.logger.wandb_define_metrics_per_training_stage(custom_metrics_per_training_stage)
 
 
     @classmethod
@@ -70,7 +73,8 @@ class VASSO(torch.optim.Optimizer):
             'rho': args.rho,
             'theta': args.theta,
             'momentum': args.momentum, # only for sgd. If I want to make it more general, I will have to remove this at some point. Or maybe I don't have to remove it.
-            'max_epochs': args.epochs
+            'max_epochs': args.epochs,
+            'log_extensive_metrics': args.log_extensive_metrics
         }
     
     @torch.enable_grad()
@@ -93,8 +97,9 @@ class VASSO(torch.optim.Optimizer):
                     self.state[p]['ema'].mul_(1 - theta)
                     self.state[p]['ema'].add_(p.grad, alpha=theta)
 
-                self.state[p]['w_{t-1}'] = self.state[p]['w_t'].clone()
-                self.state[p]['w_t'] = p.clone().detach()
+                if self.log_extensive_metrics:
+                    self.state[p]['w_{t-1}'] = self.state[p]['w_t'].clone()
+                    self.state[p]['w_t'] = p.clone().detach()
 
         avg_grad_norm = self._avg_grad_norm('ema')
         for group in self.param_groups:
@@ -104,18 +109,21 @@ class VASSO(torch.optim.Optimizer):
                 e_w = self.state[p]['ema'] * scale
                 p.add_(e_w)
 
-                self.state[p]['e_{t-1}'] = self.state[p]['e_t'].clone()
+                if self.log_extensive_metrics:
+                    self.state[p]['e_{t-1}'] = self.state[p]['e_t'].clone()
                 self.state[p]['e_t'] = e_w.clone()
 
-                self.state[p]['pert_{t-1}'] = self.state[p]['pert_t'].clone()
-                self.state[p]['pert_t'] = p.clone().detach()
+                if self.log_extensive_metrics:
+                    self.state[p]['pert_{t-1}'] = self.state[p]['pert_t'].clone()
+                    self.state[p]['pert_t'] = p.clone().detach()
         
-        self.normdiff = self._normdiff('w_t', 'w_{t-1}')
-        self.pert_normdiff = self._normdiff('pert_t', 'pert_{t-1}')
-        self.cos_sim = self._cosine_similarity('e_t', 'e_{t-1}')
+        if self.log_extensive_metrics:
+            self.normdiff = self._normdiff('w_t', 'w_{t-1}')
+            self.pert_normdiff = self._normdiff('pert_t', 'pert_{t-1}')
+            self.cos_sim = self._cosine_similarity('e_t', 'e_{t-1}')
 
         # update the lists that will be used for measuring correlations
-        if not self.iteration_step_counter == 0:
+        if self.log_extensive_metrics and not self.iteration_step_counter == 0:
             self.cos_sim_evolution_all_epochs.append(self.cos_sim)
             self.cos_sim_evolution_training_stage.append(self.cos_sim)
 
@@ -134,9 +142,10 @@ class VASSO(torch.optim.Optimizer):
                 if p.grad is None: continue
                 p.sub_(self.state[p]['e_t'])
 
-                # I am running here an analysis on the outer gradient, g_{SAM}, not the inner gradient.
-                self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
-                self.state[p]['g_t'] = p.grad.clone().detach()
+                if self.log_extensive_metrics:
+                    # I am running here an analysis on the outer gradient, g_{SAM}, not the inner gradient.
+                    self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
+                    self.state[p]['g_t'] = p.grad.clone().detach()
 
                 # if 'momentum_buffer' in self.base_optimizer.state[p]:
                 #     momentum_buffer = self.base_optimizer.state[p]['momentum_buffer']
@@ -164,8 +173,9 @@ class VASSO(torch.optim.Optimizer):
         self.iteration_step_counter += 1
 
         # logging I am interested in
-        self._metrics_logging()
-        self._correlation_logging(epoch) 
+        if self.log_extensive_metrics:
+            self._metrics_logging()
+            self._correlation_logging(epoch)
 
         return output, loss
 

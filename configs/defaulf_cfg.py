@@ -9,6 +9,7 @@ class default_parser:
         parser.add_argument('--wandb', action='store_true')
         parser.add_argument('--wandb_project', type=str, default='VASSO', help="Project name in wandb.")
         parser.add_argument('--wandb_name', type=str, default='Default', help="Experiment name in wandb.")
+        parser.add_argument('--log_extensive_metrics', action='store_true')
         return parser
 
     def base_parser(self):
