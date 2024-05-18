@@ -19,7 +19,7 @@ class default_parser:
         parser.add_argument('--resume', action='store_true', help="resume model,opt,etc.")
         parser.add_argument('--resume_path', type=str, default='.')
 
-        parser.add_argument('--seed', type=int, default=1234)
+        parser.add_argument('--seed', type=int, default=3107)
         parser.add_argument('--log_freq', type=int, default=10, help="Frequency of recording information.")
 
         parser.add_argument('--start_epoch', type=int, default=0)
@@ -59,7 +59,7 @@ class default_parser:
     def sam_opt_parser(self):
         parser = argparse.ArgumentParser(add_help=False)
         parser.add_argument('--rho', type=float, default=0.05, help="Perturbation intensity of SAM type optims.")
-        parser.add_argument('--theta', type=float, default=0.1, help='Moving average for VASSO')
+        parser.add_argument('--theta', type=float, default=0.4, help='Moving average for VASSO')
         parser.add_argument('--phi', type=float, default=1e-3, help='Moving average for second moment in AdaVaSSO')
         parser.add_argument('--k', type=int, default=2, help='Re-use of \eps-perturbation for k consecutive steps.')
         parser.add_argument('--reuse_random_perturbation', action='store_true', default=False)
