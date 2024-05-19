@@ -32,12 +32,13 @@ class Logger():
             if distributed: wandb_dict['group']='DDP'
             self.run = wandb.init(**wandb_dict, config=args)
             wandb_step = 0
+
+            wandb.define_metric('global_batch_counter')
+            wandb.define_metric('epoch')
+            wandb.define_metric('training_stage_%5')
         else:
             self.run = None
         
-        wandb.define_metric('global_batch_counter')
-        wandb.define_metric('epoch')
-        wandb.define_metric('training_stage_%5')
             
     @classmethod
     def from_config(cls, args):

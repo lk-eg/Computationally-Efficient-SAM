@@ -8,3 +8,9 @@ def need_closure(args):
         or args.opt[:9] == 'vassoremu'
         or args.opt[:8] == 'adavasso'
     )
+
+def optimiser_overhead_calculation(args):
+    return (
+        args.opt[:7] == 'vassore'
+        or args.opt[:9] == 'vassoremu'
+    )

@@ -111,6 +111,8 @@ class default_parser:
             output_name = ['rho{}'.format(args.rho)]
             if sam_opt[:5].upper() == 'VASSO':
                 output_name.extend(['theta{}'.format(args.theta)])
+            if sam_opt[:7].upper() == 'VASSORE':
+                output_name.extend(['crt={}'.format(args.crt)])
             return output_name
 
         if args.output_name is None:

@@ -12,7 +12,7 @@ from utils.logger import Logger
 from utils.dist import init_distributed_model, is_main_process
 from utils.seed import setup_seed
 from utils.engine import train_one_epoch, evaluate
-from utils.need_closure import need_closure
+from utils.optimiser_based_selection import need_closure, optimiser_overhead_calculation
 
 def main(args):
     # init seed
@@ -124,6 +124,9 @@ def main(args):
     end_training = time.time()
     used_training = str(datetime.timedelta(seconds=end_training-start_training))
     logger.log('Training Time:{}'.format(used_training))
+    if optimiser_overhead_calculation(args):
+        logger.log('Total inner gradient calculations: {}, Total iterations: {}'.format(optimizer.inner_gradient_calculation_counter, optimizer.iteration_step_counter))
+        logger.log('Overhead over SGD: {:.4f}'.format(1 + optimizer.inner_gradient_calculation_counter/(optimizer.iteration_step_counter)))
     logger.mv('{}_{:.4f}'.format(logger.logger_path, max_acc))
 
 

@@ -8,6 +8,7 @@ from solver.build import OPTIMIZER_REGISTRY
 from scipy.stats import spearmanr, pearsonr
 
 
+
 @OPTIMIZER_REGISTRY.register()
 class VASSO(torch.optim.Optimizer):
     @configurable()
@@ -18,7 +19,7 @@ class VASSO(torch.optim.Optimizer):
         self.base_optimizer = base_optimizer
         self.extensive_metrics_mode = extensive_metrics_mode
         self.performance_scores_mode = performance_scores_mode
-        self.iteration_step_counter = 1
+        self.iteration_step_counter = 0
 
         if self.extensive_metrics_mode: 
             self.logger = logger

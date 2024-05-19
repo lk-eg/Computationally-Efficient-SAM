@@ -6,14 +6,14 @@ from utils.configurable import configurable
 from solver.build import OPTIMIZER_REGISTRY
 
 from solver.vasso import VASSO
-from criteria_functions import criteria_functions
+from solver.criteria_functions import criteria_functions
 
 
 @OPTIMIZER_REGISTRY.register()
 class VASSORE(VASSO):
     @configurable()
-    def __init__(self, params, base_optimizer, logger, rho, theta, max_epochs, extensive_mode, crt, crt_k, crt_p) -> None:
-        super().__init__(params, base_optimizer, logger, rho, theta, max_epochs, extensive_mode)
+    def __init__(self, params, base_optimizer, logger, rho, theta, max_epochs, extensive_metrics_mode, performance_scores_mode, crt, crt_k, crt_p) -> None:
+        super().__init__(params, base_optimizer, logger, rho, theta, max_epochs, extensive_metrics_mode, performance_scores_mode)
         
         assert 0 <= crt_k and isinstance(crt_k, int), f"k must be a natural number"
         assert 0 <= crt_p and crt_p <= 1, f"p must live in [0, 1]."
@@ -21,6 +21,8 @@ class VASSORE(VASSO):
         self.crt = crt
         self.k = crt_k
         self.p = crt_p
+        self.rndm = 0.0
+        self.inner_gradient_calculation_counter = 0
         
         if self.crt[:8] == "gSAMNorm":
             self.tau = 0
@@ -45,16 +47,16 @@ class VASSORE(VASSO):
 
     @torch.no_grad()
     def first_step(self, zero_grad=False):
-        if self.inner_gradient_calculation():
+        if self.inner_gradient_calculation(self):
             self._ema_update()
 
         avg_grad_norm = self._avg_grad_norm('ema')
         for group in self.param_groups:
-            if not self.iteration_step_counter % self.k:
+            if self.inner_gradient_calculation(self):
                 scale = group['rho'] / (avg_grad_norm + 1e-16)
 
             for p in group['params']:
-                if self.inner_gradient_calculation():
+                if self.inner_gradient_calculation(self):
                     e_w = self._new_e_w_calculation(p, scale)
                 else:
                     e_w = self.state[p]['e_t']
@@ -74,8 +76,9 @@ class VASSORE(VASSO):
                     self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
                 self.state[p]['g_t'] = p.grad
 
-        self.g_norm = self._avg_grad_norm('g_t').item()
-        self.tau = (1 - self.theta) * self.tau + self.theta * self.g_norm
+        if self.crt[:8] == "gSAMNorm":
+            self.g_norm = self._avg_grad_norm('g_t').item()
+            self.tau = (1 - self.theta) * self.tau + self.theta * self.g_norm
         
         self.base_optimizer.step()
         if zero_grad: self.zero_grad()
@@ -84,8 +87,12 @@ class VASSORE(VASSO):
     def step(self, closure=None, **kwargs):
         assert closure is not None, "SAM requires closure, which is not provided."
 
-        computeForward = self.performance_scores_mode or self.inner_gradient_calculation()
-        computeBackprop = self.inner_gradient_calculation()
+        if self.crt == 'random':
+            self.rndm = random.random()
+
+        computeForward = self.performance_scores_mode or self.inner_gradient_calculation(self)
+        computeBackprop = self.inner_gradient_calculation(self)
+        self.inner_gradient_calculation_counter += (computeBackprop)
         with torch.enable_grad():
             if computeForward:
                 innerOutput, innerLoss = closure(computeForward, computeBackprop)
