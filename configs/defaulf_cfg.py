@@ -9,7 +9,6 @@ class default_parser:
         parser.add_argument('--wandb', action='store_true')
         parser.add_argument('--wandb_project', type=str, default='VASSO', help="Project name in wandb.")
         parser.add_argument('--wandb_name', type=str, default='Default', help="Experiment name in wandb.")
-        parser.add_argument('--log_extensive_metrics', action='store_true')
         return parser
 
     def base_parser(self):
@@ -37,8 +36,8 @@ class default_parser:
 
     def data_parser(self):
         parser = argparse.ArgumentParser(add_help=False)
-        parser.add_argument('--dataset', type=str, default='CIFAR10_base', help="Dataset name in `DATASETS` registry.")
-        parser.add_argument('--datadir', type=str, default='./datasets', help="Path to your dataset.")
+        parser.add_argument('--dataset', type=str, default='CIFAR10_cutout', help="Dataset name in `DATASETS` registry.")
+        parser.add_argument('--datadir', type=str, default='~/sam/datasets', help="Path to your dataset.")
         parser.add_argument('--batch_size', type=int, default=128, help="Batch size used in training and validation.")
         parser.add_argument('--num_workers', type=int, default=8, help="Number of CPU threads for dataloaders.")
         parser.add_argument('--pin_memory', action='store_true', default=True)
@@ -50,7 +49,7 @@ class default_parser:
         parser = argparse.ArgumentParser(add_help=False)
         parser.add_argument('--opt', type=str, default='sgd', help='sgd, sam-sgd, vasso-sgd, sam-adam, vasso-adam, vassore-sgd, vassore-adam')
         parser.add_argument('--lr', type=float, default=0.05)
-        parser.add_argument('--weight_decay', type=float, default=5e-4)
+        parser.add_argument('--weight_decay', type=float, default=1e-3)
         # sgd
         parser.add_argument('--momentum', type=float, default=0.9, help="Momentum for SGD.(None means the default in optm)")
         parser.add_argument('--nesterov', action="store_true")
