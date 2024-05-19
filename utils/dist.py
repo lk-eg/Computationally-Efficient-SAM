@@ -2,9 +2,7 @@ import os
 import functools
 import torch
 import torch.distributed as dist
-
-# device = 'cuda' if torch.cuda.is_available() else 'cpu'
-device = 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
+from utils.device import device
 
 def is_dist_avail_and_initialized():
     if not dist.is_available():
