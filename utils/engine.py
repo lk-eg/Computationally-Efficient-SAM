@@ -6,13 +6,13 @@ import torch
 import torch.distributed as dist
 from utils.dist import is_dist_avail_and_initialized
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-# device = 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
+# device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
 
 def train_one_epoch(
     model: torch.nn.Module,
     train_loader : Iterable,
-    criterion, optimizer, epoch, logger, log_freq, need_closure, optimizer_argument, need_own_inner_grad_calc
+    criterion, optimizer, epoch, logger, log_freq, need_closure, optimizer_argument, extensive_metrics_mode
 ):
     model.train()
 
@@ -26,25 +26,28 @@ def train_one_epoch(
         images = images.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
 
-        # outer gradient calculation, $g_{\text{SAM}}$
-        def closure():
-            output = model(images)
-            loss = criterion(output, targets)
-            loss.backward()
 
-            # loss L(w_t + e_t) value (from the perturbed parameter position)
-            return output, loss
+        # Forard- and Backward-pass function.
+        # Efficiency is about how often, and which part, of this function gets called.
+        def closure(computeForward, computeBackprop):
+            if computeForward:
+                output = model(images)
+                loss = criterion(output, targets)
+            if computeBackprop:
+                optimizer.zero_grad()
+                loss.backward()
+
+            # computeForward=True in second_step() holds always. 
+            # We return output and loss at the perturbed position 
+            # as this is the bound on the generalization error up to a monotonic function (cf. Foret et. al.: SAM).
+            if computeForward:
+                return output, loss
         
-        # for simulatenously checking the norm of SGD gradient
-        if not need_own_inner_grad_calc:
-            output = model(images)
-            loss = criterion(output, targets)
-            optimizer.zero_grad()
-            loss.backward()
 
-            if optimizer_argument[:3] == 'sgd':
-                total_sgd_norm = sum(p.grad.data.norm(2).item() ** 2 for p in model.parameters()) ** 0.5
-                logger.wandb_log_batch(**{'||g_{SGD}||': total_sgd_norm, 'global_batch_counter': epoch * len(train_loader) + batch_idx})
+        # sgd needs "normal" output and loss calculation
+        if optimizer_argument[:3] == 'sgd' and extensive_metrics_mode:
+            total_sgd_norm = sum(p.grad.data.norm(2).item() ** 2 for p in model.parameters()) ** 0.5
+            logger.wandb_log_batch(**{'||g_{SGD}||': total_sgd_norm, 'global_batch_counter': epoch * len(train_loader) + batch_idx})
 
         if need_closure:
             output, loss = optimizer.step(
@@ -58,8 +61,10 @@ def train_one_epoch(
                 criterion=criterion,
                 train_data=train_loader.dataset, 
                 logger=logger,
-            ) 
+            )
         else:
+            with torch.enable_grad():
+                output, loss = closure(True, True)
             optimizer.step()
 
         acc1, acc5 = accuracy(output, targets, topk=(1, 5))

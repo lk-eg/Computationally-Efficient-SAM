@@ -3,45 +3,53 @@ import torch.optim
 import numpy as np
 
 from utils.configurable import configurable
-from scipy.stats import spearmanr, pearsonr
-
 from solver.build import OPTIMIZER_REGISTRY
+
+from scipy.stats import spearmanr, pearsonr
 
 
 @OPTIMIZER_REGISTRY.register()
 class VASSO(torch.optim.Optimizer):
     @configurable()
-    def __init__(self, params, base_optimizer, logger, rho, theta, momentum, max_epochs, log_extensive_metrics) -> None:
+    def __init__(self, params, base_optimizer, logger, rho, theta, max_epochs, extensive_metrics_mode, performance_scores_mode) -> None:
         assert isinstance(base_optimizer, torch.optim.Optimizer), f"base_optimizer must be an `Optimizer`"
-        self.base_optimizer = base_optimizer
-        self.logger = logger
 
+        # base configurations
+        self.base_optimizer = base_optimizer
+        self.extensive_metrics_mode = extensive_metrics_mode
+        self.performance_scores_mode = performance_scores_mode
+        self.iteration_step_counter = 1
+
+        if self.extensive_metrics_mode: 
+            self.logger = logger
+            self.cos_sim = 0
+            self.normdiff = 0
+            self.max_epochs = max_epochs
+            self.logged_epoch = 0
+
+        # VaSSO specific configurations
         assert 0 <= rho, f"rho should be non-negative:{rho}"
         assert theta <= 1 and theta >= 0, f"theta must live in [0, 1]."
         self.rho = rho
         self.theta = theta
-        self.momentum = momentum
-        self.max_epochs = max_epochs
-        self.log_extensive_metrics = log_extensive_metrics
 
-        self.iteration_step_counter = 0
-        self.normdiff = 0
-        self.cos_sim = 0
-        self.logged_epoch = 0
-
+        # base_optimizer
         super(VASSO, self).__init__(params, dict(rho=rho, theta=theta))
-
         self.param_groups = self.base_optimizer.param_groups
+
         for group in self.param_groups:
             group['rho'] = rho
             group['theta'] = theta
 
             for p in group['params']:
-                itr_metric_keys = ['e_t', 'e_{t-1}', 'w_t', 'w_{t-1}', 'g_t', 'g_{t-1}', 'pert_t', 'pert_{t-1}']
+                if self.extensive_metrics_mode:
+                    itr_metric_keys = ['e_t', 'e_{t-1}', 'w_t', 'w_{t-1}', 'g_t', 'g_{t-1}', 'pert_t', 'pert_{t-1}']
+                else:
+                    itr_metric_keys = ['e_t']
                 for key in itr_metric_keys:
                     self.state[p][key] = torch.zeros_like(p, requires_grad=False).to(p)
 
-        if log_extensive_metrics:
+        if self.extensive_metrics_mode:
             self.cos_sim_evolution_all_epochs = []
             self.cos_sim_evolution_training_stage = []
 
@@ -72,21 +80,58 @@ class VASSO(torch.optim.Optimizer):
         return {
             'rho': args.rho,
             'theta': args.theta,
-            'momentum': args.momentum, # only for sgd. If I want to make it more general, I will have to remove this at some point. Or maybe I don't have to remove it.
             'max_epochs': args.epochs,
-            'log_extensive_metrics': args.log_extensive_metrics
+            'extensive_metrics_mode': args.extensive_metrics_mode,
+            'performance_scores_mode': args.performance_scores_mode
         }
-    
-    @torch.enable_grad()
-    def inner_gradient_calculation(self, model, images, targets, criterion):
-        output = model(images)
-        loss = criterion(output, targets)
-        self.base_optimizer.zero_grad()
-        loss.backward()
-        loss_w_t = loss.item()
 
     @torch.no_grad()
     def first_step(self, zero_grad=False):
+        self._ema_update()
+        self._perturbation(zero_grad)
+
+    @torch.no_grad()
+    def second_step(self, zero_grad=False):
+        for group in self.param_groups:
+            for p in group['params']:
+                if p.grad is None: continue
+                p.sub_(self.state[p]['e_t'])
+
+                if self.extensive_metrics_mode:
+                    # I am running here an analysis on the outer gradient, g_{SAM}, not the inner gradient.
+                    self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
+                    self.state[p]['g_t'] = p.grad.clone().detach()
+        
+        self.base_optimizer.step()
+        if zero_grad: self.zero_grad()
+
+    @torch.no_grad()
+    def step(self, closure=None, **kwargs):
+        assert closure is not None, "SAM requires closure, which is not provided."
+
+        epoch = kwargs['epoch']
+
+        with torch.enable_grad():
+            innerOutput, innerLoss = closure(True, True)
+        self.first_step()
+        with torch.enable_grad():
+            outerOutput, outerLoss = closure(True, True)
+        self.second_step()
+
+        self.iteration_step_counter += 1
+
+        # logging I am interested in
+        if self.extensive_metrics_mode:
+            self._metrics_logging()
+            self._correlation_logging(epoch)
+
+        return outerOutput, outerLoss
+
+
+    """
+    HELPER METHODS
+    """
+    def _ema_update(self):
         for group in self.param_groups:
             theta = group['theta']
             for p in group['params']:
@@ -94,36 +139,38 @@ class VASSO(torch.optim.Optimizer):
                 if 'ema' not in self.state[p]:
                     self.state[p]['ema'] = p.grad.clone().detach()
                 else:
-                    self.state[p]['ema'].mul_(1 - theta)
-                    self.state[p]['ema'].add_(p.grad, alpha=theta)
+                    self._ema_update_inner(p, theta)
 
-                if self.log_extensive_metrics:
+                if self.extensive_metrics_mode:
                     self.state[p]['w_{t-1}'] = self.state[p]['w_t'].clone()
                     self.state[p]['w_t'] = p.clone().detach()
+    
+    @torch.no_grad()
+    def _ema_update_inner(self, p, theta):
+        self.state[p]['ema'].mul_(1 - theta)
+        self.state[p]['ema'].add_(p.grad, alpha=theta)
 
+    def _perturbation(self, zero_grad):
         avg_grad_norm = self._avg_grad_norm('ema')
         for group in self.param_groups:
-            scale = group["rho"] / (avg_grad_norm + 1e-7)
+            scale = group["rho"] / (avg_grad_norm + 1e-16)
             for p in group["params"]:
-                if p.grad is None: continue
-                e_w = self.state[p]['ema'] * scale
+                e_w = self._new_e_w_calculation(p, scale)
                 p.add_(e_w)
 
-                if self.log_extensive_metrics:
+                if self.extensive_metrics_mode:
                     self.state[p]['e_{t-1}'] = self.state[p]['e_t'].clone()
-                self.state[p]['e_t'] = e_w.clone()
 
-                if self.log_extensive_metrics:
                     self.state[p]['pert_{t-1}'] = self.state[p]['pert_t'].clone()
                     self.state[p]['pert_t'] = p.clone().detach()
         
-        if self.log_extensive_metrics:
+        if self.extensive_metrics_mode:
             self.normdiff = self._normdiff('w_t', 'w_{t-1}')
             self.pert_normdiff = self._normdiff('pert_t', 'pert_{t-1}')
             self.cos_sim = self._cosine_similarity('e_t', 'e_{t-1}')
 
         # update the lists that will be used for measuring correlations
-        if self.log_extensive_metrics and not self.iteration_step_counter == 0:
+        if self.extensive_metrics_mode and not self.iteration_step_counter == 0:
             self.cos_sim_evolution_all_epochs.append(self.cos_sim)
             self.cos_sim_evolution_training_stage.append(self.cos_sim)
 
@@ -134,52 +181,12 @@ class VASSO(torch.optim.Optimizer):
             self.pert_normdiff_evolution_training_stage.append(self.pert_normdiff.item())
 
         if zero_grad: self.zero_grad()
-
-    @torch.no_grad()
-    def second_step(self, zero_grad=False):
-        for group in self.param_groups:
-            for p in group["params"]:
-                if p.grad is None: continue
-                p.sub_(self.state[p]['e_t'])
-
-                if self.log_extensive_metrics:
-                    # I am running here an analysis on the outer gradient, g_{SAM}, not the inner gradient.
-                    self.state[p]['g_{t-1}'] = self.state[p]['g_t'].clone()
-                    self.state[p]['g_t'] = p.grad.clone().detach()
-
-                # if 'momentum_buffer' in self.base_optimizer.state[p]:
-                #     momentum_buffer = self.base_optimizer.state[p]['momentum_buffer']
-                #     self.state[p]['b_t'] = self.momentum * momentum_buffer + self.state[p]['grad']
-
-        self.base_optimizer.step()
-        if zero_grad: self.zero_grad()
-
-    @torch.no_grad()
-    def step(self, closure=None, **kwargs):
-        assert closure is not None, "SAM requires closure, which is not provided."
-
-        epoch = kwargs['epoch']
-        model = kwargs['model']
-        images = kwargs['images']
-        targets = kwargs['targets']
-        criterion = kwargs['criterion']
-
-        self.inner_gradient_calculation(model, images, targets, criterion)
-        self.first_step(True)
-        with torch.enable_grad():
-            output, loss = closure()
-        self.second_step()
-
-        self.iteration_step_counter += 1
-
-        # logging I am interested in
-        if self.log_extensive_metrics:
-            self._metrics_logging()
-            self._correlation_logging(epoch)
-
-        return output, loss
-
-            
+    
+    def _new_e_w_calculation(self, p, scale):
+        if p.grad is None: return
+        e_w = self.state[p]['ema'] * scale
+        self.state[p]['e_t'] = e_w
+        return e_w
     
     def _avg_grad_norm(self, key):
         norm = torch.norm(

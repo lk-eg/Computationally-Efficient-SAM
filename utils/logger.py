@@ -55,17 +55,26 @@ class Logger():
     # called from within the constructor of the optimization algorithm class,
     # so from class VaSSO, class SAM, etc.
     def wandb_define_metrics_per_batch(self, custom_metrics):
-        for metric in custom_metrics:
-            wandb.define_metric(metric, step_metric='global_batch_counter')
+        if self.enable_wandb:
+            for metric in custom_metrics:
+                wandb.define_metric(metric, step_metric='global_batch_counter')
+        else:
+            return
 
     # one `training stage` is every 5 epochs
     def wandb_define_metrics_per_training_stage(self, custom_metrics):
-        for metric in custom_metrics:
-            wandb.define_metric(metric, step_metric='training_stage_%5')
+        if self.enable_wandb:
+            for metric in custom_metrics:
+                wandb.define_metric(metric, step_metric='training_stage_%5')
+        else:
+            return
     
     def wandb_define_metrics_per_epoch(self, custom_metrics):
-        for metric in custom_metrics:
-            wandb.define_metric(metric, step_metric='epoch')
+        if self.enable_wandb:
+            for metric in custom_metrics:
+                wandb.define_metric(metric, step_metric='epoch')
+        else:
+            return
 
     @is_main_process
     def log(self, info, printf=True):

@@ -1,4 +1,3 @@
-import math
 import torch
 import torch.optim
 
@@ -33,7 +32,7 @@ class SAM(torch.optim.Optimizer):
     def first_step(self, zero_grad=False):
         grad_norm = self._grad_norm()
         for group in self.param_groups:
-            scale = group["rho"] / (grad_norm + 1e-7)
+            scale = group["rho"] / (grad_norm + 1e-16)
             for p in group["params"]:
                 if p.grad is None: continue
                 e_w = p.grad * scale
@@ -55,10 +54,14 @@ class SAM(torch.optim.Optimizer):
     def step(self, closure=None, **kwargs):
         assert closure is not None, "SAM requires closure, which is not provided."
         
-        self.first_step(True)
         with torch.enable_grad():
-            closure()
+            innerOutput, innerLoss = closure(True, True)
+        self.first_step()
+        with torch.enable_grad():
+            outerOutput, outerLoss = closure(True, True)
         self.second_step()
+
+        return innerOutput, innerLoss
 
     def _grad_norm(self):
         shared_device = self.param_groups[0]["params"][0].device  # put everything on the same device, in case of model parallelism
@@ -71,4 +74,3 @@ class SAM(torch.optim.Optimizer):
                     p=2
                )
         return norm
-

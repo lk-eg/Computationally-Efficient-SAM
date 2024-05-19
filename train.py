@@ -12,6 +12,7 @@ from utils.logger import Logger
 from utils.dist import init_distributed_model, is_main_process
 from utils.seed import setup_seed
 from utils.engine import train_one_epoch, evaluate
+from utils.need_closure import need_closure
 
 def main(args):
     # init seed
@@ -54,29 +55,9 @@ def main(args):
     logger.log(f'Optimizer: {type(optimizer)}')
     logger.log(f'LR Scheduler: {type(lr_scheduler)}')
 
-    # check if we need a closure
-    # for these, the reported loss right now is the PERTURBED loss.
-    # Be AWARE of that
-    need_closure = (
-        args.opt[:3] == 'sam' 
-        or args.opt[:5] == 'vasso' 
-        or args.opt[:7] == 'vassore'
-        or args.opt[:9] == 'vassoremu'
-        or args.opt[:12] == 'vassoremucrt'
-        or args.opt[:8] == 'adavasso'
-    )
-    
-    # check if we need two backprop calculations
-    need_own_inner_grad_calc = (
-        args.opt[:5] == 'vasso'
-        or args.opt[:7] == 'vassore'
-        or args.opt[:9] == 'vassoremu'
-        or args.opt[:12] == 'vassoremucrt'
-        or args.opt[:8] == 'adavasso'
-    )
-
     # just for SGD
-    logger.wandb_define_metrics_per_batch(['||g_{SGD}||'])
+    if args.extensive_metrics_mode:
+        logger.wandb_define_metrics_per_batch(['||g_{SGD}||'])
 
     # resume
     if args.resume:
@@ -106,9 +87,9 @@ def main(args):
             epoch=epoch, 
             logger=logger,
             log_freq=args.log_freq,
-            need_closure=need_closure,
+            need_closure=need_closure(args),
             optimizer_argument=args.opt,
-            need_own_inner_grad_calc=need_own_inner_grad_calc
+            extensive_metrics_mode=args.extensive_metrics_mode
         )
         lr_scheduler.step(epoch)
         val_stats = evaluate(model, val_loader)
