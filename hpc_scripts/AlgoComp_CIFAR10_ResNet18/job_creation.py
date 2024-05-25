@@ -152,5 +152,5 @@ for experiment in experiments:
     with open(script_filename, "w") as file:
         file.write(script_content)
 
-        if platform.system == "Linux":
+        if platform.system() == "Linux":
             os.system(f"sbatch {script_filename}")
