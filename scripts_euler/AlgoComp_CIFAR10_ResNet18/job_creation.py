@@ -151,4 +151,4 @@ for experiment in experiments:
     with open(script_filename, "w") as file:
         file.write(script_content)
 
-        # os.system(f"sbatch {script_filename}")
+        os.system(f"sbatch {script_filename}")
