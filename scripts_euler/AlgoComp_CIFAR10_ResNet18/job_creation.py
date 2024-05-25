@@ -6,7 +6,7 @@ from utils.device import onHPC
 
 
 def dict_creation(
-    n: str,
+    name: str,
     opt: str,
     dir: str,
     gpu: str,
@@ -19,7 +19,7 @@ def dict_creation(
     zeta: float = 1.0,
 ):
     d = {}
-    d["name"] = n
+    d["name"] = name
     d["opt"] = opt
     d["output_dir"] = dir
     d["gpu_model"] = gpu
