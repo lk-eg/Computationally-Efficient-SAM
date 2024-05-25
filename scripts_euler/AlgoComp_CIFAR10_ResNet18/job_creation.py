@@ -1,8 +1,5 @@
 import os
-import sys
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-from utils.device import onHPC
+import platform
 
 
 def dict_creation(
@@ -147,8 +144,6 @@ python3 ../../train.py \
         --zeta {zeta}
 """
 
-sbatch_now = onHPC()
-
 for experiment in experiments:
     script_content = slurm_template.format(**experiment)
     output_dir = experiment["output_dir"]
@@ -157,5 +152,5 @@ for experiment in experiments:
     with open(script_filename, "w") as file:
         file.write(script_content)
 
-        if sbatch_now:
+        if platform.system == "Linux":
             os.system(f"sbatch {script_filename}")
