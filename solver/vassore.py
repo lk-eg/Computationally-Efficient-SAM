@@ -25,6 +25,7 @@ class VASSORE(VASSO):
         crt,
         crt_k,
         crt_p,
+        zeta,
     ) -> None:
         super().__init__(
             params,
@@ -43,6 +44,7 @@ class VASSORE(VASSO):
         self.crt = crt
         self.k = crt_k
         self.p = crt_p
+        self.zeta = zeta
         self.rndm = 0.0
         self.inner_gradient_calculation_counter = 0
 
@@ -65,6 +67,7 @@ class VASSORE(VASSO):
         config["crt"] = args.crt
         config["crt_k"] = args.crt_k
         config["crt_p"] = args.crt_p
+        config["zeta"] = args.zeta
         return config
 
     @torch.no_grad()

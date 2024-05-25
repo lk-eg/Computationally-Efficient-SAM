@@ -9,3 +9,10 @@ if platform.system() == "Darwin":
     )
 else:
     device = "cuda" if torch.cuda.is_available() else "cpu"
+
+
+def onHPC():
+    if platform.system() == "Darwin":
+        return True
+    else:
+        return False

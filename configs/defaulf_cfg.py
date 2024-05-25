@@ -1,4 +1,5 @@
 import argparse
+from ..utils.device import onHPC
 
 
 class default_parser:
@@ -80,12 +81,20 @@ class default_parser:
             default="CIFAR10_cutout",
             help="Dataset name in `DATASETS` registry.",
         )
-        parser.add_argument(
-            "--datadir",
-            type=str,
-            default="~/sam/datasets",
-            help="Path to your dataset.",
-        )
+        if onHPC():
+            parser.add_argument(
+                "--datadir",
+                type=str,
+                default="/cluster/home/laltun/datasets",
+                help="Path to your dataset.",
+            )
+        else:
+            parser.add_argument(
+                "--datadir",
+                type=str,
+                default="~/sam/datasets",
+                help="Path to your dataset.",
+            )
         parser.add_argument(
             "--batch_size",
             type=int,
@@ -150,7 +159,7 @@ class default_parser:
             help="Perturbation intensity of SAM type optims.",
         )
         parser.add_argument(
-            "--theta", type=float, default=0.4, help="Moving average for VASSO"
+            "--theta", type=float, default=0.2, help="Moving average for VASSO"
         )
         parser.add_argument(
             "--phi",
@@ -172,6 +181,12 @@ class default_parser:
             type=float,
             default=0.5,
             help="Random re-use of epsilon-perturbation. Re-Calculation with probability p in each iteration_step.",
+        )
+        parser.add_argument(
+            "--zeta",
+            type=float,
+            default=1.0,
+            help="hyper parameter for decision on inner gradient calculation on gSAMNormEMA. Concretely, decision `tau_{t-1} <= zeta * ||g_{t,SAM}||`",
         )
         return parser
 

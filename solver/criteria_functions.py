@@ -17,7 +17,10 @@ def random_criterion(self):
 
 
 def gSAMNormEMA_criterion(self):
-    return self.tau <= self.g_norm or self.iteration_step_counter <= WARMUP_CONSTANT
+    return (
+        self.tau <= self.zeta * self.g_norm
+        or self.iteration_step_counter <= WARMUP_CONSTANT
+    )
 
 
 def gSAMNormEMAInverted_criterion(self):
