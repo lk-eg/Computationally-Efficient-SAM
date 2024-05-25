@@ -5,7 +5,6 @@ import argparse
 
 def configurable(init_func=None, *, from_config=None):
     if init_func is not None:  # use for `__init__` in a class
-        
         assert (
             inspect.isfunction(init_func)
             and from_config is None
@@ -17,15 +16,20 @@ def configurable(init_func=None, *, from_config=None):
             try:
                 from_config_func = type(self).from_config
             except AttributeError as e:
-                raise AttributeError("Class with @configurable must have a `from_config` classmethod.") from e
+                raise AttributeError(
+                    "Class with @configurable must have a `from_config` classmethod."
+                ) from e
             if not inspect.ismethod(from_config_func):
-                raise TypeError("Class with @configurable must have a `from_config` classmethod.")
-            
+                raise TypeError(
+                    "Class with @configurable must have a `from_config` classmethod."
+                )
+
             if _called_with_args(*args, **kwargs):
                 explicit_args = _get_args_from_config(from_config_func, *args, **kwargs)
                 init_func(self, **explicit_args)
             else:
                 init_func(self, *args, **kwargs)
+
         return wrapped
 
     else:  # use for a function
@@ -43,16 +47,20 @@ def configurable(init_func=None, *, from_config=None):
                     return orig_func(**explicit_args)
                 else:
                     return orig_func(*args, **kwargs)
-            
+
             wrapped.from_config = from_config
             return wrapped
+
         return wrapper
 
+
 def _called_with_args(*args, **kwargs):
-    '''
-        Check whether the arguments contain `argparse`
-    '''
-    if len(args) and isinstance(args[0], (argparse.Namespace,)): # `from_config`'s first argument is forces to be `argparse`
+    """
+    Check whether the arguments contain `argparse`
+    """
+    if len(args) and isinstance(
+        args[0], (argparse.Namespace,)
+    ):  # `from_config`'s first argument is forces to be `argparse`
         return True
     if isinstance(kwargs.pop("args", None), (argparse.Namespace,)):
         return True
@@ -76,7 +84,9 @@ def _get_args_from_config(from_config_func, *args, **kwargs):
         param.kind in [param.VAR_POSITIONAL, param.VAR_KEYWORD]
         for param in signature.parameters.values()
     )
-    if support_var_arg:  # forward all arguments to from_config, if from_config accepts them
+    if (
+        support_var_arg
+    ):  # forward all arguments to from_config, if from_config accepts them
         ret = from_config_func(*args, **kwargs)
     else:
         # forward supported arguments to from_config

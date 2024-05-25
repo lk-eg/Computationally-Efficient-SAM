@@ -11,12 +11,13 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "sgd",
-                "--weight_decay", "5e-4"
+                "--opt",
+                "sgd",
+                "--weight_decay",
+                "5e-4"
             ],
             "cwd": "${workspaceFolder}"
         },
-
         {
             "name": "SAM - VaSSO Repo - CIFAR10-ResNet18",
             "type": "debugpy",
@@ -24,11 +25,11 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "sam-sgd",
+                "--opt",
+                "sam-sgd",
             ],
             "cwd": "${workspaceFolder}"
         },
-
         {
             "name": "VaSSO - VaSSO Repo - CIFAR10-ResNet18",
             "type": "debugpy",
@@ -36,11 +37,11 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vasso-sgd"
+                "--opt",
+                "vasso-sgd"
             ],
             "cwd": "${workspaceFolder}"
         },
-
         {
             "name": "VaSSORe_k=2 - VaSSO Repo - CIFAR10-ResNet18",
             "type": "debugpy",
@@ -48,9 +49,12 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassore-sgd",
-                "--crt", "naive",
-                "--epochs", "1"
+                "--opt",
+                "vassore-sgd",
+                "--crt",
+                "naive",
+                "--epochs",
+                "1"
             ],
             "cwd": "${workspaceFolder}"
         },
@@ -61,8 +65,10 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassore-sgd",
-                "--crt", "random"
+                "--opt",
+                "vassore-sgd",
+                "--crt",
+                "random"
             ],
             "cwd": "${workspaceFolder}"
         },
@@ -73,9 +79,12 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassore-sgd",
-                "--crt", "gSAMNormEMA",
-                "--epochs", "1"
+                "--opt",
+                "vassore-sgd",
+                "--crt",
+                "gSAMNormEMA",
+                "--epochs",
+                "1"
             ],
             "cwd": "${workspaceFolder}"
         },
@@ -86,13 +95,15 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassore-sgd",
-                "--crt", "gSAMNormEMAInverted",
-                "--epochs", "1"
+                "--opt",
+                "vassore-sgd",
+                "--crt",
+                "gSAMNormEMAInverted",
+                "--epochs",
+                "1"
             ],
             "cwd": "${workspaceFolder}"
         },
-
         {
             "name": "VaSSOReMu_k=2 - VaSSO Repo - CIFAR10-ResNet18",
             "type": "debugpy",
@@ -100,9 +111,12 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassoremu-sgd",
-                "--crt", "naive",
-                "--epochs", "1"
+                "--opt",
+                "vassoremu-sgd",
+                "--crt",
+                "naive",
+                "--epochs",
+                "1"
             ],
             "cwd": "${workspaceFolder}"
         },
@@ -113,9 +127,12 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassoremu-sgd",
-                "--crt", "random",
-                "--epochs", "1"
+                "--opt",
+                "vassoremu-sgd",
+                "--crt",
+                "random",
+                "--epochs",
+                "1"
             ],
             "cwd": "${workspaceFolder}"
         },
@@ -126,9 +143,12 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassoremu-sgd",
-                "--crt", "gSAMNormEMA",
-                "--epochs", "5"
+                "--opt",
+                "vassoremu-sgd",
+                "--crt",
+                "gSAMNormEMA",
+                "--epochs",
+                "5"
             ],
             "cwd": "${workspaceFolder}"
         },
@@ -139,9 +159,12 @@
             "program": "${workspaceFolder}/train.py",
             "console": "integratedTerminal",
             "args": [
-                "--opt", "vassoremu-sgd",
-                "--crt", "gSAMNormEMAInverted",
-                "--epochs", "1"
+                "--opt",
+                "vassoremu-sgd",
+                "--crt",
+                "gSAMNormEMAInverted",
+                "--epochs",
+                "1"
             ],
             "cwd": "${workspaceFolder}"
         },
