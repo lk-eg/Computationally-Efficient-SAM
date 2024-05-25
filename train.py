@@ -137,10 +137,14 @@ def main(args):
                 epoch_time=time.time() - start_epoch,
             )
         )
+        train_acc1 = train_stats["train_acc1"]
+        test_loss = val_stats["test_loss"]
+        train_loss = train_stats["train_loss"]
     logger.log("Train Finish. Max Test Acc1:{:.4f}".format(max_acc))
     end_training = time.time()
     used_training = str(datetime.timedelta(seconds=end_training - start_training))
     logger.log("Training Time:{}".format(used_training))
+    overhead = 0.0
     if optimiser_overhead_calculation(args):
         logger.log(
             "Total inner gradient calculations: {}, Total iterations: {}".format(
@@ -148,14 +152,26 @@ def main(args):
                 optimizer.iteration_step_counter,
             )
         )
-        logger.log(
-            "Overhead over SGD: {:.4f}".format(
-                1
-                + optimizer.inner_gradient_calculation_counter
-                / (optimizer.iteration_step_counter)
-            )
+        overhead = 1 + optimizer.inner_gradient_calculation_counter / (
+            optimizer.iteration_step_counter
         )
+        logger.log("Overhead over SGD: {:.4f}".format(overhead))
     logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
+    with open("comp.info", "a") as f:
+        opt = args.opt.split("-")[0]
+        f.write(f"- OPTIMISER: {opt} \n")
+        if optimiser_overhead_calculation(args):
+            f.write(f"- reuse method: {args.crt} \n")
+        f.write(
+            f"- Max Test Accuracy: {max_acc:.4f}, Last Train Accuracy: {train_acc1:.4f}, Difference (Train Accuracy - Test Accuracy) = {train_acc1 - max_acc:.4f} \n"
+        )
+        f.write(
+            f"- Last Test Loss: {test_loss:.4f}, Last Train Loss: {train_loss:.4f}, Difference (test loss - train loss) = {test_loss - train_loss:.4f} \n"
+        )
+        if optimiser_overhead_calculation(args):
+            f.write(f"- More calculations x SGD: {overhead:.4f} \n")
+        f.write(f"- Training Time: {used_training} \n")
+        f.write("\n")
 
 
 if __name__ == "__main__":
