@@ -1,5 +1,4 @@
 import os
-import platform
 
 
 def dict_creation(
@@ -38,7 +37,7 @@ ps = [0.5, 0.2, 0.1, 0.05]
 zetas = [2.0, 1.0, 0.5, 0.1, 1e-2]
 
 experiments = []
-experiments.append(dict_creation("sam", "sam", "base", "rtx_3090", "4G"))
+experiments.append(dict_creation("sam", "sam-sgd", "base", "rtx_3090", "4G"))
 experiments.append(dict_creation("sgd", "sgd", "base", "rtx_3090", "4G", w=5e-4))
 
 for opt in opt_prefixes:
@@ -46,10 +45,12 @@ for opt in opt_prefixes:
         base_name = name = opt + "_theta=" + str(theta)
         if opt == "vasso":
             gpu = "rtx_3090"
+            optm = opt + "-sgd"
             experiments.append(
-                dict_creation(base_name, opt, "base", gpu, "6G", t=theta)
+                dict_creation(base_name, optm, "base", gpu, "6G", t=theta)
             )
         else:
+            optm = opt + "-sgd"
             for crt in crts:
                 if crt == "naive":
                     for k in ks:
@@ -58,7 +59,7 @@ for opt in opt_prefixes:
                         experiments.append(
                             dict_creation(
                                 full_name,
-                                opt,
+                                optm,
                                 os.path.join(opt, crt),
                                 gpu,
                                 "4G",
@@ -74,7 +75,7 @@ for opt in opt_prefixes:
                         experiments.append(
                             dict_creation(
                                 full_name,
-                                opt,
+                                optm,
                                 os.path.join(opt, crt),
                                 gpu,
                                 "4G",
@@ -94,7 +95,7 @@ for opt in opt_prefixes:
                         experiments.append(
                             dict_creation(
                                 full_name_normal,
-                                opt,
+                                optm,
                                 os_path_normal,
                                 "v100",
                                 "4G",
@@ -106,7 +107,7 @@ for opt in opt_prefixes:
                         experiments.append(
                             dict_creation(
                                 full_name_inv,
-                                opt,
+                                optm,
                                 os_path_inv,
                                 "a100_80gb",
                                 "4G",
@@ -137,7 +138,7 @@ module load python_gpu/3.8.5
 cd ~/sam/VaSSO
 
 python3 train.py \
-        --opt {opt}-sgd \
+        --opt {opt} \
         --theta {theta} \
         --weight_decay {weight_decay} \
         --crt {crt} \
