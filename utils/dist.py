@@ -2,6 +2,9 @@ import os
 import functools
 import torch
 import torch.distributed as dist
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from utils.device import onHPC
 
 
