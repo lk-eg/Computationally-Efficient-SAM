@@ -134,7 +134,9 @@ module load eth_proxy
 module load gcc/8.2.0
 module load python_gpu/3.8.5
 
-python3 ../../train.py \
+cd ~/sam/VaSSO
+
+python3 train.py \
         --opt {opt}-sgd \
         --theta {theta} \
         --weight_decay {weight_decay} \
