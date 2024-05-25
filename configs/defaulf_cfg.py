@@ -1,5 +1,5 @@
 import argparse
-from ..utils.device import onHPC
+from utils.device import onHPC
 
 
 class default_parser:
