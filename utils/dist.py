@@ -2,6 +2,7 @@ import os
 import functools
 import torch
 import torch.distributed as dist
+from utils.device import onHPC
 
 
 def is_dist_avail_and_initialized():
@@ -65,7 +66,8 @@ def init_distributed_model(args):
 
     args.distributed = True
 
-    # torch.cuda.set_device(args.gpu)
+    if onHPC():
+        torch.cuda.set_device(args.gpu)
     args.dist_backend = "nccl"
     print(
         "| distributed init (rank {}): {}".format(args.rank, args.dist_url), flush=True

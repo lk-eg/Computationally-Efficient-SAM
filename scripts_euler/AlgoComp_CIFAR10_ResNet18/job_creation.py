@@ -1,4 +1,5 @@
 import os
+from utils.device import onHPC
 
 
 def dict_creation(
@@ -95,7 +96,7 @@ for opt in opt_prefixes:
                                 full_name_normal,
                                 opt,
                                 os_path_normal,
-                                "a100_80gb",
+                                "v100",
                                 "16G",
                                 theta,
                                 crt="gSAMNormEMA",
@@ -143,6 +144,8 @@ python3 ../../train.py \
         --zeta {zeta}
 """
 
+sbatch_now = onHPC()
+
 for experiment in experiments:
     script_content = slurm_template.format(**experiment)
     output_dir = experiment["output_dir"]
@@ -151,4 +154,5 @@ for experiment in experiments:
     with open(script_filename, "w") as file:
         file.write(script_content)
 
-        os.system(f"sbatch {script_filename}")
+        if sbatch_now:
+            os.system(f"sbatch {script_filename}")
