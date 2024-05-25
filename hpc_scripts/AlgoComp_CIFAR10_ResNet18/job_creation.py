@@ -47,7 +47,7 @@ for opt in opt_prefixes:
         if opt == "vasso":
             gpu = "rtx_3090"
             experiments.append(
-                dict_creation(base_name, opt, "base", gpu, "16G", t=theta)
+                dict_creation(base_name, opt, "base", gpu, "6G", t=theta)
             )
         else:
             for crt in crts:
@@ -61,7 +61,7 @@ for opt in opt_prefixes:
                                 opt,
                                 os.path.join(opt, crt),
                                 gpu,
-                                "8G",
+                                "4G",
                                 theta,
                                 crt=crt,
                                 crt_k=k,
@@ -77,7 +77,7 @@ for opt in opt_prefixes:
                                 opt,
                                 os.path.join(opt, crt),
                                 gpu,
-                                "8G",
+                                "4G",
                                 theta,
                                 crt=crt,
                                 crt_p=p,
@@ -97,7 +97,7 @@ for opt in opt_prefixes:
                                 opt,
                                 os_path_normal,
                                 "v100",
-                                "8G",
+                                "4G",
                                 theta,
                                 crt="gSAMNormEMA",
                                 zeta=z,
@@ -109,7 +109,7 @@ for opt in opt_prefixes:
                                 opt,
                                 os_path_inv,
                                 "a100_80gb",
-                                "8G",
+                                "4G",
                                 theta,
                                 crt="gSAMNormEMAInverted",
                                 zeta=z,
@@ -151,6 +151,3 @@ for experiment in experiments:
     script_filename = os.path.join(output_dir, f"{experiment['name']}.sh")
     with open(script_filename, "w") as file:
         file.write(script_content)
-
-    if platform.system() == "Linux":
-        os.system(f"sbatch {script_filename}")
