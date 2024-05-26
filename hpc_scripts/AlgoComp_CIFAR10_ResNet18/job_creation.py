@@ -129,7 +129,7 @@ slurm_template = """#!/bin/bash
 #SBATCH --output={output_dir}/outputs/{name}.out
 #SBATCH --error={output_dir}/errors/{name}.err
 #SBATCH --open-mode=truncate
-#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-type=END
 
 module load eth_proxy
 module load gcc/8.2.0
@@ -150,7 +150,7 @@ python3 train.py \
 for experiment in experiments:
     script_content = slurm_template.format(**experiment)
     output_dir = experiment["output_dir"]
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(os.path.join(output_dir, "scripts"), exist_ok=True)
     script_filename = os.path.join(output_dir, "scripts", f"{experiment['name']}.sh")
     with open(script_filename, "w") as file:
         file.write(script_content)
