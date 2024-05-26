@@ -109,7 +109,7 @@ for opt in opt_prefixes:
                                 full_name_inv,
                                 optm,
                                 os_path_inv,
-                                "a100_80gb",
+                                "v100",
                                 "4G",
                                 theta,
                                 crt="gSAMNormEMAInverted",
@@ -126,8 +126,8 @@ slurm_template = """#!/bin/bash
 #SBATCH --time=6:00:00
 #SBATCH --job-name={name}_cifar10_resnet18
 #SBATCH --mem-per-cpu={memcpu}
-#SBATCH --output={name}_cifar10_resnet18.out
-#SBATCH --error={name}_cifar10_resnet18.err
+#SBATCH --output={output_dir}/outputs/{name}.out
+#SBATCH --error={output_dir}/errors/{name}.err
 #SBATCH --open-mode=truncate
 #SBATCH --mail-type=BEGIN,END
 
@@ -151,6 +151,6 @@ for experiment in experiments:
     script_content = slurm_template.format(**experiment)
     output_dir = experiment["output_dir"]
     os.makedirs(output_dir, exist_ok=True)
-    script_filename = os.path.join(output_dir, f"{experiment['name']}.sh")
+    script_filename = os.path.join(output_dir, "scripts", f"{experiment['name']}.sh")
     with open(script_filename, "w") as file:
         file.write(script_content)

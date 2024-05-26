@@ -234,6 +234,18 @@ class default_parser:
         return args
 
     def auto_set_name(self, args):
+        def reuse_naming(args, output_name):
+            crt = args.crt
+            output_name.extend(["crt={}".format(crt)])
+            if crt == "naive":
+                output_name.extend(["k={}".format(args.crt_k)])
+            elif crt == "random":
+                output_name.extend(["p={}".format(args.crt_p)])
+            elif crt == "gSAMNormEMA":
+                output_name.extend(["zeta={}".format(args.zeta)])
+            elif crt == "gSAMNormEMAInverted":
+                output_name.extend(["zeta={}".format(args.zeta)])
+
         def sam_hyper_param(args):
             args_opt = args.opt.split("-")
             if len(args_opt) == 1:
@@ -243,21 +255,21 @@ class default_parser:
             # SAM, VASSO
             output_name = ["rho{}".format(args.rho)]
             if sam_opt[:5].upper() == "VASSO":
-                output_name.extend(["theta{}".format(args.theta)])
+                output_name.extend(["theta={}".format(args.theta)])
             if sam_opt[:7].upper() == "VASSORE":
-                output_name.extend(["crt={}".format(args.crt)])
+                reuse_naming(args, output_name)
             return output_name
 
         if args.output_name is None:
             args.output_name = "_".join(
                 [
                     args.dataset,
-                    "bsz" + str(args.batch_size),
-                    "epoch" + str(args.epochs),
+                    # "bsz" + str(args.batch_size),
+                    # "epoch" + str(args.epochs),
                     args.model,
-                    "lr" + str(args.lr),
+                    # "lr" + str(args.lr),
                     str(args.opt),
                 ]
                 + sam_hyper_param(args)
-                + ["seed{}".format(args.seed)]
+                # + ["seed{}".format(args.seed)]
             )

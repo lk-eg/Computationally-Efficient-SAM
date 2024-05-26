@@ -157,20 +157,29 @@ def main(args):
         )
         logger.log("Overhead over SGD: {:.4f}".format(overhead))
     logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
+
+    # Write global comparison file
     with open("comp.info", "a") as f:
         opt = args.opt.split("-")[0]
-        f.write(f"- OPTIMISER: {opt} \n")
+        f.write(f"OPTIMISER: {opt} \n")
         if optimiser_overhead_calculation(args):
-            f.write(f"- reuse method: {args.crt} \n")
+            reuse_method = args.crt
+            f.write(f"Reuse method: {reuse_method}")
+            if reuse_method == "naive":
+                f.write(f" - k={args.crt_k} \n")
+            elif reuse_method == "random":
+                f.write(f" - p={args.crt_p} \n")
+            elif reuse_method == "gSAMNormEMA":
+                f.write(f" - zeta={args.zeta} \n")
         f.write(
-            f"- Max Test Accuracy: {max_acc:.4f}, Last Train Accuracy: {train_acc1:.4f}, Difference (Train Accuracy - Test Accuracy) = {train_acc1 - max_acc:.4f} \n"
+            f"Max Test Accuracy: {max_acc:.4f}, Last Train Accuracy: {train_acc1:.4f}, Difference (Train Accuracy - Test Accuracy) = {train_acc1 - max_acc:.4f} \n"
         )
         f.write(
-            f"- Last Test Loss: {test_loss:.4f}, Last Train Loss: {train_loss:.4f}, Difference (test loss - train loss) = {test_loss - train_loss:.4f} \n"
+            f"Last Test Loss: {test_loss:.4f}, Last Train Loss: {train_loss:.4f}, Difference (test loss - train loss) = {test_loss - train_loss:.4f} \n"
         )
         if optimiser_overhead_calculation(args):
-            f.write(f"- More calculations x SGD: {overhead:.4f} \n")
-        f.write(f"- Training Time: {used_training} \n")
+            f.write(f"More calculations x SGD: {overhead:.4f} \n")
+        f.write(f"Training Time: {used_training} \n")
         f.write("\n")
 
 
