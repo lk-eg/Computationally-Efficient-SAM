@@ -161,7 +161,7 @@ def main(args):
     # Write global comparison file
     with open("comp.info", "a") as f:
         opt = args.opt.split("-")[0]
-        f.write(f"OPTIMISER: {opt} \n")
+        f.write(f"OPTIMISER: {opt} - theta = {args.theta} \n")
         if optimiser_overhead_calculation(args):
             reuse_method = args.crt
             f.write(f"Reuse method: {reuse_method}")
