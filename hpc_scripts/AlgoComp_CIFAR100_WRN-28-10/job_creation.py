@@ -44,10 +44,10 @@ for opt in opt_prefixes:
     for theta in thetas:
         base_name = name = opt + "_theta=" + str(theta)
         if opt == "vasso":
-            gpu = "rtx_3090"
+            gpu = "rtx_4090"
             optm = opt + "-sgd"
             experiments.append(
-                dict_creation(base_name, optm, "base", gpu, "6G", t=theta)
+                dict_creation(base_name, optm, "base", gpu, "2G", t=theta)
             )
         else:
             optm = opt + "-sgd"
@@ -62,7 +62,7 @@ for opt in opt_prefixes:
                                 optm,
                                 os.path.join(opt, crt),
                                 gpu,
-                                "4G",
+                                "2G",
                                 theta,
                                 crt=crt,
                                 crt_k=k,
@@ -71,14 +71,14 @@ for opt in opt_prefixes:
                 if crt == "random":
                     for p in ps:
                         full_name = base_name + "_p=" + str(p)
-                        gpu = "rtx_4090"
+                        gpu = "titan_rtx"
                         experiments.append(
                             dict_creation(
                                 full_name,
                                 optm,
                                 os.path.join(opt, crt),
                                 gpu,
-                                "4G",
+                                "2G",
                                 theta,
                                 crt=crt,
                                 crt_p=p,
@@ -97,8 +97,8 @@ for opt in opt_prefixes:
                                 full_name_normal,
                                 optm,
                                 os_path_normal,
-                                "v100",
-                                "4G",
+                                "quadro_rtx_6000",
+                                "2G",
                                 theta,
                                 crt="gSAMNormEMA",
                                 zeta=z,
@@ -109,8 +109,8 @@ for opt in opt_prefixes:
                                 full_name_inv,
                                 optm,
                                 os_path_inv,
-                                "v100",
-                                "4G",
+                                "rtx_4090",
+                                "2G",
                                 theta,
                                 crt="gSAMNormEMAInverted",
                                 zeta=z,
@@ -123,8 +123,8 @@ slurm_template = """#!/bin/bash
 #SBATCH --cpus-per-task=8
 #SBATCH --gpus=1
 #SBATCH --gpus={gpu_model}:1
-#SBATCH --time=6:00:00
-#SBATCH --job-name={name}_cifar10_resnet18
+#SBATCH --time=10:00:00
+#SBATCH --job-name={name}_cifar100_wrn-28-10
 #SBATCH --mem-per-cpu={memcpu}
 #SBATCH --output=./outputs/{name}.out
 #SBATCH --error=./errors/{name}.err
@@ -138,6 +138,9 @@ module load python_gpu/3.8.5
 cd ~/sam/VaSSO
 
 python3 train.py \
+        --dataset CIFAR100_cutout \
+        --model wideresnet28x10 \
+        --rho 0.2 \
         --opt {opt} \
         --theta {theta} \
         --weight_decay {weight_decay} \
