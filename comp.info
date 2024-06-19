@@ -185,10 +185,109 @@ More calculations x SGD: 1.9989
 Training Time: 5:26:45.313436 
 
 
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMA - zeta=0.01 
+Max Test Accuracy: 96.3400, Last Train Accuracy: 99.3149, Difference (Train Accuracy - Test Accuracy) = 2.9749 
+Last Test Loss: 0.1289, Last Train Loss: 0.0247, Difference (test loss - train loss) = 0.1042 
+More calculations x SGD: 1.0013 
+Training Time: 0:46:48.150781 
 
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMA - zeta=0.1 
+Max Test Accuracy: 96.3600, Last Train Accuracy: 99.2428, Difference (Train Accuracy - Test Accuracy) = 2.8828 
+Last Test Loss: 0.1278, Last Train Loss: 0.0250, Difference (test loss - train loss) = 0.1028 
+More calculations x SGD: 1.0013 
+Training Time: 0:46:11.934989 
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMA - zeta=0.5 
+Max Test Accuracy: 96.1800, Last Train Accuracy: 99.2768, Difference (Train Accuracy - Test Accuracy) = 3.0968 
+Last Test Loss: 0.1382, Last Train Loss: 0.0254, Difference (test loss - train loss) = 0.1127 
+More calculations x SGD: 1.0013 
+Training Time: 0:46:09.768775 
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMA - zeta=1.0 
+Max Test Accuracy: 96.5100, Last Train Accuracy: 98.0529, Difference (Train Accuracy - Test Accuracy) = 1.5429 
+Last Test Loss: 0.1166, Last Train Loss: 0.0835, Difference (test loss - train loss) = 0.0331 
+More calculations x SGD: 1.4884 
+Training Time: 1:05:50.425679 
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMA - zeta=2.0 
+Max Test Accuracy: 96.6900, Last Train Accuracy: 95.9896, Difference (Train Accuracy - Test Accuracy) = -0.7004 
+Last Test Loss: 0.1051, Last Train Loss: 0.1433, Difference (test loss - train loss) = -0.0383 
+More calculations x SGD: 2.0000 
+Training Time: 1:25:46.160337 
+
+----------------------------------------------------------------------------------------------------------------
 
 gSAMNormEMAInverted:
 
+OPTIMISER: vassore - theta = 0.2 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.5400, Last Train Accuracy: 96.8349, Difference (Train Accuracy - Test Accuracy) = 0.2949 
+Last Test Loss: 0.1082, Last Train Loss: 0.1171, Difference (test loss - train loss) = -0.0089 
+More calculations x SGD: 2.0000 
+Training Time: 1:27:14.718001 
+
+OPTIMISER: vassore - theta = 0.2 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.8400, Last Train Accuracy: 96.9010, Difference (Train Accuracy - Test Accuracy) = 0.0610 
+Last Test Loss: 0.1039, Last Train Loss: 0.1131, Difference (test loss - train loss) = -0.0092 
+More calculations x SGD: 2.0000 
+Training Time: 1:26:46.691032 
+
+OPTIMISER: vassore - theta = 0.2 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.6300, Last Train Accuracy: 96.8590, Difference (Train Accuracy - Test Accuracy) = 0.2290 
+Last Test Loss: 0.1063, Last Train Loss: 0.1148, Difference (test loss - train loss) = -0.0085 
+More calculations x SGD: 2.0000 
+Training Time: 1:26:48.450153 
+
+OPTIMISER: vassore - theta = 0.2 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.3200, Last Train Accuracy: 99.0004, Difference (Train Accuracy - Test Accuracy) = 2.6804 
+Last Test Loss: 0.1257, Last Train Loss: 0.0391, Difference (test loss - train loss) = 0.0866 
+More calculations x SGD: 1.0169 
+Training Time: 0:48:17.801365 
+
+OPTIMISER: vassore - theta = 0.2 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.6900, Last Train Accuracy: 98.0449, Difference (Train Accuracy - Test Accuracy) = 1.3549 
+Last Test Loss: 0.1121, Last Train Loss: 0.0804, Difference (test loss - train loss) = 0.0317 
+More calculations x SGD: 1.5131 
+Training Time: 1:07:49.196207 
+
+
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.6900, Last Train Accuracy: 96.0897, Difference (Train Accuracy - Test Accuracy) = -0.6003 
+Last Test Loss: 0.1073, Last Train Loss: 0.1416, Difference (test loss - train loss) = -0.0343 
+More calculations x SGD: 2.0000 
+Training Time: 1:26:00.864804 
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.7500, Last Train Accuracy: 96.0938, Difference (Train Accuracy - Test Accuracy) = -0.6562 
+Last Test Loss: 0.1050, Last Train Loss: 0.1423, Difference (test loss - train loss) = -0.0373 
+More calculations x SGD: 2.0000 
+Training Time: 1:26:11.076755 
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.7100, Last Train Accuracy: 96.0236, Difference (Train Accuracy - Test Accuracy) = -0.6864 
+Last Test Loss: 0.1052, Last Train Loss: 0.1428, Difference (test loss - train loss) = -0.0376 
+More calculations x SGD: 2.0000 
+Training Time: 1:26:33.082534 
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.4300, Last Train Accuracy: 98.9363, Difference (Train Accuracy - Test Accuracy) = 2.5063 
+Last Test Loss: 0.1263, Last Train Loss: 0.0432, Difference (test loss - train loss) = 0.0831 
+More calculations x SGD: 1.0135 
+Training Time: 0:47:30.036041 
 
 ----------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------
@@ -203,6 +302,13 @@ Max Test Accuracy: 96.5900, Last Train Accuracy: 98.3934, Difference (Train Accu
 Last Test Loss: 0.1142, Last Train Loss: 0.0662, Difference (test loss - train loss) = 0.0479 
 More calculations x SGD: 1.5006 
 Training Time: 1:06:58.343694 
+
+OPTIMISER: vassoremu - theta = 0.2 
+Reuse method: naive - k=5 
+Max Test Accuracy: 96.4800, Last Train Accuracy: 98.8582, Difference (Train Accuracy - Test Accuracy) = 2.3782 
+Last Test Loss: 0.1171, Last Train Loss: 0.0492, Difference (test loss - train loss) = 0.0679 
+More calculations x SGD: 1.2010 
+Training Time: 0:55:29.206064 
 
 OPTIMISER: vassoremu - theta = 0.2 
 Reuse method: naive - k=10 
@@ -239,6 +345,13 @@ Max Test Accuracy: 96.2500, Last Train Accuracy: 99.0264, Difference (Train Accu
 Last Test Loss: 0.1257, Last Train Loss: 0.0404, Difference (test loss - train loss) = 0.0853 
 More calculations x SGD: 1.1012 
 Training Time: 0:50:02.854760 
+
+OPTIMISER: vassore - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.6700, Last Train Accuracy: 97.8886, Difference (Train Accuracy - Test Accuracy) = 1.2186 
+Last Test Loss: 0.1145, Last Train Loss: 0.0886, Difference (test loss - train loss) = 0.0260 
+More calculations x SGD: 1.5090 
+Training Time: 1:06:35.669394 
 
 OPTIMISER: vassoremu - theta = 0.4 
 Reuse method: naive - k=20 
@@ -315,45 +428,41 @@ Last Test Loss: 0.1084, Last Train Loss: 0.0870, Difference (test loss - train l
 More calculations x SGD: 1.5000 
 Training Time: 1:05:56.323414 
 
-----------------------------------------------------------------------------------------------------------------OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMA - zeta=0.5 
-Max Test Accuracy: 96.1800, Last Train Accuracy: 99.2768, Difference (Train Accuracy - Test Accuracy) = 3.0968 
-Last Test Loss: 0.1382, Last Train Loss: 0.0254, Difference (test loss - train loss) = 0.1127 
-More calculations x SGD: 1.0013 
-Training Time: 0:46:09.768775 
+----------------------------------------------------------------------------------------------------------------
 
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMA - zeta=0.1 
-Max Test Accuracy: 96.3600, Last Train Accuracy: 99.2428, Difference (Train Accuracy - Test Accuracy) = 2.8828 
-Last Test Loss: 0.1278, Last Train Loss: 0.0250, Difference (test loss - train loss) = 0.1028 
-More calculations x SGD: 1.0013 
-Training Time: 0:46:11.934989 
+gSAMNormEMA:
 
-OPTIMISER: vassore - theta = 0.4 
+OPTIMISER: vassoremu - theta = 0.2 
 Reuse method: gSAMNormEMA - zeta=0.01 
-Max Test Accuracy: 96.3400, Last Train Accuracy: 99.3149, Difference (Train Accuracy - Test Accuracy) = 2.9749 
-Last Test Loss: 0.1289, Last Train Loss: 0.0247, Difference (test loss - train loss) = 0.1042 
+Max Test Accuracy: 96.0200, Last Train Accuracy: 99.2268, Difference (Train Accuracy - Test Accuracy) = 3.2068 
+Last Test Loss: 0.1336, Last Train Loss: 0.0265, Difference (test loss - train loss) = 0.1071 
 More calculations x SGD: 1.0013 
-Training Time: 0:46:48.150781 
+Training Time: 0:48:32.082667 
 
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.4300, Last Train Accuracy: 98.9363, Difference (Train Accuracy - Test Accuracy) = 2.5063 
-Last Test Loss: 0.1263, Last Train Loss: 0.0432, Difference (test loss - train loss) = 0.0831 
-More calculations x SGD: 1.0135 
-Training Time: 0:47:30.036041 
-
-OPTIMISER: vassore - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.3200, Last Train Accuracy: 99.0004, Difference (Train Accuracy - Test Accuracy) = 2.6804 
-Last Test Loss: 0.1257, Last Train Loss: 0.0391, Difference (test loss - train loss) = 0.0866 
-More calculations x SGD: 1.0169 
-Training Time: 0:48:17.801365 
-
+!!!!!
 OPTIMISER: vassoremu - theta = 0.2 
 Reuse method: gSAMNormEMA - zeta=0.5 
 Max Test Accuracy: 96.3100, Last Train Accuracy: 99.1867, Difference (Train Accuracy - Test Accuracy) = 2.8767 
 Last Test Loss: 0.1305, Last Train Loss: 0.0274, Difference (test loss - train loss) = 0.1031 
 More calculations x SGD: 1.0017 
 Training Time: 0:48:10.647402 
+!!!!!
+
+!!!!!
+OPTIMISER: vassoremu - theta = 0.2 
+Reuse method: gSAMNormEMA - zeta=1.0 
+Max Test Accuracy: 96.6000, Last Train Accuracy: 98.2432, Difference (Train Accuracy - Test Accuracy) = 1.6432 
+Last Test Loss: 0.1130, Last Train Loss: 0.0737, Difference (test loss - train loss) = 0.0393 
+More calculations x SGD: 1.4871 
+Training Time: 1:06:40.612565 
+!!!!!
+
+OPTIMISER: vassoremu - theta = 0.2 
+Reuse method: gSAMNormEMA - zeta=2.0 
+Max Test Accuracy: 96.6900, Last Train Accuracy: 96.8610, Difference (Train Accuracy - Test Accuracy) = 0.1710 
+Last Test Loss: 0.1043, Last Train Loss: 0.1135, Difference (test loss - train loss) = -0.0092 
+More calculations x SGD: 1.9987 
+Training Time: 1:27:03.877476 
 
 OPTIMISER: vassoremu - theta = 0.2 
 Reuse method: gSAMNormEMA - zeta=0.1 
@@ -362,19 +471,15 @@ Last Test Loss: 0.1362, Last Train Loss: 0.0260, Difference (test loss - train l
 More calculations x SGD: 1.0013 
 Training Time: 0:48:20.103290 
 
+
+!!!!! (LUCK)
 OPTIMISER: vassoremu - theta = 0.4 
 Reuse method: gSAMNormEMA - zeta=0.01 
 Max Test Accuracy: 96.4100, Last Train Accuracy: 99.2468, Difference (Train Accuracy - Test Accuracy) = 2.8368 
 Last Test Loss: 0.1233, Last Train Loss: 0.0255, Difference (test loss - train loss) = 0.0978 
 More calculations x SGD: 1.0013 
 Training Time: 0:48:20.754224 
-
-OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMA - zeta=0.01 
-Max Test Accuracy: 96.0200, Last Train Accuracy: 99.2268, Difference (Train Accuracy - Test Accuracy) = 3.2068 
-Last Test Loss: 0.1336, Last Train Loss: 0.0265, Difference (test loss - train loss) = 0.1071 
-More calculations x SGD: 1.0013 
-Training Time: 0:48:32.082667 
+!!!!!
 
 OPTIMISER: vassoremu - theta = 0.4 
 Reuse method: gSAMNormEMA - zeta=0.1 
@@ -390,88 +495,14 @@ Last Test Loss: 0.1392, Last Train Loss: 0.0254, Difference (test loss - train l
 More calculations x SGD: 1.0013 
 Training Time: 0:48:57.669749 
 
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMA - zeta=1.0 
-Max Test Accuracy: 96.5100, Last Train Accuracy: 98.0529, Difference (Train Accuracy - Test Accuracy) = 1.5429 
-Last Test Loss: 0.1166, Last Train Loss: 0.0835, Difference (test loss - train loss) = 0.0331 
-More calculations x SGD: 1.4884 
-Training Time: 1:05:50.425679 
-
-OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: naive - k=5 
-Max Test Accuracy: 96.4800, Last Train Accuracy: 98.8582, Difference (Train Accuracy - Test Accuracy) = 2.3782 
-Last Test Loss: 0.1171, Last Train Loss: 0.0492, Difference (test loss - train loss) = 0.0679 
-More calculations x SGD: 1.2010 
-Training Time: 0:55:29.206064 
-
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.6700, Last Train Accuracy: 97.8886, Difference (Train Accuracy - Test Accuracy) = 1.2186 
-Last Test Loss: 0.1145, Last Train Loss: 0.0886, Difference (test loss - train loss) = 0.0260 
-More calculations x SGD: 1.5090 
-Training Time: 1:06:35.669394 
-
-OPTIMISER: vassore - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.6900, Last Train Accuracy: 98.0449, Difference (Train Accuracy - Test Accuracy) = 1.3549 
-Last Test Loss: 0.1121, Last Train Loss: 0.0804, Difference (test loss - train loss) = 0.0317 
-More calculations x SGD: 1.5131 
-Training Time: 1:07:49.196207 
-
-OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMA - zeta=1.0 
-Max Test Accuracy: 96.6000, Last Train Accuracy: 98.2432, Difference (Train Accuracy - Test Accuracy) = 1.6432 
-Last Test Loss: 0.1130, Last Train Loss: 0.0737, Difference (test loss - train loss) = 0.0393 
-More calculations x SGD: 1.4871 
-Training Time: 1:06:40.612565 
-
+!!!!!
 OPTIMISER: vassoremu - theta = 0.4 
 Reuse method: gSAMNormEMA - zeta=1.0 
 Max Test Accuracy: 96.4900, Last Train Accuracy: 98.0308, Difference (Train Accuracy - Test Accuracy) = 1.5408 
 Last Test Loss: 0.1166, Last Train Loss: 0.0866, Difference (test loss - train loss) = 0.0300 
 More calculations x SGD: 1.4908 
 Training Time: 1:06:48.616393 
-
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMA - zeta=2.0 
-Max Test Accuracy: 96.6900, Last Train Accuracy: 95.9896, Difference (Train Accuracy - Test Accuracy) = -0.7004 
-Last Test Loss: 0.1051, Last Train Loss: 0.1433, Difference (test loss - train loss) = -0.0383 
-More calculations x SGD: 2.0000 
-Training Time: 1:25:46.160337 
-
-OPTIMISER: vassore - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.8400, Last Train Accuracy: 96.9010, Difference (Train Accuracy - Test Accuracy) = 0.0610 
-Last Test Loss: 0.1039, Last Train Loss: 0.1131, Difference (test loss - train loss) = -0.0092 
-More calculations x SGD: 2.0000 
-Training Time: 1:26:46.691032 
-
-OPTIMISER: vassore - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.6300, Last Train Accuracy: 96.8590, Difference (Train Accuracy - Test Accuracy) = 0.2290 
-Last Test Loss: 0.1063, Last Train Loss: 0.1148, Difference (test loss - train loss) = -0.0085 
-More calculations x SGD: 2.0000 
-Training Time: 1:26:48.450153 
-
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.6900, Last Train Accuracy: 96.0897, Difference (Train Accuracy - Test Accuracy) = -0.6003 
-Last Test Loss: 0.1073, Last Train Loss: 0.1416, Difference (test loss - train loss) = -0.0343 
-More calculations x SGD: 2.0000 
-Training Time: 1:26:00.864804 
-
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.7500, Last Train Accuracy: 96.0938, Difference (Train Accuracy - Test Accuracy) = -0.6562 
-Last Test Loss: 0.1050, Last Train Loss: 0.1423, Difference (test loss - train loss) = -0.0373 
-More calculations x SGD: 2.0000 
-Training Time: 1:26:11.076755 
-
-OPTIMISER: vassore - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.5400, Last Train Accuracy: 96.8349, Difference (Train Accuracy - Test Accuracy) = 0.2949 
-Last Test Loss: 0.1082, Last Train Loss: 0.1171, Difference (test loss - train loss) = -0.0089 
-More calculations x SGD: 2.0000 
-Training Time: 1:27:14.718001 
-
-OPTIMISER: vassore - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.7100, Last Train Accuracy: 96.0236, Difference (Train Accuracy - Test Accuracy) = -0.6864 
-Last Test Loss: 0.1052, Last Train Loss: 0.1428, Difference (test loss - train loss) = -0.0376 
-More calculations x SGD: 2.0000 
-Training Time: 1:26:33.082534 
+!!!!!
 
 OPTIMISER: vassoremu - theta = 0.4 
 Reuse method: gSAMNormEMA - zeta=2.0 
@@ -480,70 +511,81 @@ Last Test Loss: 0.1047, Last Train Loss: 0.1420, Difference (test loss - train l
 More calculations x SGD: 1.9999 
 Training Time: 1:26:11.171317 
 
-OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMA - zeta=2.0 
-Max Test Accuracy: 96.6900, Last Train Accuracy: 96.8610, Difference (Train Accuracy - Test Accuracy) = 0.1710 
-Last Test Loss: 0.1043, Last Train Loss: 0.1135, Difference (test loss - train loss) = -0.0092 
-More calculations x SGD: 1.9987 
-Training Time: 1:27:03.877476 
+----------------------------------------------------------------------------------------------------------------
+
+gSAMNormEMAInverted:
 
 OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.2500, Last Train Accuracy: 99.0024, Difference (Train Accuracy - Test Accuracy) = 2.7524 
-Last Test Loss: 0.1266, Last Train Loss: 0.0416, Difference (test loss - train loss) = 0.0850 
-More calculations x SGD: 1.0166 
-Training Time: 0:48:44.646983 
-
-OPTIMISER: vassoremu - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.0500, Last Train Accuracy: 98.9643, Difference (Train Accuracy - Test Accuracy) = 2.9143 
-Last Test Loss: 0.1287, Last Train Loss: 0.0424, Difference (test loss - train loss) = 0.0863 
-More calculations x SGD: 1.0128 
-Training Time: 0:50:25.474227 
-
-OPTIMISER: vassoremu - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.6100, Last Train Accuracy: 97.9828, Difference (Train Accuracy - Test Accuracy) = 1.3728 
-Last Test Loss: 0.1122, Last Train Loss: 0.0823, Difference (test loss - train loss) = 0.0299 
-More calculations x SGD: 1.5106 
-Training Time: 1:08:05.501259 
-
-OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.5100, Last Train Accuracy: 98.3754, Difference (Train Accuracy - Test Accuracy) = 1.8654 
-Last Test Loss: 0.1127, Last Train Loss: 0.0645, Difference (test loss - train loss) = 0.0483 
-More calculations x SGD: 1.5124 
-Training Time: 1:08:39.751489 
-
-OPTIMISER: vassoremu - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.7500, Last Train Accuracy: 96.1879, Difference (Train Accuracy - Test Accuracy) = -0.5621 
-Last Test Loss: 0.1019, Last Train Loss: 0.1404, Difference (test loss - train loss) = -0.0385 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.7400, Last Train Accuracy: 96.8530, Difference (Train Accuracy - Test Accuracy) = 0.1130 
+Last Test Loss: 0.1062, Last Train Loss: 0.1149, Difference (test loss - train loss) = -0.0087 
 More calculations x SGD: 2.0000 
-Training Time: 1:25:44.275064 
-
-OPTIMISER: vassoremu - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.6500, Last Train Accuracy: 96.1558, Difference (Train Accuracy - Test Accuracy) = -0.4942 
-Last Test Loss: 0.1081, Last Train Loss: 0.1400, Difference (test loss - train loss) = -0.0318 
-More calculations x SGD: 2.0000 
-Training Time: 1:25:49.358105 
+Training Time: 1:27:48.867869 
 
 OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.6100, Last Train Accuracy: 96.7949, Difference (Train Accuracy - Test Accuracy) = 0.1849 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.6100, Last Train Accuracy: 96.7949, Difference (Train Accuracy - Test Accuracy) = 0.1849 
 Last Test Loss: 0.1031, Last Train Loss: 0.1152, Difference (test loss - train loss) = -0.0121 
 More calculations x SGD: 2.0000 
 Training Time: 1:26:25.174625 
 
 OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.5900, Last Train Accuracy: 96.8650, Difference (Train Accuracy - Test Accuracy) = 0.2750 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.5900, Last Train Accuracy: 96.8650, Difference (Train Accuracy - Test Accuracy) = 0.2750 
 Last Test Loss: 0.1061, Last Train Loss: 0.1158, Difference (test loss - train loss) = -0.0098 
 More calculations x SGD: 2.0000 
 Training Time: 1:26:25.097787 
 
+!!!!!
+OPTIMISER: vassoremu - theta = 0.2 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.5100, Last Train Accuracy: 98.3754, Difference (Train Accuracy - Test Accuracy) = 1.8654 
+Last Test Loss: 0.1127, Last Train Loss: 0.0645, Difference (test loss - train loss) = 0.0483 
+More calculations x SGD: 1.5124 
+Training Time: 1:08:39.751489 
+!!!!!
+
+OPTIMISER: vassoremu - theta = 0.2 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.2500, Last Train Accuracy: 99.0024, Difference (Train Accuracy - Test Accuracy) = 2.7524 
+Last Test Loss: 0.1266, Last Train Loss: 0.0416, Difference (test loss - train loss) = 0.0850 
+More calculations x SGD: 1.0166 
+Training Time: 0:48:44.646983 
+
+
 OPTIMISER: vassoremu - theta = 0.4 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.7300, Last Train Accuracy: 96.1058, Difference (Train Accuracy - Test Accuracy) = -0.6242 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.7500, Last Train Accuracy: 96.1879, Difference (Train Accuracy - Test Accuracy) = -0.5621 
+Last Test Loss: 0.1019, Last Train Loss: 0.1404, Difference (test loss - train loss) = -0.0385 
+More calculations x SGD: 2.0000 
+Training Time: 1:25:44.275064 
+
+OPTIMISER: vassoremu - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.6500, Last Train Accuracy: 96.1558, Difference (Train Accuracy - Test Accuracy) = -0.4942 
+Last Test Loss: 0.1081, Last Train Loss: 0.1400, Difference (test loss - train loss) = -0.0318 
+More calculations x SGD: 2.0000 
+Training Time: 1:25:49.358105 
+
+OPTIMISER: vassoremu - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.7300, Last Train Accuracy: 96.1058, Difference (Train Accuracy - Test Accuracy) = -0.6242 
 Last Test Loss: 0.1014, Last Train Loss: 0.1419, Difference (test loss - train loss) = -0.0406 
 More calculations x SGD: 2.0000 
 Training Time: 1:27:27.132432 
 
-OPTIMISER: vassoremu - theta = 0.2 
-Reuse method: gSAMNormEMAInvertedMax Test Accuracy: 96.7400, Last Train Accuracy: 96.8530, Difference (Train Accuracy - Test Accuracy) = 0.1130 
-Last Test Loss: 0.1062, Last Train Loss: 0.1149, Difference (test loss - train loss) = -0.0087 
-More calculations x SGD: 2.0000 
-Training Time: 1:27:48.867869 
+!!!!!
+OPTIMISER: vassoremu - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.6100, Last Train Accuracy: 97.9828, Difference (Train Accuracy - Test Accuracy) = 1.3728 
+Last Test Loss: 0.1122, Last Train Loss: 0.0823, Difference (test loss - train loss) = 0.0299 
+More calculations x SGD: 1.5106 
+Training Time: 1:08:05.501259 
+!!!!!
 
+OPTIMISER: vassoremu - theta = 0.4 
+Reuse method: gSAMNormEMAInverted
+Max Test Accuracy: 96.0500, Last Train Accuracy: 98.9643, Difference (Train Accuracy - Test Accuracy) = 2.9143 
+Last Test Loss: 0.1287, Last Train Loss: 0.0424, Difference (test loss - train loss) = 0.0863 
+More calculations x SGD: 1.0128 
+Training Time: 0:50:25.474227 

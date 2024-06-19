@@ -1,0 +1,16 @@
+
+The following have been reloaded with a version change:
+  1) gcc/4.8.5 => gcc/8.2.0
+
+Traceback (most recent call last):
+  File "train.py", line 191, in <module>
+    main(args)
+  File "train.py", line 78, in main
+    train_stats = train_one_epoch(
+  File "/cluster/home/laltun/sam/VaSSO/utils/engine.py", line 99, in train_one_epoch
+    logger.log(
+  File "/cluster/home/laltun/sam/VaSSO/utils/dist.py", line 37, in wrapped
+    return func(*args, **kwargs)
+  File "/cluster/home/laltun/sam/VaSSO/utils/logger.py", line 100, in log
+    with open(os.path.join(self.logger_path, "log.info"), "a") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'logs/CIFAR100_cutout_wideresnet28x10_vassore-sgd_rho0.2_theta=0.4_crt=random_p=0.5/log.info'

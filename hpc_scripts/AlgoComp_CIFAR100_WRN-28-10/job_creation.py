@@ -126,8 +126,8 @@ slurm_template = """#!/bin/bash
 #SBATCH --time=10:00:00
 #SBATCH --job-name={name}_cifar100_wrn-28-10
 #SBATCH --mem-per-cpu={memcpu}
-#SBATCH --output=./outputs/{name}.out
-#SBATCH --error=./errors/{name}.err
+#SBATCH --output={output_dir}/outputs/{name}.out
+#SBATCH --error={output_dir}/errors/{name}.err
 #SBATCH --open-mode=truncate
 #SBATCH --mail-type=END
 

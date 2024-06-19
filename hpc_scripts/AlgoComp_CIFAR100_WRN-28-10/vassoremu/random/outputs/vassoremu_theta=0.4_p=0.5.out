@@ -1,0 +1,737 @@
+Not using distributed mode
+2024-05-28 10:22:50 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Namespace(batch_size=128, betas=None, crt='random', crt_k=2, crt_p=0.5, datadir='~/sam/datasets', dataset='CIFAR100_cutout', dist_url='env://', distributed=False, distributed_val=False, drop_last=True, epochs=200, eps=None, eta_min=0, extensive_metrics_mode=False, gamma=0.2, log_freq=10, lr=0.05, lr_scheduler='CosineLRscheduler', milestone=[60, 120, 160], model='wideresnet28x10', momentum=0.9, nesterov=False, num_workers=8, opt='vassoremu-sgd', output_dir='logs', output_name='CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5', performance_scores_mode=False, phi=0.001, pin_memory=True, resume=False, resume_path='.', rho=0.2, seed=3107, start_epoch=0, theta=0.4, wandb=False, wandb_name='Default', wandb_project='VASSO', warmup_epoch=0, warmup_init_lr=0.0, weight_decay=0.001, zeta=1.0)
+
+Files already downloaded and verified
+Files already downloaded and verified
+2024-05-28 10:22:52 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Train Data: 50000, Test Data: 10000.
+
+2024-05-28 10:22:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Model: wideresnet28x10
+
+2024-05-28 10:22:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Optimizer: <class 'solver.vassoremu.VASSOREMU'>
+
+2024-05-28 10:22:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: LR Scheduler: <class 'solver.lr_scheduler.CosineLRscheduler'>
+
+2024-05-28 10:22:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Start training for 200 Epochs.
+
+2024-05-28 10:23:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [0/390] lr:0.050000 Train Loss:4.8094 Train Acc1:0.0000 Train Acc5:2.3438 Time:0.646s
+
+2024-05-28 10:23:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [10/390] lr:0.050000 Train Loss:4.7992 Train Acc1:0.7812 Train Acc5:4.0483 Time:0.532s
+
+2024-05-28 10:23:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [20/390] lr:0.050000 Train Loss:4.8210 Train Acc1:0.7440 Train Acc5:4.0179 Time:0.531s
+
+2024-05-28 10:23:16 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [30/390] lr:0.050000 Train Loss:4.8052 Train Acc1:0.8821 Train Acc5:4.5615 Time:0.532s
+
+2024-05-28 10:23:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [40/390] lr:0.050000 Train Loss:4.7866 Train Acc1:0.8956 Train Acc5:4.8018 Time:0.534s
+
+2024-05-28 10:23:27 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [50/390] lr:0.050000 Train Loss:4.7572 Train Acc1:1.0723 Train Acc5:5.0858 Time:0.534s
+
+2024-05-28 10:23:32 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [60/390] lr:0.050000 Train Loss:4.7266 Train Acc1:1.2423 Train Acc5:5.6096 Time:0.534s
+
+2024-05-28 10:23:37 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [70/390] lr:0.050000 Train Loss:4.6909 Train Acc1:1.3754 Train Acc5:6.3820 Time:0.533s
+
+2024-05-28 10:23:43 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [80/390] lr:0.050000 Train Loss:4.6643 Train Acc1:1.5336 Train Acc5:7.0120 Time:0.534s
+
+2024-05-28 10:23:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [90/390] lr:0.050000 Train Loss:4.6363 Train Acc1:1.7256 Train Acc5:7.7438 Time:0.535s
+
+2024-05-28 10:23:54 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [100/390] lr:0.050000 Train Loss:4.6125 Train Acc1:1.9338 Train Acc5:8.4004 Time:0.534s
+
+2024-05-28 10:23:58 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [110/390] lr:0.050000 Train Loss:4.5898 Train Acc1:2.0763 Train Acc5:8.9316 Time:0.535s
+
+2024-05-28 10:24:02 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [120/390] lr:0.050000 Train Loss:4.5654 Train Acc1:2.2146 Train Acc5:9.4912 Time:0.273s
+
+2024-05-28 10:24:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [130/390] lr:0.050000 Train Loss:4.5472 Train Acc1:2.3438 Train Acc5:9.9594 Time:0.274s
+
+2024-05-28 10:24:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [140/390] lr:0.050000 Train Loss:4.5272 Train Acc1:2.4878 Train Acc5:10.5219 Time:0.280s
+
+2024-05-28 10:24:14 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [150/390] lr:0.050000 Train Loss:4.5081 Train Acc1:2.6438 Train Acc5:11.0979 Time:0.538s
+
+2024-05-28 10:24:18 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [160/390] lr:0.050000 Train Loss:4.4908 Train Acc1:2.7028 Train Acc5:11.6168 Time:0.278s
+
+2024-05-28 10:24:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [170/390] lr:0.050000 Train Loss:4.4730 Train Acc1:2.8189 Train Acc5:12.0751 Time:0.273s
+
+2024-05-28 10:24:26 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [180/390] lr:0.050000 Train Loss:4.4572 Train Acc1:2.9394 Train Acc5:12.5129 Time:0.274s
+
+2024-05-28 10:24:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [190/390] lr:0.050000 Train Loss:4.4431 Train Acc1:3.0718 Train Acc5:12.9663 Time:0.273s
+
+2024-05-28 10:24:35 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [200/390] lr:0.050000 Train Loss:4.4312 Train Acc1:3.1833 Train Acc5:13.2113 Time:0.537s
+
+2024-05-28 10:24:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [210/390] lr:0.050000 Train Loss:4.4174 Train Acc1:3.3138 Train Acc5:13.6626 Time:0.537s
+
+2024-05-28 10:24:44 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [220/390] lr:0.050000 Train Loss:4.4066 Train Acc1:3.3901 Train Acc5:13.9176 Time:0.537s
+
+2024-05-28 10:24:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [230/390] lr:0.050000 Train Loss:4.3961 Train Acc1:3.4361 Train Acc5:14.1673 Time:0.537s
+
+2024-05-28 10:24:52 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [240/390] lr:0.050000 Train Loss:4.3830 Train Acc1:3.5302 Train Acc5:14.5488 Time:0.273s
+
+2024-05-28 10:24:56 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [250/390] lr:0.050000 Train Loss:4.3702 Train Acc1:3.5981 Train Acc5:14.8780 Time:0.274s
+
+2024-05-28 10:24:59 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [260/390] lr:0.050000 Train Loss:4.3599 Train Acc1:3.6997 Train Acc5:15.2000 Time:0.279s
+
+2024-05-28 10:25:04 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [270/390] lr:0.050000 Train Loss:4.3503 Train Acc1:3.7535 Train Acc5:15.5010 Time:0.274s
+
+2024-05-28 10:25:08 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [280/390] lr:0.050000 Train Loss:4.3387 Train Acc1:3.8701 Train Acc5:15.8530 Time:0.274s
+
+2024-05-28 10:25:12 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [290/390] lr:0.050000 Train Loss:4.3273 Train Acc1:3.9626 Train Acc5:16.1754 Time:0.274s
+
+2024-05-28 10:25:16 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [300/390] lr:0.050000 Train Loss:4.3184 Train Acc1:4.0568 Train Acc5:16.4037 Time:0.538s
+
+2024-05-28 10:25:20 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [310/390] lr:0.050000 Train Loss:4.3071 Train Acc1:4.2102 Train Acc5:16.7353 Time:0.538s
+
+2024-05-28 10:25:24 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [320/390] lr:0.050000 Train Loss:4.2974 Train Acc1:4.3297 Train Acc5:17.0147 Time:0.538s
+
+2024-05-28 10:25:28 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [330/390] lr:0.050000 Train Loss:4.2873 Train Acc1:4.4326 Train Acc5:17.2984 Time:0.538s
+
+2024-05-28 10:25:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [340/390] lr:0.050000 Train Loss:4.2797 Train Acc1:4.4882 Train Acc5:17.5128 Time:0.538s
+
+2024-05-28 10:25:37 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [350/390] lr:0.050000 Train Loss:4.2721 Train Acc1:4.5584 Train Acc5:17.7506 Time:0.537s
+
+2024-05-28 10:25:40 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [360/390] lr:0.050000 Train Loss:4.2622 Train Acc1:4.6680 Train Acc5:18.0402 Time:0.275s
+
+2024-05-28 10:25:44 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [370/390] lr:0.050000 Train Loss:4.2540 Train Acc1:4.8054 Train Acc5:18.2951 Time:0.280s
+
+2024-05-28 10:25:49 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 0 [380/390] lr:0.050000 Train Loss:4.2485 Train Acc1:4.8515 Train Acc5:18.4219 Time:0.274s
+
+2024-05-28 10:26:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:0 Train Loss:4.2420 Train Acc1:4.8958 Train Acc5:18.5757 Test Loss:3.8035 Test Acc1:9.7000(Max:9.7000) Test Acc5:32.4500 Time:183.044s
+
+2024-05-28 10:26:01 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [0/390] lr:0.050000 Train Loss:3.9814 Train Acc1:6.2500 Train Acc5:23.4375 Time:0.538s
+
+2024-05-28 10:26:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [10/390] lr:0.050000 Train Loss:3.8828 Train Acc1:8.5938 Train Acc5:29.5455 Time:0.274s
+
+2024-05-28 10:26:10 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [20/390] lr:0.050000 Train Loss:3.9194 Train Acc1:8.4449 Train Acc5:28.4226 Time:0.539s
+
+2024-05-28 10:26:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [30/390] lr:0.050000 Train Loss:3.9097 Train Acc1:8.8206 Train Acc5:28.6038 Time:0.279s
+
+2024-05-28 10:26:17 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [40/390] lr:0.050000 Train Loss:3.9055 Train Acc1:8.9367 Train Acc5:29.2111 Time:0.280s
+
+2024-05-28 10:26:20 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [50/390] lr:0.050000 Train Loss:3.9105 Train Acc1:8.7929 Train Acc5:29.2892 Time:0.280s
+
+2024-05-28 10:26:24 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [60/390] lr:0.050000 Train Loss:3.9115 Train Acc1:8.7987 Train Acc5:29.2520 Time:0.538s
+
+2024-05-28 10:26:28 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [70/390] lr:0.050000 Train Loss:3.9048 Train Acc1:8.8798 Train Acc5:29.2694 Time:0.275s
+
+2024-05-28 10:26:32 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [80/390] lr:0.050000 Train Loss:3.8993 Train Acc1:8.8638 Train Acc5:29.6296 Time:0.284s
+
+2024-05-28 10:26:36 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [90/390] lr:0.050000 Train Loss:3.9041 Train Acc1:8.8341 Train Acc5:29.6274 Time:0.295s
+
+2024-05-28 10:26:41 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [100/390] lr:0.050000 Train Loss:3.8995 Train Acc1:8.8258 Train Acc5:29.7494 Time:0.538s
+
+2024-05-28 10:26:45 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [110/390] lr:0.050000 Train Loss:3.8930 Train Acc1:8.8682 Train Acc5:29.9409 Time:0.539s
+
+2024-05-28 10:26:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [120/390] lr:0.050000 Train Loss:3.8879 Train Acc1:8.9876 Train Acc5:30.1588 Time:0.539s
+
+2024-05-28 10:26:52 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [130/390] lr:0.050000 Train Loss:3.8816 Train Acc1:9.0887 Train Acc5:30.2242 Time:0.538s
+
+2024-05-28 10:26:58 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [140/390] lr:0.050000 Train Loss:3.8848 Train Acc1:9.0924 Train Acc5:30.1363 Time:0.539s
+
+2024-05-28 10:27:01 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [150/390] lr:0.050000 Train Loss:3.8776 Train Acc1:9.1836 Train Acc5:30.1738 Time:0.278s
+
+2024-05-28 10:27:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [160/390] lr:0.050000 Train Loss:3.8758 Train Acc1:9.1809 Train Acc5:30.2455 Time:0.539s
+
+2024-05-28 10:27:10 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [170/390] lr:0.050000 Train Loss:3.8740 Train Acc1:9.1831 Train Acc5:30.3500 Time:0.538s
+
+2024-05-28 10:27:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [180/390] lr:0.050000 Train Loss:3.8671 Train Acc1:9.2067 Train Acc5:30.5162 Time:0.275s
+
+2024-05-28 10:27:18 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [190/390] lr:0.050000 Train Loss:3.8637 Train Acc1:9.2564 Train Acc5:30.6896 Time:0.277s
+
+2024-05-28 10:27:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [200/390] lr:0.050000 Train Loss:3.8575 Train Acc1:9.3828 Train Acc5:30.9157 Time:0.539s
+
+2024-05-28 10:27:27 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [210/390] lr:0.050000 Train Loss:3.8548 Train Acc1:9.4342 Train Acc5:30.9612 Time:0.539s
+
+2024-05-28 10:27:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [220/390] lr:0.050000 Train Loss:3.8501 Train Acc1:9.5305 Train Acc5:31.1086 Time:0.539s
+
+2024-05-28 10:27:34 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [230/390] lr:0.050000 Train Loss:3.8440 Train Acc1:9.5982 Train Acc5:31.2466 Time:0.539s
+
+2024-05-28 10:27:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [240/390] lr:0.050000 Train Loss:3.8375 Train Acc1:9.6570 Train Acc5:31.4931 Time:0.539s
+
+2024-05-28 10:27:43 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [250/390] lr:0.050000 Train Loss:3.8339 Train Acc1:9.6863 Train Acc5:31.6048 Time:0.539s
+
+2024-05-28 10:27:47 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [260/390] lr:0.050000 Train Loss:3.8291 Train Acc1:9.7432 Train Acc5:31.7379 Time:0.539s
+
+2024-05-28 10:27:52 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [270/390] lr:0.050000 Train Loss:3.8249 Train Acc1:9.8420 Train Acc5:31.8986 Time:0.276s
+
+2024-05-28 10:27:56 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [280/390] lr:0.050000 Train Loss:3.8206 Train Acc1:9.9005 Train Acc5:32.0507 Time:0.539s
+
+2024-05-28 10:28:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [290/390] lr:0.050000 Train Loss:3.8165 Train Acc1:9.9495 Train Acc5:32.2031 Time:0.275s
+
+2024-05-28 10:28:04 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [300/390] lr:0.050000 Train Loss:3.8112 Train Acc1:9.9901 Train Acc5:32.3375 Time:0.275s
+
+2024-05-28 10:28:08 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [310/390] lr:0.050000 Train Loss:3.8072 Train Acc1:10.0407 Train Acc5:32.4256 Time:0.540s
+
+2024-05-28 10:28:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [320/390] lr:0.050000 Train Loss:3.8038 Train Acc1:10.0735 Train Acc5:32.5375 Time:0.280s
+
+2024-05-28 10:28:17 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [330/390] lr:0.050000 Train Loss:3.7993 Train Acc1:10.1728 Train Acc5:32.6850 Time:0.278s
+
+2024-05-28 10:28:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [340/390] lr:0.050000 Train Loss:3.7959 Train Acc1:10.2273 Train Acc5:32.8079 Time:0.539s
+
+2024-05-28 10:28:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [350/390] lr:0.050000 Train Loss:3.7916 Train Acc1:10.2764 Train Acc5:32.9371 Time:0.279s
+
+2024-05-28 10:28:29 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [360/390] lr:0.050000 Train Loss:3.7867 Train Acc1:10.3553 Train Acc5:33.0484 Time:0.275s
+
+2024-05-28 10:28:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [370/390] lr:0.050000 Train Loss:3.7835 Train Acc1:10.4405 Train Acc5:33.1579 Time:0.538s
+
+2024-05-28 10:28:37 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 1 [380/390] lr:0.050000 Train Loss:3.7785 Train Acc1:10.5294 Train Acc5:33.3456 Time:0.538s
+
+2024-05-28 10:28:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:1 Train Loss:3.7747 Train Acc1:10.6030 Train Acc5:33.4615 Test Loss:3.5456 Test Acc1:15.1200(Max:15.1200) Test Acc5:41.1000 Time:168.282s
+
+2024-05-28 10:28:49 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [0/390] lr:0.049997 Train Loss:3.7253 Train Acc1:16.4062 Train Acc5:38.2812 Time:0.277s
+
+2024-05-28 10:28:53 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [10/390] lr:0.049997 Train Loss:3.6088 Train Acc1:14.1335 Train Acc5:38.6364 Time:0.275s
+
+2024-05-28 10:28:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [20/390] lr:0.049997 Train Loss:3.5917 Train Acc1:14.0253 Train Acc5:39.9182 Time:0.274s
+
+2024-05-28 10:29:01 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [30/390] lr:0.049997 Train Loss:3.6016 Train Acc1:13.4577 Train Acc5:39.7681 Time:0.276s
+
+2024-05-28 10:29:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [40/390] lr:0.049997 Train Loss:3.6016 Train Acc1:13.3956 Train Acc5:39.3293 Time:0.279s
+
+2024-05-28 10:29:10 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [50/390] lr:0.049997 Train Loss:3.5988 Train Acc1:13.4957 Train Acc5:39.3536 Time:0.275s
+
+2024-05-28 10:29:14 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [60/390] lr:0.049997 Train Loss:3.5870 Train Acc1:13.7039 Train Acc5:39.8694 Time:0.274s
+
+2024-05-28 10:29:18 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [70/390] lr:0.049997 Train Loss:3.5855 Train Acc1:13.7214 Train Acc5:39.9868 Time:0.539s
+
+2024-05-28 10:29:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [80/390] lr:0.049997 Train Loss:3.5813 Train Acc1:13.8407 Train Acc5:39.8920 Time:0.280s
+
+2024-05-28 10:29:26 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [90/390] lr:0.049997 Train Loss:3.5803 Train Acc1:13.9509 Train Acc5:39.9382 Time:0.540s
+
+2024-05-28 10:29:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [100/390] lr:0.049997 Train Loss:3.5787 Train Acc1:14.1399 Train Acc5:39.9366 Time:0.275s
+
+2024-05-28 10:29:35 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [110/390] lr:0.049997 Train Loss:3.5728 Train Acc1:14.3511 Train Acc5:40.1675 Time:0.540s
+
+2024-05-28 10:29:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [120/390] lr:0.049997 Train Loss:3.5641 Train Acc1:14.5403 Train Acc5:40.4184 Time:0.540s
+
+2024-05-28 10:29:43 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [130/390] lr:0.049997 Train Loss:3.5606 Train Acc1:14.6171 Train Acc5:40.5236 Time:0.539s
+
+2024-05-28 10:29:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [140/390] lr:0.049997 Train Loss:3.5604 Train Acc1:14.5279 Train Acc5:40.5086 Time:0.539s
+
+2024-05-28 10:29:52 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [150/390] lr:0.049997 Train Loss:3.5613 Train Acc1:14.4816 Train Acc5:40.4801 Time:0.275s
+
+2024-05-28 10:29:56 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [160/390] lr:0.049997 Train Loss:3.5543 Train Acc1:14.6205 Train Acc5:40.7269 Time:0.280s
+
+2024-05-28 10:30:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [170/390] lr:0.049997 Train Loss:3.5496 Train Acc1:14.7981 Train Acc5:40.8900 Time:0.276s
+
+2024-05-28 10:30:04 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [180/390] lr:0.049997 Train Loss:3.5443 Train Acc1:14.9776 Train Acc5:41.1084 Time:0.275s
+
+2024-05-28 10:30:09 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [190/390] lr:0.049997 Train Loss:3.5365 Train Acc1:15.0605 Train Acc5:41.2795 Time:0.540s
+
+2024-05-28 10:30:12 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [200/390] lr:0.049997 Train Loss:3.5325 Train Acc1:15.0575 Train Acc5:41.3441 Time:0.539s
+
+2024-05-28 10:30:16 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [210/390] lr:0.049997 Train Loss:3.5267 Train Acc1:15.2140 Train Acc5:41.5432 Time:0.279s
+
+2024-05-28 10:30:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [220/390] lr:0.049997 Train Loss:3.5227 Train Acc1:15.2432 Train Acc5:41.6926 Time:0.540s
+
+2024-05-28 10:30:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [230/390] lr:0.049997 Train Loss:3.5169 Train Acc1:15.3139 Train Acc5:41.8189 Time:0.279s
+
+2024-05-28 10:30:30 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [240/390] lr:0.049997 Train Loss:3.5113 Train Acc1:15.3592 Train Acc5:42.0449 Time:0.539s
+
+2024-05-28 10:30:34 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [250/390] lr:0.049997 Train Loss:3.5046 Train Acc1:15.4787 Train Acc5:42.2404 Time:0.539s
+
+2024-05-28 10:30:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [260/390] lr:0.049997 Train Loss:3.5012 Train Acc1:15.4783 Train Acc5:42.3042 Time:0.557s
+
+2024-05-28 10:30:43 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [270/390] lr:0.049997 Train Loss:3.4995 Train Acc1:15.5010 Train Acc5:42.3634 Time:0.539s
+
+2024-05-28 10:30:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [280/390] lr:0.049997 Train Loss:3.4930 Train Acc1:15.6194 Train Acc5:42.5851 Time:0.539s
+
+2024-05-28 10:30:50 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [290/390] lr:0.049997 Train Loss:3.4898 Train Acc1:15.6894 Train Acc5:42.6546 Time:0.540s
+
+2024-05-28 10:30:54 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [300/390] lr:0.049997 Train Loss:3.4845 Train Acc1:15.7522 Train Acc5:42.7663 Time:0.275s
+
+2024-05-28 10:30:58 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [310/390] lr:0.049997 Train Loss:3.4800 Train Acc1:15.8109 Train Acc5:42.8708 Time:0.276s
+
+2024-05-28 10:31:02 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [320/390] lr:0.049997 Train Loss:3.4759 Train Acc1:15.8952 Train Acc5:43.0028 Time:0.539s
+
+2024-05-28 10:31:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [330/390] lr:0.049997 Train Loss:3.4731 Train Acc1:15.9507 Train Acc5:43.0750 Time:0.539s
+
+2024-05-28 10:31:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [340/390] lr:0.049997 Train Loss:3.4703 Train Acc1:15.9618 Train Acc5:43.1154 Time:0.539s
+
+2024-05-28 10:31:15 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [350/390] lr:0.049997 Train Loss:3.4671 Train Acc1:16.0390 Train Acc5:43.2648 Time:0.539s
+
+2024-05-28 10:31:19 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [360/390] lr:0.049997 Train Loss:3.4639 Train Acc1:16.1119 Train Acc5:43.3345 Time:0.275s
+
+2024-05-28 10:31:23 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [370/390] lr:0.049997 Train Loss:3.4608 Train Acc1:16.1915 Train Acc5:43.4320 Time:0.540s
+
+2024-05-28 10:31:27 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 2 [380/390] lr:0.049997 Train Loss:3.4554 Train Acc1:16.2668 Train Acc5:43.5839 Time:0.275s
+
+2024-05-28 10:31:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:2 Train Loss:3.4535 Train Acc1:16.3061 Train Acc5:43.6278 Test Loss:3.2774 Test Acc1:19.6100(Max:19.6100) Test Acc5:48.4300 Time:170.390s
+
+2024-05-28 10:31:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [0/390] lr:0.049988 Train Loss:3.1740 Train Acc1:23.4375 Train Acc5:53.1250 Time:0.290s
+
+2024-05-28 10:31:44 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [10/390] lr:0.049988 Train Loss:3.3027 Train Acc1:19.2472 Train Acc5:48.5085 Time:0.546s
+
+2024-05-28 10:31:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [20/390] lr:0.049988 Train Loss:3.2820 Train Acc1:19.6057 Train Acc5:48.8467 Time:0.558s
+
+2024-05-28 10:31:53 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [30/390] lr:0.049988 Train Loss:3.2804 Train Acc1:19.4556 Train Acc5:48.7651 Time:0.280s
+
+2024-05-28 10:31:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [40/390] lr:0.049988 Train Loss:3.2677 Train Acc1:19.7027 Train Acc5:48.8186 Time:0.540s
+
+2024-05-28 10:32:01 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [50/390] lr:0.049988 Train Loss:3.2571 Train Acc1:20.0214 Train Acc5:49.2800 Time:0.539s
+
+2024-05-28 10:32:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [60/390] lr:0.049988 Train Loss:3.2559 Train Acc1:19.8258 Train Acc5:49.2572 Time:0.276s
+
+2024-05-28 10:32:10 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [70/390] lr:0.049988 Train Loss:3.2504 Train Acc1:20.0044 Train Acc5:49.2077 Time:0.539s
+
+2024-05-28 10:32:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [80/390] lr:0.049988 Train Loss:3.2449 Train Acc1:19.9749 Train Acc5:49.4406 Time:0.539s
+
+2024-05-28 10:32:17 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [90/390] lr:0.049988 Train Loss:3.2388 Train Acc1:20.1666 Train Acc5:49.6223 Time:0.275s
+
+2024-05-28 10:32:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [100/390] lr:0.049988 Train Loss:3.2375 Train Acc1:20.2893 Train Acc5:49.6287 Time:0.539s
+
+2024-05-28 10:32:26 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [110/390] lr:0.049988 Train Loss:3.2408 Train Acc1:20.2703 Train Acc5:49.4229 Time:0.539s
+
+2024-05-28 10:32:30 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [120/390] lr:0.049988 Train Loss:3.2369 Train Acc1:20.4158 Train Acc5:49.5932 Time:0.540s
+
+2024-05-28 10:32:34 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [130/390] lr:0.049988 Train Loss:3.2291 Train Acc1:20.6763 Train Acc5:49.6899 Time:0.276s
+
+2024-05-28 10:32:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [140/390] lr:0.049988 Train Loss:3.2203 Train Acc1:20.7945 Train Acc5:49.8504 Time:0.540s
+
+2024-05-28 10:32:42 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [150/390] lr:0.049988 Train Loss:3.2173 Train Acc1:20.9178 Train Acc5:49.8913 Time:0.539s
+
+2024-05-28 10:32:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [160/390] lr:0.049988 Train Loss:3.2090 Train Acc1:21.0452 Train Acc5:50.1359 Time:0.274s
+
+2024-05-28 10:32:49 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [170/390] lr:0.049988 Train Loss:3.2045 Train Acc1:21.1166 Train Acc5:50.2513 Time:0.278s
+
+2024-05-28 10:32:53 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [180/390] lr:0.049988 Train Loss:3.1993 Train Acc1:21.1412 Train Acc5:50.4144 Time:0.540s
+
+2024-05-28 10:32:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [190/390] lr:0.049988 Train Loss:3.1911 Train Acc1:21.2533 Train Acc5:50.6217 Time:0.276s
+
+2024-05-28 10:33:01 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [200/390] lr:0.049988 Train Loss:3.1895 Train Acc1:21.1987 Train Acc5:50.6685 Time:0.541s
+
+2024-05-28 10:33:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [210/390] lr:0.049988 Train Loss:3.1863 Train Acc1:21.2715 Train Acc5:50.7183 Time:0.539s
+
+2024-05-28 10:33:10 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [220/390] lr:0.049988 Train Loss:3.1884 Train Acc1:21.2352 Train Acc5:50.7494 Time:0.540s
+
+2024-05-28 10:33:14 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [230/390] lr:0.049988 Train Loss:3.1826 Train Acc1:21.3170 Train Acc5:50.8692 Time:0.280s
+
+2024-05-28 10:33:18 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [240/390] lr:0.049988 Train Loss:3.1778 Train Acc1:21.3887 Train Acc5:51.0114 Time:0.540s
+
+2024-05-28 10:33:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [250/390] lr:0.049988 Train Loss:3.1717 Train Acc1:21.4361 Train Acc5:51.1423 Time:0.539s
+
+2024-05-28 10:33:26 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [260/390] lr:0.049988 Train Loss:3.1664 Train Acc1:21.5787 Train Acc5:51.2751 Time:0.275s
+
+2024-05-28 10:33:29 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [270/390] lr:0.049988 Train Loss:3.1603 Train Acc1:21.7309 Train Acc5:51.4530 Time:0.540s
+
+2024-05-28 10:33:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [280/390] lr:0.049988 Train Loss:3.1558 Train Acc1:21.7916 Train Acc5:51.5986 Time:0.539s
+
+2024-05-28 10:33:37 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [290/390] lr:0.049988 Train Loss:3.1529 Train Acc1:21.7998 Train Acc5:51.6404 Time:0.539s
+
+2024-05-28 10:33:42 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [300/390] lr:0.049988 Train Loss:3.1477 Train Acc1:21.8828 Train Acc5:51.8350 Time:0.540s
+
+2024-05-28 10:33:45 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [310/390] lr:0.049988 Train Loss:3.1430 Train Acc1:21.9805 Train Acc5:51.9619 Time:0.540s
+
+2024-05-28 10:33:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [320/390] lr:0.049988 Train Loss:3.1376 Train Acc1:22.0527 Train Acc5:52.1028 Time:0.276s
+
+2024-05-28 10:33:52 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [330/390] lr:0.049988 Train Loss:3.1314 Train Acc1:22.1370 Train Acc5:52.2682 Time:0.275s
+
+2024-05-28 10:33:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [340/390] lr:0.049988 Train Loss:3.1278 Train Acc1:22.1889 Train Acc5:52.3621 Time:0.275s
+
+2024-05-28 10:34:01 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [350/390] lr:0.049988 Train Loss:3.1231 Train Acc1:22.2868 Train Acc5:52.4929 Time:0.275s
+
+2024-05-28 10:34:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [360/390] lr:0.049988 Train Loss:3.1203 Train Acc1:22.3078 Train Acc5:52.5493 Time:0.541s
+
+2024-05-28 10:34:09 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [370/390] lr:0.049988 Train Loss:3.1189 Train Acc1:22.2919 Train Acc5:52.5880 Time:0.275s
+
+2024-05-28 10:34:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 3 [380/390] lr:0.049988 Train Loss:3.1154 Train Acc1:22.3712 Train Acc5:52.6677 Time:0.275s
+
+2024-05-28 10:34:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:3 Train Loss:3.1128 Train Acc1:22.4419 Train Acc5:52.7143 Test Loss:2.8696 Test Acc1:27.1200(Max:27.1200) Test Acc5:57.9300 Time:166.051s
+
+2024-05-28 10:34:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [0/390] lr:0.049972 Train Loss:2.6810 Train Acc1:32.0312 Train Acc5:62.5000 Time:0.282s
+
+2024-05-28 10:34:29 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [10/390] lr:0.049972 Train Loss:2.8976 Train Acc1:26.2784 Train Acc5:58.0256 Time:0.275s
+
+2024-05-28 10:34:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [20/390] lr:0.049972 Train Loss:2.9388 Train Acc1:24.8884 Train Acc5:56.6220 Time:0.539s
+
+2024-05-28 10:34:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [30/390] lr:0.049972 Train Loss:2.9384 Train Acc1:24.6220 Train Acc5:56.8044 Time:0.541s
+
+2024-05-28 10:34:42 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [40/390] lr:0.049972 Train Loss:2.9379 Train Acc1:24.9619 Train Acc5:56.8216 Time:0.274s
+
+2024-05-28 10:34:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [50/390] lr:0.049972 Train Loss:2.9204 Train Acc1:25.7659 Train Acc5:57.3223 Time:0.275s
+
+2024-05-28 10:34:50 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [60/390] lr:0.049972 Train Loss:2.9109 Train Acc1:26.2551 Train Acc5:57.7228 Time:0.277s
+
+2024-05-28 10:34:54 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [70/390] lr:0.049972 Train Loss:2.8956 Train Acc1:26.3534 Train Acc5:58.2306 Time:0.539s
+
+2024-05-28 10:34:59 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [80/390] lr:0.049972 Train Loss:2.9056 Train Acc1:26.1381 Train Acc5:58.0536 Time:0.539s
+
+2024-05-28 10:35:03 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [90/390] lr:0.049972 Train Loss:2.9084 Train Acc1:26.1418 Train Acc5:57.9155 Time:0.540s
+
+2024-05-28 10:35:07 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [100/390] lr:0.049972 Train Loss:2.9037 Train Acc1:26.2531 Train Acc5:57.9981 Time:0.275s
+
+2024-05-28 10:35:10 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [110/390] lr:0.049972 Train Loss:2.8981 Train Acc1:26.2880 Train Acc5:58.1503 Time:0.277s
+
+2024-05-28 10:35:14 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [120/390] lr:0.049972 Train Loss:2.8912 Train Acc1:26.4398 Train Acc5:58.4065 Time:0.539s
+
+2024-05-28 10:35:18 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [130/390] lr:0.049972 Train Loss:2.8886 Train Acc1:26.4194 Train Acc5:58.4625 Time:0.275s
+
+2024-05-28 10:35:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [140/390] lr:0.049972 Train Loss:2.8817 Train Acc1:26.4240 Train Acc5:58.6824 Time:0.276s
+
+2024-05-28 10:35:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [150/390] lr:0.049972 Train Loss:2.8717 Train Acc1:26.6142 Train Acc5:58.8162 Time:0.274s
+
+2024-05-28 10:35:29 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [160/390] lr:0.049972 Train Loss:2.8694 Train Acc1:26.6935 Train Acc5:58.8849 Time:0.275s
+
+2024-05-28 10:35:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [170/390] lr:0.049972 Train Loss:2.8693 Train Acc1:26.7041 Train Acc5:58.8313 Time:0.275s
+
+2024-05-28 10:35:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [180/390] lr:0.049972 Train Loss:2.8683 Train Acc1:26.7308 Train Acc5:58.8916 Time:0.539s
+
+2024-05-28 10:35:41 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [190/390] lr:0.049972 Train Loss:2.8571 Train Acc1:26.9347 Train Acc5:59.2727 Time:0.275s
+
+2024-05-28 10:35:45 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [200/390] lr:0.049972 Train Loss:2.8516 Train Acc1:27.1028 Train Acc5:59.4644 Time:0.540s
+
+2024-05-28 10:35:49 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [210/390] lr:0.049972 Train Loss:2.8436 Train Acc1:27.2697 Train Acc5:59.6786 Time:0.276s
+
+2024-05-28 10:35:54 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [220/390] lr:0.049972 Train Loss:2.8420 Train Acc1:27.3155 Train Acc5:59.6543 Time:0.276s
+
+2024-05-28 10:35:59 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [230/390] lr:0.049972 Train Loss:2.8414 Train Acc1:27.3370 Train Acc5:59.6456 Time:0.540s
+
+2024-05-28 10:36:03 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [240/390] lr:0.049972 Train Loss:2.8383 Train Acc1:27.3924 Train Acc5:59.6894 Time:0.540s
+
+2024-05-28 10:36:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [250/390] lr:0.049972 Train Loss:2.8310 Train Acc1:27.5181 Train Acc5:59.9228 Time:0.275s
+
+2024-05-28 10:36:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [260/390] lr:0.049972 Train Loss:2.8283 Train Acc1:27.5563 Train Acc5:59.9826 Time:0.275s
+
+2024-05-28 10:36:14 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [270/390] lr:0.049972 Train Loss:2.8225 Train Acc1:27.6839 Train Acc5:60.1591 Time:0.276s
+
+2024-05-28 10:36:18 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [280/390] lr:0.049972 Train Loss:2.8199 Train Acc1:27.7219 Train Acc5:60.2591 Time:0.275s
+
+2024-05-28 10:36:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [290/390] lr:0.049972 Train Loss:2.8186 Train Acc1:27.7626 Train Acc5:60.3334 Time:0.540s
+
+2024-05-28 10:36:26 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [300/390] lr:0.049972 Train Loss:2.8133 Train Acc1:27.8343 Train Acc5:60.4573 Time:0.540s
+
+2024-05-28 10:36:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [310/390] lr:0.049972 Train Loss:2.8132 Train Acc1:27.8763 Train Acc5:60.4301 Time:0.275s
+
+2024-05-28 10:36:35 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [320/390] lr:0.049972 Train Loss:2.8115 Train Acc1:27.9230 Train Acc5:60.4824 Time:0.276s
+
+2024-05-28 10:36:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [330/390] lr:0.049972 Train Loss:2.8104 Train Acc1:27.9267 Train Acc5:60.4961 Time:0.275s
+
+2024-05-28 10:36:43 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [340/390] lr:0.049972 Train Loss:2.8075 Train Acc1:27.9692 Train Acc5:60.5320 Time:0.275s
+
+2024-05-28 10:36:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [350/390] lr:0.049972 Train Loss:2.7994 Train Acc1:28.0849 Train Acc5:60.7127 Time:0.276s
+
+2024-05-28 10:36:51 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [360/390] lr:0.049972 Train Loss:2.7970 Train Acc1:28.1769 Train Acc5:60.7730 Time:0.540s
+
+2024-05-28 10:36:55 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [370/390] lr:0.049972 Train Loss:2.7969 Train Acc1:28.1903 Train Acc5:60.7248 Time:0.540s
+
+2024-05-28 10:37:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 4 [380/390] lr:0.049972 Train Loss:2.7945 Train Acc1:28.2542 Train Acc5:60.7509 Time:0.275s
+
+2024-05-28 10:37:12 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:4 Train Loss:2.7919 Train Acc1:28.3253 Train Acc5:60.8073 Test Loss:2.4287 Test Acc1:35.0100(Max:35.0100) Test Acc5:68.3600 Time:167.180s
+
+2024-05-28 10:37:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [0/390] lr:0.049951 Train Loss:2.8453 Train Acc1:28.9062 Train Acc5:57.8125 Time:0.539s
+
+2024-05-28 10:37:17 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [10/390] lr:0.049951 Train Loss:2.6749 Train Acc1:31.2500 Train Acc5:63.2812 Time:0.275s
+
+2024-05-28 10:37:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [20/390] lr:0.049951 Train Loss:2.6491 Train Acc1:30.6548 Train Acc5:64.6949 Time:0.275s
+
+2024-05-28 10:37:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [30/390] lr:0.049951 Train Loss:2.6362 Train Acc1:31.0232 Train Acc5:64.8942 Time:0.275s
+
+2024-05-28 10:37:29 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [40/390] lr:0.049951 Train Loss:2.6099 Train Acc1:31.5930 Train Acc5:65.6059 Time:0.275s
+
+2024-05-28 10:37:34 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [50/390] lr:0.049951 Train Loss:2.6167 Train Acc1:31.5104 Train Acc5:65.3799 Time:0.275s
+
+2024-05-28 10:37:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [60/390] lr:0.049951 Train Loss:2.6200 Train Acc1:31.2500 Train Acc5:65.0487 Time:0.540s
+
+2024-05-28 10:37:42 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [70/390] lr:0.049951 Train Loss:2.6228 Train Acc1:31.5141 Train Acc5:64.8878 Time:0.540s
+
+2024-05-28 10:37:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [80/390] lr:0.049951 Train Loss:2.6103 Train Acc1:31.7515 Train Acc5:65.3164 Time:0.540s
+
+2024-05-28 10:37:50 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [90/390] lr:0.049951 Train Loss:2.6009 Train Acc1:32.0999 Train Acc5:65.3760 Time:0.540s
+
+2024-05-28 10:37:54 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [100/390] lr:0.049951 Train Loss:2.5902 Train Acc1:32.4567 Train Acc5:65.7024 Time:0.540s
+
+2024-05-28 10:37:58 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [110/390] lr:0.049951 Train Loss:2.5734 Train Acc1:32.7773 Train Acc5:66.0121 Time:0.276s
+
+2024-05-28 10:38:02 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [120/390] lr:0.049951 Train Loss:2.5713 Train Acc1:32.7608 Train Acc5:66.1415 Time:0.280s
+
+2024-05-28 10:38:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [130/390] lr:0.049951 Train Loss:2.5639 Train Acc1:32.8602 Train Acc5:66.4301 Time:0.540s
+
+2024-05-28 10:38:08 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [140/390] lr:0.049951 Train Loss:2.5553 Train Acc1:33.1560 Train Acc5:66.7221 Time:0.276s
+
+2024-05-28 10:38:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [150/390] lr:0.049951 Train Loss:2.5536 Train Acc1:33.2005 Train Acc5:66.7322 Time:0.539s
+
+2024-05-28 10:38:17 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [160/390] lr:0.049951 Train Loss:2.5554 Train Acc1:33.2638 Train Acc5:66.7217 Time:0.278s
+
+2024-05-28 10:38:20 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [170/390] lr:0.049951 Train Loss:2.5565 Train Acc1:33.3242 Train Acc5:66.7580 Time:0.539s
+
+2024-05-28 10:38:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [180/390] lr:0.049951 Train Loss:2.5570 Train Acc1:33.3002 Train Acc5:66.6739 Time:0.540s
+
+2024-05-28 10:38:29 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [190/390] lr:0.049951 Train Loss:2.5492 Train Acc1:33.3933 Train Acc5:66.8316 Time:0.275s
+
+2024-05-28 10:38:32 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [200/390] lr:0.049951 Train Loss:2.5442 Train Acc1:33.5393 Train Acc5:66.9115 Time:0.276s
+
+2024-05-28 10:38:36 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [210/390] lr:0.049951 Train Loss:2.5426 Train Acc1:33.5456 Train Acc5:66.9987 Time:0.276s
+
+2024-05-28 10:38:41 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [220/390] lr:0.049951 Train Loss:2.5392 Train Acc1:33.6326 Train Acc5:67.0178 Time:0.539s
+
+2024-05-28 10:38:45 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [230/390] lr:0.049951 Train Loss:2.5368 Train Acc1:33.5904 Train Acc5:67.1435 Time:0.275s
+
+2024-05-28 10:38:49 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [240/390] lr:0.049951 Train Loss:2.5344 Train Acc1:33.6586 Train Acc5:67.1680 Time:0.540s
+
+2024-05-28 10:38:53 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [250/390] lr:0.049951 Train Loss:2.5349 Train Acc1:33.6124 Train Acc5:67.1657 Time:0.279s
+
+2024-05-28 10:38:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [260/390] lr:0.049951 Train Loss:2.5346 Train Acc1:33.6297 Train Acc5:67.1815 Time:0.540s
+
+2024-05-28 10:39:01 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [270/390] lr:0.049951 Train Loss:2.5320 Train Acc1:33.7321 Train Acc5:67.2394 Time:0.539s
+
+2024-05-28 10:39:04 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [280/390] lr:0.049951 Train Loss:2.5251 Train Acc1:33.9024 Train Acc5:67.3988 Time:0.276s
+
+2024-05-28 10:39:08 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [290/390] lr:0.049951 Train Loss:2.5224 Train Acc1:33.9320 Train Acc5:67.4721 Time:0.540s
+
+2024-05-28 10:39:12 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [300/390] lr:0.049951 Train Loss:2.5188 Train Acc1:33.9909 Train Acc5:67.4808 Time:0.275s
+
+2024-05-28 10:39:17 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [310/390] lr:0.049951 Train Loss:2.5207 Train Acc1:33.9605 Train Acc5:67.4111 Time:0.540s
+
+2024-05-28 10:39:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [320/390] lr:0.049951 Train Loss:2.5186 Train Acc1:33.9783 Train Acc5:67.4382 Time:0.540s
+
+2024-05-28 10:39:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [330/390] lr:0.049951 Train Loss:2.5135 Train Acc1:34.0587 Train Acc5:67.5557 Time:0.275s
+
+2024-05-28 10:39:30 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [340/390] lr:0.049951 Train Loss:2.5112 Train Acc1:34.0772 Train Acc5:67.6182 Time:0.276s
+
+2024-05-28 10:39:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [350/390] lr:0.049951 Train Loss:2.5096 Train Acc1:34.0990 Train Acc5:67.6616 Time:0.540s
+
+2024-05-28 10:39:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [360/390] lr:0.049951 Train Loss:2.5085 Train Acc1:34.1369 Train Acc5:67.6917 Time:0.540s
+
+2024-05-28 10:39:42 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [370/390] lr:0.049951 Train Loss:2.5055 Train Acc1:34.2086 Train Acc5:67.7455 Time:0.275s
+
+2024-05-28 10:39:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 5 [380/390] lr:0.049951 Train Loss:2.5022 Train Acc1:34.2868 Train Acc5:67.8560 Time:0.275s
+
+2024-05-28 10:39:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:5 Train Loss:2.4998 Train Acc1:34.3029 Train Acc5:67.9407 Test Loss:2.3773 Test Acc1:35.7800(Max:35.7800) Test Acc5:70.3600 Time:165.357s
+
+2024-05-28 10:39:58 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [0/390] lr:0.049923 Train Loss:2.4104 Train Acc1:32.0312 Train Acc5:70.3125 Time:0.540s
+
+2024-05-28 10:40:03 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [10/390] lr:0.049923 Train Loss:2.4006 Train Acc1:36.0795 Train Acc5:70.2415 Time:0.559s
+
+2024-05-28 10:40:07 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [20/390] lr:0.049923 Train Loss:2.4046 Train Acc1:36.5327 Train Acc5:69.8661 Time:0.540s
+
+2024-05-28 10:40:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [30/390] lr:0.049923 Train Loss:2.3755 Train Acc1:37.0716 Train Acc5:70.2117 Time:0.540s
+
+2024-05-28 10:40:15 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [40/390] lr:0.049923 Train Loss:2.3804 Train Acc1:36.9284 Train Acc5:70.1220 Time:0.276s
+
+2024-05-28 10:40:19 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [50/390] lr:0.049923 Train Loss:2.3759 Train Acc1:37.0098 Train Acc5:70.2665 Time:0.539s
+
+2024-05-28 10:40:23 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [60/390] lr:0.049923 Train Loss:2.3631 Train Acc1:37.0774 Train Acc5:70.8888 Time:0.540s
+
+2024-05-28 10:40:27 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [70/390] lr:0.049923 Train Loss:2.3578 Train Acc1:37.2359 Train Acc5:70.9067 Time:0.281s
+
+2024-05-28 10:40:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [80/390] lr:0.049923 Train Loss:2.3422 Train Acc1:37.7508 Train Acc5:71.2963 Time:0.540s
+
+2024-05-28 10:40:36 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [90/390] lr:0.049923 Train Loss:2.3475 Train Acc1:37.5859 Train Acc5:71.3084 Time:0.541s
+
+2024-05-28 10:40:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [100/390] lr:0.049923 Train Loss:2.3500 Train Acc1:37.5387 Train Acc5:71.2020 Time:0.540s
+
+2024-05-28 10:40:44 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [110/390] lr:0.049923 Train Loss:2.3473 Train Acc1:37.6830 Train Acc5:71.2204 Time:0.540s
+
+2024-05-28 10:40:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [120/390] lr:0.049923 Train Loss:2.3452 Train Acc1:37.7131 Train Acc5:71.3391 Time:0.540s
+
+2024-05-28 10:40:53 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [130/390] lr:0.049923 Train Loss:2.3534 Train Acc1:37.6312 Train Acc5:71.2011 Time:0.276s
+
+2024-05-28 10:40:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [140/390] lr:0.049923 Train Loss:2.3563 Train Acc1:37.5499 Train Acc5:71.1492 Time:0.539s
+
+2024-05-28 10:41:02 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [150/390] lr:0.049923 Train Loss:2.3553 Train Acc1:37.5103 Train Acc5:71.1351 Time:0.539s
+
+2024-05-28 10:41:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [160/390] lr:0.049923 Train Loss:2.3523 Train Acc1:37.5340 Train Acc5:71.1859 Time:0.278s
+
+2024-05-28 10:41:09 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [170/390] lr:0.049923 Train Loss:2.3465 Train Acc1:37.6599 Train Acc5:71.3222 Time:0.276s
+
+2024-05-28 10:41:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [180/390] lr:0.049923 Train Loss:2.3443 Train Acc1:37.7072 Train Acc5:71.3225 Time:0.540s
+
+2024-05-28 10:41:18 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [190/390] lr:0.049923 Train Loss:2.3388 Train Acc1:37.8927 Train Acc5:71.3801 Time:0.275s
+
+2024-05-28 10:41:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [200/390] lr:0.049923 Train Loss:2.3360 Train Acc1:37.9470 Train Acc5:71.4164 Time:0.540s
+
+2024-05-28 10:41:26 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [210/390] lr:0.049923 Train Loss:2.3331 Train Acc1:38.0739 Train Acc5:71.4529 Time:0.540s
+
+2024-05-28 10:41:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [220/390] lr:0.049923 Train Loss:2.3284 Train Acc1:38.2282 Train Acc5:71.5427 Time:0.275s
+
+2024-05-28 10:41:34 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [230/390] lr:0.049923 Train Loss:2.3222 Train Acc1:38.3354 Train Acc5:71.6619 Time:0.540s
+
+2024-05-28 10:41:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [240/390] lr:0.049923 Train Loss:2.3175 Train Acc1:38.4206 Train Acc5:71.7648 Time:0.541s
+
+2024-05-28 10:41:42 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [250/390] lr:0.049923 Train Loss:2.3112 Train Acc1:38.5365 Train Acc5:71.9155 Time:0.276s
+
+2024-05-28 10:41:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [260/390] lr:0.049923 Train Loss:2.3100 Train Acc1:38.5387 Train Acc5:71.9259 Time:0.276s
+
+2024-05-28 10:41:50 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [270/390] lr:0.049923 Train Loss:2.3102 Train Acc1:38.5522 Train Acc5:71.9442 Time:0.539s
+
+2024-05-28 10:41:56 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [280/390] lr:0.049923 Train Loss:2.3107 Train Acc1:38.5482 Train Acc5:71.9139 Time:0.540s
+
+2024-05-28 10:42:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [290/390] lr:0.049923 Train Loss:2.3128 Train Acc1:38.5014 Train Acc5:71.8777 Time:0.275s
+
+2024-05-28 10:42:04 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [300/390] lr:0.049923 Train Loss:2.3108 Train Acc1:38.4707 Train Acc5:71.8984 Time:0.281s
+
+2024-05-28 10:42:08 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [310/390] lr:0.049923 Train Loss:2.3107 Train Acc1:38.5601 Train Acc5:71.8850 Time:0.540s
+
+2024-05-28 10:42:12 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [320/390] lr:0.049923 Train Loss:2.3077 Train Acc1:38.6220 Train Acc5:71.9383 Time:0.287s
+
+2024-05-28 10:42:16 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [330/390] lr:0.049923 Train Loss:2.3066 Train Acc1:38.6683 Train Acc5:71.9883 Time:0.540s
+
+2024-05-28 10:42:19 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [340/390] lr:0.049923 Train Loss:2.3027 Train Acc1:38.7097 Train Acc5:72.1087 Time:0.281s
+
+2024-05-28 10:42:22 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [350/390] lr:0.049923 Train Loss:2.2995 Train Acc1:38.8065 Train Acc5:72.1844 Time:0.280s
+
+2024-05-28 10:42:27 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [360/390] lr:0.049923 Train Loss:2.2975 Train Acc1:38.8028 Train Acc5:72.2234 Time:0.540s
+
+2024-05-28 10:42:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [370/390] lr:0.049923 Train Loss:2.2964 Train Acc1:38.8624 Train Acc5:72.2330 Time:0.540s
+
+2024-05-28 10:42:35 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 6 [380/390] lr:0.049923 Train Loss:2.2944 Train Acc1:38.9026 Train Acc5:72.2749 Time:0.540s
+
+2024-05-28 10:42:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:6 Train Loss:2.2925 Train Acc1:38.9443 Train Acc5:72.3157 Test Loss:2.0821 Test Acc1:44.2500(Max:44.2500) Test Acc5:75.9700 Time:169.325s
+
+2024-05-28 10:42:47 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [0/390] lr:0.049889 Train Loss:2.0059 Train Acc1:46.8750 Train Acc5:74.2188 Time:0.281s
+
+2024-05-28 10:42:51 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [10/390] lr:0.049889 Train Loss:2.1619 Train Acc1:41.2642 Train Acc5:74.8580 Time:0.281s
+
+2024-05-28 10:42:56 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [20/390] lr:0.049889 Train Loss:2.1352 Train Acc1:41.6667 Train Acc5:74.6652 Time:0.279s
+
+2024-05-28 10:43:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [30/390] lr:0.049889 Train Loss:2.1442 Train Acc1:41.0786 Train Acc5:75.2016 Time:0.276s
+
+2024-05-28 10:43:04 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [40/390] lr:0.049889 Train Loss:2.1369 Train Acc1:41.2538 Train Acc5:75.4764 Time:0.539s
+
+2024-05-28 10:43:08 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [50/390] lr:0.049889 Train Loss:2.1206 Train Acc1:41.8811 Train Acc5:76.0263 Time:0.275s
+
+2024-05-28 10:43:12 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [60/390] lr:0.049889 Train Loss:2.1229 Train Acc1:42.0722 Train Acc5:76.0118 Time:0.275s
+
+2024-05-28 10:43:16 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [70/390] lr:0.049889 Train Loss:2.1201 Train Acc1:42.2095 Train Acc5:75.9573 Time:0.275s
+
+2024-05-28 10:43:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [80/390] lr:0.049889 Train Loss:2.1308 Train Acc1:41.8113 Train Acc5:75.6655 Time:0.275s
+
+2024-05-28 10:43:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [90/390] lr:0.049889 Train Loss:2.1425 Train Acc1:41.6810 Train Acc5:75.3348 Time:0.275s
+
+2024-05-28 10:43:29 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [100/390] lr:0.049889 Train Loss:2.1502 Train Acc1:41.4991 Train Acc5:75.1624 Time:0.539s
+
+2024-05-28 10:43:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [110/390] lr:0.049889 Train Loss:2.1509 Train Acc1:41.6596 Train Acc5:75.1197 Time:0.539s
+
+2024-05-28 10:43:37 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [120/390] lr:0.049889 Train Loss:2.1500 Train Acc1:41.7226 Train Acc5:75.1614 Time:0.539s
+
+2024-05-28 10:43:41 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [130/390] lr:0.049889 Train Loss:2.1417 Train Acc1:41.9847 Train Acc5:75.3220 Time:0.275s
+
+2024-05-28 10:43:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [140/390] lr:0.049889 Train Loss:2.1468 Train Acc1:41.8828 Train Acc5:75.2050 Time:0.540s
+
+2024-05-28 10:43:50 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [150/390] lr:0.049889 Train Loss:2.1501 Train Acc1:41.8874 Train Acc5:75.1914 Time:0.539s
+
+2024-05-28 10:43:54 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [160/390] lr:0.049889 Train Loss:2.1439 Train Acc1:41.9546 Train Acc5:75.2863 Time:0.539s
+
+2024-05-28 10:43:58 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [170/390] lr:0.049889 Train Loss:2.1434 Train Acc1:41.9362 Train Acc5:75.3107 Time:0.540s
+
+2024-05-28 10:44:02 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [180/390] lr:0.049889 Train Loss:2.1449 Train Acc1:41.9372 Train Acc5:75.3194 Time:0.275s
+
+2024-05-28 10:44:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [190/390] lr:0.049889 Train Loss:2.1440 Train Acc1:42.0321 Train Acc5:75.3763 Time:0.275s
+
+2024-05-28 10:44:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [200/390] lr:0.049889 Train Loss:2.1452 Train Acc1:42.0437 Train Acc5:75.4003 Time:0.540s
+
+2024-05-28 10:44:15 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [210/390] lr:0.049889 Train Loss:2.1427 Train Acc1:42.1912 Train Acc5:75.4110 Time:0.276s
+
+2024-05-28 10:44:19 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [220/390] lr:0.049889 Train Loss:2.1377 Train Acc1:42.2971 Train Acc5:75.4843 Time:0.539s
+
+2024-05-28 10:44:23 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [230/390] lr:0.049889 Train Loss:2.1376 Train Acc1:42.3228 Train Acc5:75.4600 Time:0.539s
+
+2024-05-28 10:44:27 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [240/390] lr:0.049889 Train Loss:2.1366 Train Acc1:42.3366 Train Acc5:75.4538 Time:0.275s
+
+2024-05-28 10:44:31 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [250/390] lr:0.049889 Train Loss:2.1323 Train Acc1:42.4178 Train Acc5:75.5011 Time:0.276s
+
+2024-05-28 10:44:35 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [260/390] lr:0.049889 Train Loss:2.1321 Train Acc1:42.4569 Train Acc5:75.4729 Time:0.540s
+
+2024-05-28 10:44:39 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [270/390] lr:0.049889 Train Loss:2.1256 Train Acc1:42.6113 Train Acc5:75.6227 Time:0.540s
+
+2024-05-28 10:44:43 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [280/390] lr:0.049889 Train Loss:2.1246 Train Acc1:42.6657 Train Acc5:75.5839 Time:0.540s
+
+2024-05-28 10:44:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [290/390] lr:0.049889 Train Loss:2.1251 Train Acc1:42.6412 Train Acc5:75.5369 Time:0.275s
+
+2024-05-28 10:44:52 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [300/390] lr:0.049889 Train Loss:2.1212 Train Acc1:42.6988 Train Acc5:75.6074 Time:0.275s
+
+2024-05-28 10:44:56 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [310/390] lr:0.049889 Train Loss:2.1200 Train Acc1:42.7125 Train Acc5:75.6406 Time:0.540s
+
+2024-05-28 10:45:00 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [320/390] lr:0.049889 Train Loss:2.1191 Train Acc1:42.7181 Train Acc5:75.6547 Time:0.275s
+
+2024-05-28 10:45:03 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [330/390] lr:0.049889 Train Loss:2.1181 Train Acc1:42.7304 Train Acc5:75.7246 Time:0.540s
+
+2024-05-28 10:45:08 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [340/390] lr:0.049889 Train Loss:2.1170 Train Acc1:42.7488 Train Acc5:75.7767 Time:0.539s
+
+2024-05-28 10:45:12 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [350/390] lr:0.049889 Train Loss:2.1190 Train Acc1:42.6905 Train Acc5:75.7456 Time:0.539s
+
+2024-05-28 10:45:16 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [360/390] lr:0.049889 Train Loss:2.1189 Train Acc1:42.7264 Train Acc5:75.7250 Time:0.540s
+
+2024-05-28 10:45:20 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [370/390] lr:0.049889 Train Loss:2.1194 Train Acc1:42.7182 Train Acc5:75.7286 Time:0.540s
+
+2024-05-28 10:45:25 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 7 [380/390] lr:0.049889 Train Loss:2.1194 Train Acc1:42.7022 Train Acc5:75.7546 Time:0.539s
+
+2024-05-28 10:45:36 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:7 Train Loss:2.1199 Train Acc1:42.7063 Train Acc5:75.7512 Test Loss:2.0672 Test Acc1:44.6700(Max:44.6700) Test Acc5:76.7900 Time:169.721s
+
+2024-05-28 10:45:37 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [0/390] lr:0.049849 Train Loss:1.9156 Train Acc1:49.2188 Train Acc5:78.9062 Time:0.278s
+
+2024-05-28 10:45:40 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [10/390] lr:0.049849 Train Loss:1.9229 Train Acc1:47.3722 Train Acc5:80.3977 Time:0.540s
+
+2024-05-28 10:45:45 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [20/390] lr:0.049849 Train Loss:2.0237 Train Acc1:45.5357 Train Acc5:77.6786 Time:0.540s
+
+2024-05-28 10:45:48 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [30/390] lr:0.049849 Train Loss:2.0131 Train Acc1:45.4385 Train Acc5:77.9234 Time:0.276s
+
+2024-05-28 10:45:53 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [40/390] lr:0.049849 Train Loss:2.0150 Train Acc1:45.4840 Train Acc5:78.2203 Time:0.274s
+
+2024-05-28 10:45:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [50/390] lr:0.049849 Train Loss:1.9972 Train Acc1:45.5882 Train Acc5:78.4161 Time:0.539s
+
+2024-05-28 10:46:02 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [60/390] lr:0.049849 Train Loss:1.9936 Train Acc1:45.7095 Train Acc5:78.5861 Time:0.552s
+
+2024-05-28 10:46:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [70/390] lr:0.049849 Train Loss:1.9944 Train Acc1:45.8957 Train Acc5:78.4331 Time:0.540s
+
+2024-05-28 10:46:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [80/390] lr:0.049849 Train Loss:1.9985 Train Acc1:45.7272 Train Acc5:78.2118 Time:0.539s
+
+2024-05-28 10:46:15 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [90/390] lr:0.049849 Train Loss:1.9933 Train Acc1:45.8877 Train Acc5:78.1164 Time:0.277s
+
+2024-05-28 10:46:19 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [100/390] lr:0.049849 Train Loss:1.9933 Train Acc1:45.7689 Train Acc5:78.1946 Time:0.274s
+
+2024-05-28 10:46:24 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [110/390] lr:0.049849 Train Loss:2.0066 Train Acc1:45.4533 Train Acc5:77.7872 Time:0.539s
+
+2024-05-28 10:46:28 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [120/390] lr:0.049849 Train Loss:2.0010 Train Acc1:45.6999 Train Acc5:77.8280 Time:0.540s
+
+2024-05-28 10:46:33 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [130/390] lr:0.049849 Train Loss:2.0104 Train Acc1:45.4914 Train Acc5:77.5584 Time:0.540s
+
+2024-05-28 10:46:37 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [140/390] lr:0.049849 Train Loss:2.0125 Train Acc1:45.4289 Train Acc5:77.5598 Time:0.539s
+
+2024-05-28 10:46:41 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [150/390] lr:0.049849 Train Loss:2.0115 Train Acc1:45.4781 Train Acc5:77.6438 Time:0.276s
+
+2024-05-28 10:46:45 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [160/390] lr:0.049849 Train Loss:2.0109 Train Acc1:45.4775 Train Acc5:77.6252 Time:0.278s
+
+2024-05-28 10:46:49 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [170/390] lr:0.049849 Train Loss:2.0096 Train Acc1:45.4359 Train Acc5:77.6910 Time:0.540s
+
+2024-05-28 10:46:53 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [180/390] lr:0.049849 Train Loss:2.0109 Train Acc1:45.4118 Train Acc5:77.5768 Time:0.540s
+
+2024-05-28 10:46:57 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [190/390] lr:0.049849 Train Loss:2.0125 Train Acc1:45.4107 Train Acc5:77.4951 Time:0.276s
+
+2024-05-28 10:47:02 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [200/390] lr:0.049849 Train Loss:2.0129 Train Acc1:45.3825 Train Acc5:77.5381 Time:0.539s
+
+2024-05-28 10:47:05 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [210/390] lr:0.049849 Train Loss:2.0096 Train Acc1:45.4347 Train Acc5:77.6066 Time:0.278s
+
+2024-05-28 10:47:10 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [220/390] lr:0.049849 Train Loss:2.0110 Train Acc1:45.3761 Train Acc5:77.6089 Time:0.539s
+
+2024-05-28 10:47:13 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [230/390] lr:0.049849 Train Loss:2.0076 Train Acc1:45.4681 Train Acc5:77.6752 Time:0.275s
+
+2024-05-28 10:47:17 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [240/390] lr:0.049849 Train Loss:2.0084 Train Acc1:45.4778 Train Acc5:77.6225 Time:0.540s
+
+2024-05-28 10:47:21 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [250/390] lr:0.049849 Train Loss:2.0079 Train Acc1:45.4868 Train Acc5:77.6550 Time:0.540s
+
+2024-05-28 10:47:26 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [260/390] lr:0.049849 Train Loss:2.0090 Train Acc1:45.3963 Train Acc5:77.6700 Time:0.540s
+
+2024-05-28 10:47:30 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [270/390] lr:0.049849 Train Loss:2.0085 Train Acc1:45.3961 Train Acc5:77.6955 Time:0.275s
+
+2024-05-28 10:47:34 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [280/390] lr:0.049849 Train Loss:2.0053 Train Acc1:45.5043 Train Acc5:77.7969 Time:0.275s
+
+2024-05-28 10:47:38 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [290/390] lr:0.049849 Train Loss:2.0062 Train Acc1:45.4763 Train Acc5:77.7975 Time:0.540s
+
+2024-05-28 10:47:42 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [300/390] lr:0.049849 Train Loss:2.0036 Train Acc1:45.4760 Train Acc5:77.8732 Time:0.540s
+
+2024-05-28 10:47:46 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [310/390] lr:0.049849 Train Loss:2.0013 Train Acc1:45.5361 Train Acc5:77.9140 Time:0.276s
+
+2024-05-28 10:47:50 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [320/390] lr:0.049849 Train Loss:2.0000 Train Acc1:45.5388 Train Acc5:77.9692 Time:0.275s
+
+2024-05-28 10:47:54 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [330/390] lr:0.049849 Train Loss:2.0010 Train Acc1:45.5013 Train Acc5:77.9739 Time:0.280s
+
+2024-05-28 10:47:58 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [340/390] lr:0.049849 Train Loss:1.9990 Train Acc1:45.5806 Train Acc5:78.0219 Time:0.275s
+
+2024-05-28 10:48:03 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [350/390] lr:0.049849 Train Loss:1.9979 Train Acc1:45.6019 Train Acc5:78.0293 Time:0.540s
+
+2024-05-28 10:48:06 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [360/390] lr:0.049849 Train Loss:1.9977 Train Acc1:45.6047 Train Acc5:78.0298 Time:0.275s
+
+2024-05-28 10:48:11 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [370/390] lr:0.049849 Train Loss:2.0007 Train Acc1:45.5378 Train Acc5:77.9692 Time:0.540s
+
+2024-05-28 10:48:16 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 8 [380/390] lr:0.049849 Train Loss:2.0013 Train Acc1:45.5237 Train Acc5:77.9589 Time:0.539s
+
+2024-05-28 10:48:28 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch:8 Train Loss:2.0021 Train Acc1:45.5028 Train Acc5:77.9427 Test Loss:1.8740 Test Acc1:47.9400(Max:47.9400) Test Acc5:80.0000 Time:171.300s
+
+2024-05-28 10:48:28 CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.4_crt=random_p=0.5: Epoch: 9 [0/390] lr:0.049803 Train Loss:1.9191 Train Acc1:47.6562 Train Acc5:78.1250 Time:0.540s
+

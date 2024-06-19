@@ -159,7 +159,7 @@ def main(args):
     logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
 
     # Write global comparison file
-    with open("comp.info", "a") as f:
+    with open("comp_cifar100_wrn28-10.info", "a") as f:
         opt = args.opt.split("-")[0]
         f.write(f"OPTIMISER: {opt} - theta = {args.theta} \n")
         if optimiser_overhead_calculation(args):
@@ -169,7 +169,7 @@ def main(args):
                 f.write(f" - k={args.crt_k} \n")
             elif reuse_method == "random":
                 f.write(f" - p={args.crt_p} \n")
-            elif reuse_method == "gSAMNormEMA":
+            elif reuse_method[:11] == "gSAMNormEMA":
                 f.write(f" - zeta={args.zeta} \n")
         f.write(
             f"Max Test Accuracy: {max_acc:.4f}, Last Train Accuracy: {train_acc1:.4f}, Difference (Train Accuracy - Test Accuracy) = {train_acc1 - max_acc:.4f} \n"
