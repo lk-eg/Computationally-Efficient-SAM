@@ -30,6 +30,10 @@ def gSAMNormEMAInverted_criterion(self):
     )
 
 
+def scheduling_criterion(self, calculation_range_set):
+    return self.iteration_step_counter in calculation_range_set
+
+
 # collect all possible criteria for inner gradient calculation
 criteria_functions = {
     "naive": naive_criterion,
