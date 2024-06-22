@@ -97,8 +97,8 @@ class Logger:
             )
             + ": "
         )
-        with open(os.path.join(self.logger_path, "log.info"), "a") as f:
-            f.write(header + str(info) + "\n")
+        # with open(os.path.join(self.logger_path, "log.info"), "a") as f:
+        #     f.write(header + str(info) + "\n")
 
         if printf:
             print(header + str(info) + "\n")

@@ -9,7 +9,7 @@ def dict_creation(
     mem: str,
     t: float = 0.2,
     w: float = 1e-3,
-    crt: str = "naive",
+    crt: str = "none",
     crt_k: int = 2,
     crt_p: float = 0.5,
     zeta: float = 1.0,
@@ -30,11 +30,12 @@ def dict_creation(
 
 
 opt_prefixes = ["vasso", "vassore", "vassoremu"]
-crts = ["naive", "random", "gSAMNormEMA", "gSAMNormEMA"]
+crts = ["naive", "random", "gSAMNormEMA", "gSAMNormEMA", "schedule"]
 thetas = [0.2, 0.4]
 ks = [2, 5, 10, 20]
 ps = [0.5, 0.2, 0.1, 0.05]
 zetas = [2.0, 1.0, 0.5, 0.1, 1e-2]
+bs = [0.5, 0.3, 0.2, 0.1]
 
 experiments = []
 experiments.append(dict_creation("sam", "sam-sgd", "base", "rtx_3090", "4G"))
@@ -147,7 +148,8 @@ python3 train.py \
         --crt {crt} \
         --crt_k {k} \
         --crt_p {p} \
-        --zeta {zeta}
+        --zeta {zeta} \
+        --dataset_nn_combination "cifar100_wrn-28-10"
 """
 
 for experiment in experiments:

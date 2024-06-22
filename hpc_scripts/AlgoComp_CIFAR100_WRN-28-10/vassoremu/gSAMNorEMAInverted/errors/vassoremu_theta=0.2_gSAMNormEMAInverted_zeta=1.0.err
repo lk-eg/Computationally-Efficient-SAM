@@ -1,5 +1,0 @@
-
-The following have been reloaded with a version change:
-  1) gcc/4.8.5 => gcc/8.2.0
-
-mv: cannot stat 'logs/CIFAR100_cutout_wideresnet28x10_vassoremu-sgd_rho0.2_theta=0.2_crt=gSAMNormEMAInverted_zeta=1.0': No such file or directory

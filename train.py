@@ -13,6 +13,7 @@ from utils.dist import init_distributed_model, is_main_process
 from utils.seed import setup_seed
 from utils.engine import train_one_epoch, evaluate
 from utils.optimiser_based_selection import need_closure, optimiser_overhead_calculation
+from utils.global_comparison_presentation import comp_file_logging
 
 
 def main(args):
@@ -92,17 +93,18 @@ def main(args):
 
         if max_acc < val_stats["test_acc1"]:
             max_acc = val_stats["test_acc1"]
-            if is_main_process:
-                torch.save(
-                    {
-                        "model": model_without_ddp.state_dict(),
-                        "optimizer": optimizer.state_dict(),
-                        "lr_scheduler": lr_scheduler.state_dict(),
-                        "epoch": epoch,
-                        "args": args,
-                    },
-                    os.path.join(args.output_dir, args.output_name, "checkpoint.pth"),
-                )
+            # COMMENTED OUT because saving model checkpoints consumes too much memory
+            # if is_main_process:
+            #     torch.save(
+            #         {
+            #             "model": model_without_ddp.state_dict(),
+            #             "optimizer": optimizer.state_dict(),
+            #             "lr_scheduler": lr_scheduler.state_dict(),
+            #             "epoch": epoch,
+            #             "args": args,
+            #         },
+            #         os.path.join(args.output_dir, args.output_name, "checkpoint.pth"),
+            #     )
 
         custom_metrics_per_epoch = [
             "train_loss",
@@ -144,8 +146,10 @@ def main(args):
     end_training = time.time()
     used_training = str(datetime.timedelta(seconds=end_training - start_training))
     logger.log("Training Time:{}".format(used_training))
+
     overhead = 0.0
-    if optimiser_overhead_calculation(args):
+    optim_overhead_calc = optimiser_overhead_calculation(args)
+    if optim_overhead_calc:
         logger.log(
             "Total inner gradient calculations: {}, Total iterations: {}".format(
                 optimizer.inner_gradient_calculation_counter,
@@ -156,31 +160,20 @@ def main(args):
             optimizer.iteration_step_counter
         )
         logger.log("Overhead over SGD: {:.4f}".format(overhead))
-    logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
-
-    # Write global comparison file
-    with open("comp_cifar100_wrn28-10.info", "a") as f:
-        opt = args.opt.split("-")[0]
-        f.write(f"OPTIMISER: {opt} - theta = {args.theta} \n")
-        if optimiser_overhead_calculation(args):
-            reuse_method = args.crt
-            f.write(f"Reuse method: {reuse_method}")
-            if reuse_method == "naive":
-                f.write(f" - k={args.crt_k} \n")
-            elif reuse_method == "random":
-                f.write(f" - p={args.crt_p} \n")
-            elif reuse_method[:11] == "gSAMNormEMA":
-                f.write(f" - zeta={args.zeta} \n")
-        f.write(
-            f"Max Test Accuracy: {max_acc:.4f}, Last Train Accuracy: {train_acc1:.4f}, Difference (Train Accuracy - Test Accuracy) = {train_acc1 - max_acc:.4f} \n"
-        )
-        f.write(
-            f"Last Test Loss: {test_loss:.4f}, Last Train Loss: {train_loss:.4f}, Difference (test loss - train loss) = {test_loss - train_loss:.4f} \n"
-        )
-        if optimiser_overhead_calculation(args):
-            f.write(f"More calculations x SGD: {overhead:.4f} \n")
-        f.write(f"Training Time: {used_training} \n")
-        f.write("\n")
+    # logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
+    comp_file_logging(
+        args,
+        max_acc,
+        train_acc1,
+        test_loss,
+        train_loss,
+        overhead,
+        used_training,
+        optim_overhead_calc,
+    )
+    training_result_save(
+        args,
+    )
 
 
 if __name__ == "__main__":

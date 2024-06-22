@@ -62,6 +62,7 @@ class default_parser:
         parser.add_argument(
             "--epochs", type=int, default=200, help="Epochs of training."
         )
+        parser.add_argument("--dataset_nn_combination", type=str)
         return parser
 
     def dist_parser(self):
@@ -159,7 +160,7 @@ class default_parser:
             help="Perturbation intensity of SAM type optims.",
         )
         parser.add_argument(
-            "--theta", type=float, default=0.2, help="Moving average for VASSO"
+            "--theta", type=float, default=0.4, help="Moving average for VASSO"
         )
         parser.add_argument(
             "--phi",
@@ -170,6 +171,12 @@ class default_parser:
 
         # vassore and vassoremu-specific
         parser.add_argument("--crt", type=str)
+        parser.add_argument(
+            "--crt_parameter",
+            type=float,
+            default=1.0,
+            help="Depending on args.crt, this is the parameter for the decision rule about perturbation calculation.",
+        )
         parser.add_argument(
             "--crt_k",
             type=int,

@@ -12,7 +12,7 @@ else:
 
 
 def onHPC():
-    if platform.system() == "Darwin":
+    if platform.system() == "Linux":
         return True
     else:
         return False

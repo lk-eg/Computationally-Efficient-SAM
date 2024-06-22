@@ -30,7 +30,7 @@ def gSAMNormEMAInverted_criterion(self):
     )
 
 
-def scheduling_criterion(self, calculation_range_set):
+def scheduling_block(self, calculation_range_set):
     return self.iteration_step_counter in calculation_range_set
 
 

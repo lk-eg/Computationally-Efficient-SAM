@@ -168,5 +168,21 @@
             ],
             "cwd": "${workspaceFolder}"
         },
+        {
+            "name": "Test SEEDING",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--opt",
+                "sam-sgd",
+                "--epochs",
+                "1",
+                "--seed",
+                "3107"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
     ]
 }
