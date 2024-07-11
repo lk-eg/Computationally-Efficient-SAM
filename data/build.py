@@ -57,6 +57,12 @@ def build_train_dataloader(
     return train_loader
 
 
+def build_full_train_dataloader(train_dataset):
+    dataset_size = len(train_dataset)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=dataset_size)
+    return train_loader
+
+
 def _cfg_to_valloader(args):
     return {
         "batch_size": args.batch_size,

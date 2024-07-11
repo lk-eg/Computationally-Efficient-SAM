@@ -1,7 +1,8 @@
 import pandas as pd
+from solver.criteria_functions import criteria_parameters
 
 
-# Write global comparison file
+# Write global comparison txt file
 def comp_file_logging(
     args,
     max_acc,
@@ -32,34 +33,47 @@ def comp_file_logging(
             f"Last Test Loss: {test_loss:.4f}, Last Train Loss: {train_loss:.4f}, Difference (test loss - train loss) = {test_loss - train_loss:.4f} \n"
         )
         if optimiser_overhead_calculation:
-            f.write(f"More calculations x SGD: {overhead:.4f} \n")
+            f.write(f"Backprop Overhead x SGD: {overhead:.2f} \n")
         f.write(f"Training Time: {used_training} \n")
         f.write("\n")
 
 
-# save into a csv file
-def training_result_save(args, top_1_test_acc, overhead_over_sgd):
+# Results Collection
+# Save results data of every experiment into a csv file
+def training_result_save(
+    args,
+    top_1_test_acc,
+    overfitting_indicator,
+    fwp_overhead_over_sgd,
+    bwp_overhead_over_sgd,
+    images_per_sec,
+    lambda_1=None,
+    lambda_5=None,
+):
+    criterion = args.crt
     results = []
+    jastr = lambda_1 / lambda_5
     exp_res = {
         "optimizer": args.opt,
+        "criterion": criterion,
+        "crt_parameter": criteria_parameters[criterion],
         "top-1 test acc": top_1_test_acc,
-        "overhead": overhead_over_sgd,
+        "overfitting indicator": overfitting_indicator,
+        "l1": lambda_1,
+        "l1/l5": jastr,
+        "fwp_overhead": fwp_overhead_over_sgd,
+        "bwp_overhead": bwp_overhead_over_sgd,
+        "images-p-s": images_per_sec,
+        "epochs": args.epochs,
     }
-    if args.crt != "none":
-        exp_res["criterion"] = args.crt
-        epx_res[]
-    results.append(
-        {
-            "optimizer": args.opt,
-            "configuration": "default",
-            "top-1 test acc": top_1_test_acc,
-            "overhead": overhead_over_sgd,
-        }
-    )
+    if args.crt == "none":
+        exp_res["criterion"] = "none"
+        exp_res["crt_parameter"] = "none"
+    results.append(exp_res)
     df = pd.DataFrame(results)
     numerical_results_csv_fp = args.dataset_nn_combination + "_results.csv"
     try:
-        with open(numerical_results_csv_fp, "r") as f:
+        with open(numerical_results_csv_fp, "r"):
             file_exists = True
     except FileNotFoundError:
         file_exists = False
@@ -70,9 +84,3 @@ def training_result_save(args, top_1_test_acc, overhead_over_sgd):
         header=not file_exists,
         index=False,
     )
-
-
-# Needs WandB plotting as well (Runtime - Test Accuracy Plots).
-
-
-# automatically generate LaTeX Table as well from the results:

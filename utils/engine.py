@@ -26,6 +26,7 @@ def train_one_epoch(
     _memory.add_meter("train_loss", Metric())
     _memory.add_meter("train_acc1", Metric())
     _memory.add_meter("train_acc5", Metric())
+    _memory.add_meter("images/s", Metric())
     for batch_idx, (images, targets) in enumerate(train_loader):
         batch_start = time.time()
 
@@ -33,7 +34,7 @@ def train_one_epoch(
         targets = targets.to(device, non_blocking=True)
 
         # Forard- and Backward-pass function.
-        # Efficiency is about how often, and which part, of this function gets called.
+        # Efficiency is mainly about how often, and which part, of this function gets called.
         def closure(computeForward, computeBackprop):
             if computeForward:
                 output = model(images)
@@ -80,9 +81,11 @@ def train_one_epoch(
 
         acc1, acc5 = accuracy(output, targets, topk=(1, 5))
         batch_num = images.shape[0]
+        batch_t = time.time() - batch_start
         _memory.update_meter("train_loss", loss.item(), n=batch_num)
         _memory.update_meter("train_acc1", acc1.item(), n=batch_num)
         _memory.update_meter("train_acc5", acc5.item(), n=batch_num)
+        _memory.update_meter("images/s", batch_num / batch_t, n=1)
 
         msg = " ".join(
             [
@@ -105,7 +108,7 @@ def train_one_epoch(
                     train_loss=_memory.meters["train_loss"].global_avg,
                     train_acc1=_memory.meters["train_acc1"].global_avg,
                     train_acc5=_memory.meters["train_acc5"].global_avg,
-                    batch_time=time.time() - batch_start,
+                    batch_time=batch_t,
                 )
             )
         _memory.synchronize_between_processes()

@@ -41,3 +41,17 @@ criteria_functions = {
     "gSAMNormEMA": gSAMNormEMA_criterion,
     "gSAMNormEMAInverted": gSAMNormEMAInverted_criterion,
 }
+
+criteria_parameter_names = {
+    "naive": ("k", "crt_k"),
+    "random": ("p", "crt_p"),
+    "schedule_endblock": ("b", "crt_b"),
+    "gSAMNormEMA": ("z", "zeta"),
+    "gSAMNormEMAInveted": ("z", "zeta"),
+}
+
+
+def criteria_parameters(args, criterion):
+    crt_keyword = criteria_parameter_names[criterion][1]
+    crt_value = getattr(args, crt_keyword)
+    return f"{criteria_parameter_names[criterion][0]}={crt_value}"

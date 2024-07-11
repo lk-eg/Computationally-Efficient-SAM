@@ -3,9 +3,15 @@ import time
 import datetime
 
 import torch
+import numpy as np
 
 from models.build import build_model
-from data.build import build_dataset, build_train_dataloader, build_val_dataloader
+from data.build import (
+    build_dataset,
+    build_train_dataloader,
+    build_val_dataloader,
+    build_full_train_dataloader,
+)
 from solver.build import build_optimizer, build_lr_scheduler
 
 from utils.logger import Logger
@@ -13,7 +19,9 @@ from utils.dist import init_distributed_model, is_main_process
 from utils.seed import setup_seed
 from utils.engine import train_one_epoch, evaluate
 from utils.optimiser_based_selection import need_closure, optimiser_overhead_calculation
-from utils.global_comparison_presentation import comp_file_logging
+from utils.global_results_collection import comp_file_logging, training_result_save
+
+from hessian_eigenthings import compute_hessian_eigenthings
 
 
 def main(args):
@@ -71,6 +79,7 @@ def main(args):
     logger.log(f"Start training for {args.epochs} Epochs.")
     start_training = time.time()
     max_acc = 0.0
+    images_per_second_list = []
     for epoch in range(args.start_epoch, args.epochs):
         start_epoch = time.time()
         if args.distributed:
@@ -110,6 +119,7 @@ def main(args):
             "train_loss",
             "train_acc1",
             "train_acc5",
+            "images/s",
             "test_loss",
             "test_acc1",
             "test_acc5",
@@ -142,12 +152,14 @@ def main(args):
         train_acc1 = train_stats["train_acc1"]
         test_loss = val_stats["test_loss"]
         train_loss = train_stats["train_loss"]
+        images_per_second_list.append(train_stats["images/s"])
     logger.log("Train Finish. Max Test Acc1:{:.4f}".format(max_acc))
     end_training = time.time()
     used_training = str(datetime.timedelta(seconds=end_training - start_training))
     logger.log("Training Time:{}".format(used_training))
 
-    overhead = 0.0
+    overfitting_indicator = test_loss - train_loss
+
     optim_overhead_calc = optimiser_overhead_calculation(args)
     if optim_overhead_calc:
         logger.log(
@@ -156,23 +168,62 @@ def main(args):
                 optimizer.iteration_step_counter,
             )
         )
-        overhead = 1 + optimizer.inner_gradient_calculation_counter / (
+        logger.log(
+            "Total inner forward passes: {}, Total iterations: {}".format(
+                optimizer.inner_fwp_calculation_counter,
+                optimizer.iteration_step_counter,
+            )
+        )
+        fwp_overhead_over_sgd = 1 + optimizer.inner_fwp_calculation_counter / (
             optimizer.iteration_step_counter
         )
-        logger.log("Overhead over SGD: {:.4f}".format(overhead))
+        bwp_overhead_over_sgd = 1 + optimizer.inner_gradient_calculation_counter / (
+            optimizer.iteration_step_counter
+        )
+        logger.log("Overhead over SGD: {:.2f}".format(bwp_overhead_over_sgd))
+    elif args.opt == "sgd" or args.opt[:4] == "adam":
+        fwp_overhead_over_sgd = 1.0
+        bwp_overhead_over_sgd = 1.0
+    elif args.opt[:3] == "sam" or args.opt[:5] == "vasso":
+        fwp_overhead_over_sgd = 2.0
+        bwp_overhead_over_sgd = 2.0
+
+    np_images_per_second = np.array(images_per_second_list)
+    images_per_sec = np.mean(np_images_per_second)
+
+    if not (args.model == "resnet18" and args.dataset[:7] == "CIFAR10"):
+        lambda_1, lambda_5 = None, None
+    else:
+        full_traindataloader = build_full_train_dataloader(args.dataset)
+        num_eigenthings = 10
+        hessian_eigenthings = compute_hessian_eigenthings(
+            model, full_traindataloader, criterion, num_eigenthings, mode="lanczos"
+        )
+        hessian_spectrum = hessian_eigenthings[0]
+        lambda_1 = hessian_spectrum[0]
+        lambda_5 = hessian_spectrum[4]
+
     # logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
-    comp_file_logging(
-        args,
-        max_acc,
-        train_acc1,
-        test_loss,
-        train_loss,
-        overhead,
-        used_training,
-        optim_overhead_calc,
-    )
+    # comp_file_logging(
+    #     args,
+    #     max_acc,
+    #     train_acc1,
+    #     test_loss,
+    #     train_loss,
+    #     overhead,
+    #     used_training,
+    #     optim_overhead_calc,
+    # )
+    # saving everything into the csv is enough
     training_result_save(
         args,
+        max_acc,
+        overfitting_indicator,
+        fwp_overhead_over_sgd,
+        bwp_overhead_over_sgd,
+        images_per_sec=images_per_sec,
+        lambda_1=lambda_1,
+        lambda_5=lambda_5,
     )
 
 

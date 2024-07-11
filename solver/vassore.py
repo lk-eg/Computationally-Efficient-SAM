@@ -47,6 +47,7 @@ class VASSORE(VASSO):
         self.zeta = zeta
         self.rndm = 0.0
         self.inner_gradient_calculation_counter = 0
+        self.inner_fwp_calculation_counter = 0
 
         if self.crt[:8] == "gSAMNorm":
             self.tau = 0
@@ -99,7 +100,7 @@ class VASSORE(VASSO):
                 p.sub_(self.state[p]["e_t"])
 
                 if self.extensive_metrics_mode:
-                    # I am running here an analysis on the outer gradient, g_{SAM}, not the inner gradient.
+                    # This is the outer gradient, g_{SAM}, not the inner gradient.
                     self.state[p]["g_{t-1}"] = self.state[p]["g_t"].clone()
                 self.state[p]["g_t"] = p.grad
 
@@ -122,6 +123,7 @@ class VASSORE(VASSO):
             self.performance_scores_mode or self.inner_gradient_calculation(self)
         )
         computeBackprop = self.inner_gradient_calculation(self)
+        self.inner_fwp_calculation_counter += computeForward
         self.inner_gradient_calculation_counter += computeBackprop
         with torch.enable_grad():
             if computeForward:
