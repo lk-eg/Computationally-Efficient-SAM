@@ -18,8 +18,15 @@ from utils.logger import Logger
 from utils.dist import init_distributed_model, is_main_process
 from utils.seed import setup_seed
 from utils.engine import train_one_epoch, evaluate
-from utils.optimiser_based_selection import need_closure, optimiser_overhead_calculation
-from utils.global_results_collection import comp_file_logging, training_result_save
+from utils.optimiser_based_selection import (
+    need_closure_fn,
+    scheduling,
+    optimiser_overhead_calculation,
+)
+from utils.global_results_collection import (
+    comp_file_logging,
+    training_result_save,
+)
 
 from hessian_eigenthings import compute_hessian_eigenthings
 
@@ -57,6 +64,7 @@ def main(args):
     optimizer, base_optimizer = build_optimizer(
         args, model=model_without_ddp, logger=logger
     )
+    used_optimizer = optimizer
     lr_scheduler = build_lr_scheduler(args, optimizer=base_optimizer)
     logger.log(f"Optimizer: {type(optimizer)}")
     logger.log(f"LR Scheduler: {type(lr_scheduler)}")
@@ -64,6 +72,8 @@ def main(args):
     # just for SGD
     if args.extensive_metrics_mode:
         logger.wandb_define_metrics_per_batch(["||g_{SGD}||"])
+
+    # logger.wandb_define_runtime_metric("acc")
 
     # resume
     if args.resume:
@@ -75,6 +85,14 @@ def main(args):
         lr_scheduler.step(args.start_epoch)
         logger.log(f"Resume training from {args.resmue_path}.")
 
+    # scheduling method
+    # schedule=True if we are in a SAM epoch
+    schedule = False
+    if args.crt == "schedule":
+        schedule = True
+
+    need_closure = need_closure_fn(args)
+
     # start train:
     logger.log(f"Start training for {args.epochs} Epochs.")
     start_training = time.time()
@@ -85,15 +103,23 @@ def main(args):
         if args.distributed:
             train_loader.sampler.set_epoch(epoch)
 
+        if schedule:
+            if scheduling(input_string=args.crt_s, current_epoch=epoch):
+                used_optimizer = base_optimizer
+                need_closure = False
+            else:
+                used_optimizer = optimizer
+                need_closure = True
+
         train_stats = train_one_epoch(
             model=model,
             train_loader=train_loader,
             criterion=criterion,
-            optimizer=optimizer,
+            optimizer=used_optimizer,
             epoch=epoch,
             logger=logger,
             log_freq=args.log_freq,
-            need_closure=need_closure(args),
+            need_closure=need_closure,
             optimizer_argument=args.opt,
             extensive_metrics_mode=args.extensive_metrics_mode,
         )
@@ -156,6 +182,8 @@ def main(args):
     logger.log("Train Finish. Max Test Acc1:{:.4f}".format(max_acc))
     end_training = time.time()
     used_training = str(datetime.timedelta(seconds=end_training - start_training))
+    training_duration = end_training - start_training
+    training_duration_minutes = training_duration.total_seconds() / 60
     logger.log("Training Time:{}".format(used_training))
 
     overfitting_indicator = test_loss - train_loss
@@ -222,6 +250,7 @@ def main(args):
         fwp_overhead_over_sgd,
         bwp_overhead_over_sgd,
         images_per_sec=images_per_sec,
+        runtime=training_duration_minutes,
         lambda_1=lambda_1,
         lambda_5=lambda_5,
     )

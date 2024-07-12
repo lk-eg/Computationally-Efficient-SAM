@@ -19,6 +19,7 @@ def train_one_epoch(
     need_closure,
     optimizer_argument,
     extensive_metrics_mode,
+    schedule,
 ):
     model.train()
 

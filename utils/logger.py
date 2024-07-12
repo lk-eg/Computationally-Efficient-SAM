@@ -62,6 +62,15 @@ class Logger:
             "args": args,
         }
 
+    # def wandb_define_runtime_metric(self, metric):
+    #     if self.enable_wandb:
+    #         wandb.define_metric(metric, step_metric="runtime")
+    #         wandb.define_metric(metric, step_metric="Bwpass x SGD")
+    #         wandb.define_metric(metric, step_metric="Fwpass x SGD")
+    #         wandb.define_metric(metric, step_metric="images/s")
+    #     else:
+    #         return
+
     # called from within the constructor of the optimization algorithm class,
     # so from class VaSSO, class SAM, etc.
     def wandb_define_metrics_per_batch(self, custom_metrics):

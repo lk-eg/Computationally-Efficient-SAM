@@ -47,6 +47,7 @@ def training_result_save(
     fwp_overhead_over_sgd,
     bwp_overhead_over_sgd,
     images_per_sec,
+    runtime,
     lambda_1=None,
     lambda_5=None,
 ):
@@ -63,7 +64,8 @@ def training_result_save(
         "l1/l5": jastr,
         "fwp_overhead": fwp_overhead_over_sgd,
         "bwp_overhead": bwp_overhead_over_sgd,
-        "images-p-s": images_per_sec,
+        "images/s": images_per_sec,
+        "runtime": runtime,
         "epochs": args.epochs,
     }
     if args.crt == "none":

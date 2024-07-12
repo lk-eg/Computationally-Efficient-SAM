@@ -170,7 +170,9 @@ class default_parser:
         )
 
         # vassore and vassoremu-specific
-        parser.add_argument("--crt", type=str)
+        parser.add_argument(
+            "--crt", type=str, choices=["baseline", "naive", "random", "schedule"]
+        )
         parser.add_argument(
             "--crt_k",
             type=int,
@@ -190,10 +192,10 @@ class default_parser:
             help="hyper parameter for decision on inner gradient calculation on gSAMNormEMA. Concretely, decision `tau_{t-1} <= zeta * ||g_{t,SAM}||`",
         )
         parser.add_argument(
-            "--crt_b",
-            type=float,
-            default=0.5,
-            help="amount the end block in vasso schedule approach should have of all epochs",
+            "--crt_s",
+            type=str,
+            default="[100-200]",
+            help="criterion specification for schedule method. string in bracket notation for the epochs in which SAM should be the optimizer, e.g., [0-10,160-200] for 1.5 Backwardpass Overhead x SGD",
         )
         return parser
 
