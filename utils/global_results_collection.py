@@ -53,11 +53,14 @@ def training_result_save(
 ):
     criterion = args.crt
     results = []
-    jastr = lambda_1 / lambda_5
+    if lambda_1 is not None:
+        jastr = lambda_1 / lambda_5
+    else:
+        jastr = None
     exp_res = {
         "optimizer": args.opt,
         "criterion": criterion,
-        "crt_parameter": criteria_parameters[criterion],
+        "crt_parameter": criteria_parameters(args, criterion),
         "top-1 test acc": top_1_test_acc,
         "overfitting indicator": overfitting_indicator,
         "l1": lambda_1,
