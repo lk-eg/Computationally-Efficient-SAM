@@ -222,13 +222,14 @@ def main(args):
     np_images_per_second = np.array(images_per_second_list)
     images_per_sec = np.mean(np_images_per_second)
 
+    # Computing the Hessian spectrum of the solution
     if not (args.model == "resnet18" and args.dataset[:7] == "CIFAR10"):
         lambda_1, lambda_5 = None, None
     else:
-        full_traindataloader = build_full_train_dataloader(args.dataset)
+        # full_traindataloader = build_full_train_dataloader(args.dataset)
         num_eigenthings = 10
         hessian_eigenthings = compute_hessian_eigenthings(
-            model, full_traindataloader, criterion, num_eigenthings, mode="lanczos"
+            model, train_loader, criterion, num_eigenthings, mode="lanczos"
         )
         hessian_spectrum = hessian_eigenthings[0]
         lambda_1 = hessian_spectrum[0]
