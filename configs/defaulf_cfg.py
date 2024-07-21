@@ -1,5 +1,5 @@
 import argparse
-from utils.device import onHPC, dataset_directory
+from utils.device import dataset_directory
 
 
 class default_parser:
@@ -82,10 +82,11 @@ class default_parser:
             default="CIFAR10_cutout",
             help="Dataset name in `DATASETS` registry.",
         )
+        datasetdirectory = dataset_directory()
         parser.add_argument(
             "--datadir",
             type=str,
-            default=dataset_directory(),
+            default=datasetdirectory,
             help="Path to your dataset.",
         )
         parser.add_argument(
