@@ -1,5 +1,5 @@
 import argparse
-from utils.device import onHPC
+from utils.device import onHPC, dataset_directory
 
 
 class default_parser:
@@ -82,20 +82,12 @@ class default_parser:
             default="CIFAR10_cutout",
             help="Dataset name in `DATASETS` registry.",
         )
-        if onHPC():
-            parser.add_argument(
-                "--datadir",
-                type=str,
-                default="/cluster/home/laltun/datasets",
-                help="Path to your dataset.",
-            )
-        else:
-            parser.add_argument(
-                "--datadir",
-                type=str,
-                default="~/sam/datasets",
-                help="Path to your dataset.",
-            )
+        parser.add_argument(
+            "--datadir",
+            type=str,
+            default=dataset_directory(),
+            help="Path to your dataset.",
+        )
         parser.add_argument(
             "--batch_size",
             type=int,
