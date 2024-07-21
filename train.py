@@ -189,7 +189,7 @@ def main(args):
     logger.log("Training Time:{}".format(used_training))
 
     # taken from the last round
-    overfitting_indicator = test_loss - train_loss
+    overfitting_indicator = train_loss - test_loss
 
     optim_overhead_calc = optimiser_overhead_calculation(args)
     if optim_overhead_calc:
@@ -222,18 +222,19 @@ def main(args):
     np_images_per_second = np.array(images_per_second_list)
     images_per_sec = np.mean(np_images_per_second)
 
+    lambda_1, lambda_5 = None, None
     # Computing the Hessian spectrum of the solution
-    if not (args.model == "resnet18" and args.dataset[:7] == "CIFAR10"):
-        lambda_1, lambda_5 = None, None
-    else:
-        # full_traindataloader = build_full_train_dataloader(args.dataset)
-        num_eigenthings = 10
-        hessian_eigenthings = compute_hessian_eigenthings(
-            model, train_loader, criterion, num_eigenthings, mode="lanczos"
-        )
-        hessian_spectrum = hessian_eigenthings[0]
-        lambda_1 = hessian_spectrum[0]
-        lambda_5 = hessian_spectrum[4]
+    # if not (args.model == "resnet18" and args.dataset[:7] == "CIFAR10"):
+    #     lambda_1, lambda_5 = None, None
+    # else:
+    #     # full_traindataloader = build_full_train_dataloader(args.dataset)
+    #     num_eigenthings = 10
+    #     hessian_eigenthings = compute_hessian_eigenthings(
+    #         model, train_loader, criterion, num_eigenthings, mode="lanczos"
+    #     )
+    #     hessian_spectrum = hessian_eigenthings[0]
+    #     lambda_1 = round(hessian_spectrum[0], 4)
+    #     lambda_5 = round(hessian_spectrum[4], 4)
 
     # logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
     # comp_file_logging(

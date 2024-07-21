@@ -1,5 +1,6 @@
 import pandas as pd
 from solver.criteria_functions import criteria_parameters
+from utils.optimiser_based_selection import optimiser_overhead_calculation
 
 
 # Write global comparison txt file
@@ -57,18 +58,24 @@ def training_result_save(
         jastr = lambda_1 / lambda_5
     else:
         jastr = None
+
+    if optimiser_overhead_calculation(args):
+        criterium_parameter = criteria_parameters(args, criterion)
+    else:
+        criterium_parameter = None
+    
     exp_res = {
         "optimizer": args.opt,
         "criterion": criterion,
-        "crt_parameter": criteria_parameters(args, criterion),
+        "crt_parameter": criterium_parameter,
         "top-1 test acc": top_1_test_acc,
-        "overfitting indicator": overfitting_indicator,
+        "overfitting indicator": round(overfitting_indicator, 4),
         "l1": lambda_1,
         "l1/l5": jastr,
-        "fwp_overhead": fwp_overhead_over_sgd,
-        "bwp_overhead": bwp_overhead_over_sgd,
-        "images/s": images_per_sec,
-        "runtime": runtime,
+        "fwp_overhead": round(fwp_overhead_over_sgd, 4),
+        "bwp_overhead": round(bwp_overhead_over_sgd, 4),
+        "images/s": round(images_per_sec, 2),
+        "runtime": round(runtime, 4),
         "epochs": args.epochs,
     }
     if args.crt == "none":
