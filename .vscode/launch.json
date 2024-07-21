@@ -184,5 +184,21 @@
             ],
             "cwd": "${workspaceFolder}"
         },
+        {
+            "name": "Test Results Collection",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--opt",
+                "vassoremu-sgd",
+                "--epochs",
+                "1",
+                "--crt",
+                "naive",
+            ],
+            "cwd": "${workspaceFolder}"
+        },
     ]
 }

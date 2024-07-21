@@ -169,21 +169,23 @@ class default_parser:
             help="Moving average for second moment in AdaVaSSO",
         )
 
-        # vassore and vassoremu-specific
+        # Criteria for making SAM efficient
         parser.add_argument(
-            "--crt", type=str, choices=["baseline", "naive", "random", "schedule"]
+            "--crt",
+            type=str,
+            choices=["baseline", "naive", "random", "schedule", "variance"],
         )
         parser.add_argument(
             "--crt_k",
             type=int,
             default=2,
-            help="Naive re-use of epsilon-perturbation. Re-Calculation every k steps.",
+            help="Re-use of eps: new calculation every k steps",
         )
         parser.add_argument(
             "--crt_p",
             type=float,
             default=0.5,
-            help="Random re-use of epsilon-perturbation. Re-Calculation with probability p in each iteration_step.",
+            help="Re-use of eps: new calculation with probability p in each iteration_step",
         )
         parser.add_argument(
             "--zeta",
@@ -192,10 +194,15 @@ class default_parser:
             help="hyper parameter for decision on inner gradient calculation on gSAMNormEMA. Concretely, decision `tau_{t-1} <= zeta * ||g_{t,SAM}||`",
         )
         parser.add_argument(
+            "--var_delta",
+            type=float,
+            help="threshold when the variance of outer gradient norms is too high so we trigger re-calculation of perturbation",
+        )
+        parser.add_argument(
             "--crt_s",
             type=str,
             default="[100-200]",
-            help="criterion specification for schedule method. string in bracket notation for the epochs in which SAM should be the optimizer, e.g., [0-10,160-200] for 1.5 Backwardpass Overhead x SGD",
+            help="Scheduling of VaSSO optimizer: Run VaSSO in input epochs, baseline optimizer in other epochs",
         )
         return parser
 

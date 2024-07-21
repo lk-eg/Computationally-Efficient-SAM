@@ -26,6 +26,7 @@ class VASSORE(VASSO):
         crt_k,
         crt_p,
         zeta,
+        var_delta,
     ) -> None:
         super().__init__(
             params,
@@ -49,6 +50,18 @@ class VASSORE(VASSO):
         self.inner_gradient_calculation_counter = 0
         self.inner_fwp_calculation_counter = 0
 
+        # decision function indicators
+        self.sum_gsam_norm = 0
+        self.sum_gsam_norm_squared = 0
+        self.mean_gsam_norm = 0
+        self.var_gsam_norm = 0
+        self.m = 0
+
+        self.var_delta = var_delta
+
+        # counts how often the current decision rule has decided TRUE
+        self.decision_rule_counter = 0
+
         if self.crt[:8] == "gSAMNorm":
             self.tau = 0
             for group in self.param_groups:
@@ -60,6 +73,8 @@ class VASSORE(VASSO):
                         ).to(p)
 
         self.inner_gradient_calculation = criteria_functions[crt]
+
+        # outer gradient norm
         self.g_norm = 0
 
     @classmethod
@@ -69,6 +84,8 @@ class VASSORE(VASSO):
         config["crt_k"] = args.crt_k
         config["crt_p"] = args.crt_p
         config["zeta"] = args.zeta
+        # Also put it into defaulf_cfg.py as an input option
+        config["var_delta"] = args.var_delta
         return config
 
     @torch.no_grad()
@@ -107,6 +124,16 @@ class VASSORE(VASSO):
         if self.crt[:8] == "gSAMNorm":
             self.g_norm = self._avg_grad_norm("g_t").item()
             self.tau = (1 - self.theta) * self.tau + self.theta * self.g_norm
+
+            # for variance or chebyshev methods
+            # ema calculation might be more preferable... how to decide btw statistical measures?
+            self.m += 1
+            self.sum_gsam_norm += self.g_norm
+            self.sum_gsam_norm_squared += self.g_norm**2
+            self.mean_gsam_norm = self.sum_gsam_norm / self.m
+            self.var_gsam_norm = (
+                self.sum_gsam_norm_squared / self.m - self.mean_gsam_norm**2
+            )
 
         self.base_optimizer.step()
         if zero_grad:

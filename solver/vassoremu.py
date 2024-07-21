@@ -24,6 +24,7 @@ class VASSOREMU(VASSORE):
         crt_k,
         crt_p,
         zeta,
+        var_delta,
     ) -> None:
         super().__init__(
             params,
@@ -38,6 +39,7 @@ class VASSOREMU(VASSORE):
             crt_k,
             crt_p,
             zeta,
+            var_delta,
         )
 
     @torch.no_grad()

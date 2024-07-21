@@ -118,6 +118,7 @@ class Logger:
         else:
             return
 
+    # this is the same as logging per iteration step
     def wandb_log_batch(self, **stats):
         if self.enable_wandb:
             self.run.log(stats)

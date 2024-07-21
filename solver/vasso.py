@@ -28,8 +28,10 @@ class VASSO(torch.optim.Optimizer):
 
         # base configurations
         self.base_optimizer = base_optimizer
+
         self.extensive_metrics_mode = extensive_metrics_mode
         self.performance_scores_mode = performance_scores_mode
+
         self.iteration_step_counter = 0
 
         if self.extensive_metrics_mode:
@@ -41,7 +43,7 @@ class VASSO(torch.optim.Optimizer):
 
         # VaSSO specific configurations
         assert 0 <= rho, f"rho should be non-negative:{rho}"
-        assert theta <= 1 and theta >= 0, "theta must live in [0, 1]."
+        assert 0 <= theta and theta <= 1, "theta must live in [0, 1]."
         self.rho = rho
         self.theta = theta
 
@@ -85,6 +87,7 @@ class VASSO(torch.optim.Optimizer):
 
             # define here the custom metrics that will be tracked per batch
             custom_metrics_per_batch = [
+                "decision_type",
                 "cosSim(e_t, e_{t-1})",
                 "||w_t - w_{t-1}||",
                 "||g_{t-1}||",

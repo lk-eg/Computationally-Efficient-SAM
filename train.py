@@ -20,6 +20,7 @@ from utils.seed import setup_seed
 from utils.engine import train_one_epoch, evaluate
 from utils.optimiser_based_selection import (
     need_closure_fn,
+    schedule_epoch_ranges,
     scheduling,
     optimiser_overhead_calculation,
 )
@@ -64,7 +65,7 @@ def main(args):
     optimizer, base_optimizer = build_optimizer(
         args, model=model_without_ddp, logger=logger
     )
-    used_optimizer = optimizer
+    use_optimizer = optimizer
     lr_scheduler = build_lr_scheduler(args, optimizer=base_optimizer)
     logger.log(f"Optimizer: {type(optimizer)}")
     logger.log(f"LR Scheduler: {type(lr_scheduler)}")
@@ -85,11 +86,12 @@ def main(args):
         lr_scheduler.step(args.start_epoch)
         logger.log(f"Resume training from {args.resmue_path}.")
 
-    # scheduling method
-    # schedule=True if we are in a SAM epoch
+    # Re: Scheduling Optimizer
+    # schedule = True if in a VaSSO epoch
     schedule = False
     if args.crt == "schedule":
         schedule = True
+        sch_epoch_ranges = schedule_epoch_ranges(args.crt_s)
 
     need_closure = need_closure_fn(args)
 
@@ -104,18 +106,18 @@ def main(args):
             train_loader.sampler.set_epoch(epoch)
 
         if schedule:
-            if scheduling(input_string=args.crt_s, current_epoch=epoch):
-                used_optimizer = base_optimizer
-                need_closure = False
-            else:
-                used_optimizer = optimizer
+            if scheduling(current_epoch=epoch, epoch_ranges=sch_epoch_ranges):
+                use_optimizer = optimizer
                 need_closure = True
+            else:
+                use_optimizer = base_optimizer
+                need_closure = False
 
         train_stats = train_one_epoch(
             model=model,
             train_loader=train_loader,
             criterion=criterion,
-            optimizer=used_optimizer,
+            optimizer=use_optimizer,
             epoch=epoch,
             logger=logger,
             log_freq=args.log_freq,
@@ -183,9 +185,10 @@ def main(args):
     end_training = time.time()
     used_training = str(datetime.timedelta(seconds=end_training - start_training))
     training_duration = end_training - start_training
-    training_duration_minutes = training_duration.total_seconds() / 60
+    training_duration_minutes = training_duration / 60
     logger.log("Training Time:{}".format(used_training))
 
+    # taken from the last round
     overfitting_indicator = test_loss - train_loss
 
     optim_overhead_calc = optimiser_overhead_calculation(args)
