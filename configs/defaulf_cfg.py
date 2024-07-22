@@ -177,9 +177,9 @@ class default_parser:
                 "baseline",
                 "naive",
                 "random",
-                "schedule",
                 "gSAMsharp",
                 "gSAMflat",
+                "schedule",
             ],
         )
         parser.add_argument(

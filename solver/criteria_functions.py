@@ -121,9 +121,9 @@ criteria_functions = {
 criteria_parameter_names = {
     "naive": ("k", "crt_k"),
     "random": ("p", "crt_p"),
-    "schedule": ("s", "crt_s"),
     "gSAMsharp": ("z", "crt_z"),
     "gSAMflat": ("z", "crt_z"),
+    "schedule": ("s", "crt_s"),
 }
 
 

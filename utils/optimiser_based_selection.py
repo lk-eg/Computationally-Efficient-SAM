@@ -17,7 +17,7 @@ def schedule_epoch_ranges(input_string):
     epoch_ranges = []
     for element in elements:
         if "-" in element:
-            start, end = map(int, element.split("-"))
+            start, end = map(int, element[1:-1].split("-"))
             epoch_ranges.append((start, end))
         else:
             epoch = int(element)

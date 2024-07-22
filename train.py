@@ -206,11 +206,10 @@ def main(args):
     used_training = str(datetime.timedelta(seconds=end_training - start_training))
     training_duration = end_training - start_training
     training_duration_minutes = training_duration / 60
-    if logging_mode:
-        logger.log("Training Time:{}".format(used_training))
+    logger.log("Training Time:{}".format(used_training))
 
     # taken from the last round
-    overfitting_indicator = train_loss - test_loss
+    overfitting_indicator = test_loss - train_loss
 
     if not (args.opt[:3] == "sgd" or args.opt[:4] == "adam"):
         if logging_mode:
