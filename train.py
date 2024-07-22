@@ -52,7 +52,8 @@ def main(args):
     train_loader = build_train_dataloader(train_dataset=train_data, args=args)
     val_loader = build_val_dataloader(val_dataset=val_data, args=args)
     args.n_classes = n_classes
-    logger.log(f"Train Data: {len(train_data)}, Test Data: {len(val_data)}.")
+    len_train_data = len(train_data)
+    logger.log(f"Train Data: {len_train_data}, Test Data: {len(val_data)}.")
 
     # build model
     model = build_model(args)
@@ -211,25 +212,27 @@ def main(args):
     # taken from the last round
     overfitting_indicator = test_loss - train_loss
 
+    total_iterations = args.epochs * (len_train_data // (args.batch_size))
+
     if not (args.opt[:3] == "sgd" or args.opt[:4] == "adam"):
         if logging_mode:
             logger.log(
                 "Total inner gradient calculations: {}, Total iterations: {}".format(
                     optimizer.inner_gradient_calculation_counter,
-                    optimizer.iteration_step_counter,
+                    total_iterations,
                 )
             )
             logger.log(
                 "Total inner forward passes: {}, Total iterations: {}".format(
                     optimizer.inner_fwp_calculation_counter,
-                    optimizer.iteration_step_counter,
+                    total_iterations,
                 )
             )
         fwp_overhead_over_sgd = 1 + optimizer.inner_fwp_calculation_counter / (
-            optimizer.iteration_step_counter
+            total_iterations
         )
         bwp_overhead_over_sgd = 1 + optimizer.inner_gradient_calculation_counter / (
-            optimizer.iteration_step_counter
+            total_iterations
         )
         logger.log("Overhead over SGD: {:.2f}".format(bwp_overhead_over_sgd))
     else:

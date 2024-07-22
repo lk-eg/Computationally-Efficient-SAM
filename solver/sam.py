@@ -21,7 +21,6 @@ class SAM(torch.optim.Optimizer):
         super(SAM, self).__init__(params, dict(rho=rho))
 
         # Counters to measure how much more backward passes etc.
-        self.iteration_step_counter = 0
         self.inner_gradient_calculation_counter = 0
         self.inner_fwp_calculation_counter = 0
 
@@ -73,8 +72,6 @@ class SAM(torch.optim.Optimizer):
         with torch.enable_grad():
             outerOutput, outerLoss = closure(True, True)
         self.second_step()
-
-        self.iteration_step_counter += 1
 
         return innerOutput, innerLoss
 
