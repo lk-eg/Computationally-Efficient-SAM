@@ -25,7 +25,7 @@ class VASSORE(VASSO):
         crt,
         crt_k,
         crt_p,
-        zeta,
+        crt_z,
         var_delta,
     ) -> None:
         super().__init__(
@@ -42,15 +42,15 @@ class VASSORE(VASSO):
         assert 0 <= crt_k and isinstance(crt_k, int), "k must be a natural number"
         assert 0 <= crt_p and crt_p <= 1, "p must live in [0, 1]."
 
+        # Criteria parameters
         self.crt = crt
         self.k = crt_k
         self.p = crt_p
-        self.zeta = zeta
-        self.rndm = 0.0
-        self.inner_gradient_calculation_counter = 0
-        self.inner_fwp_calculation_counter = 0
+        self.crt_z = crt_z
 
-        # decision function indicators
+        self.rndm = 0.0
+
+        # Decision function indicators
         self.sum_gsam_norm = 0
         self.sum_gsam_norm_squared = 0
         self.mean_gsam_norm = 0
@@ -59,10 +59,10 @@ class VASSORE(VASSO):
 
         self.var_delta = var_delta
 
-        # counts how often the current decision rule has decided TRUE
+        # Counts how often the current decision rule has decided TRUE
         self.decision_rule_counter = 0
 
-        if self.crt[:8] == "gSAMNorm":
+        if self.crt[:4] == "gSAM":
             self.tau = 0
             for group in self.param_groups:
                 for p in group["params"]:
@@ -83,7 +83,7 @@ class VASSORE(VASSO):
         config["crt"] = args.crt
         config["crt_k"] = args.crt_k
         config["crt_p"] = args.crt_p
-        config["zeta"] = args.zeta
+        config["crt_z"] = args.crt_z
         # Also put it into defaulf_cfg.py as an input option
         config["var_delta"] = args.var_delta
         return config
@@ -121,12 +121,14 @@ class VASSORE(VASSO):
                     self.state[p]["g_{t-1}"] = self.state[p]["g_t"].clone()
                 self.state[p]["g_t"] = p.grad
 
-        if self.crt[:8] == "gSAMNorm":
+        # For gSAMsharp and gSAMflat
+        if self.crt[:4] == "gSAM":
             self.g_norm = self._avg_grad_norm("g_t").item()
             self.tau = (1 - self.theta) * self.tau + self.theta * self.g_norm
 
-            # for variance or chebyshev methods
-            # ema calculation might be more preferable... how to decide btw statistical measures?
+        # Variance or Chebyshev methods
+        # ema calculation might be more preferable... how to decide btw statistical measures?
+        if self.crt[:3] == "dec":
             self.m += 1
             self.sum_gsam_norm += self.g_norm
             self.sum_gsam_norm_squared += self.g_norm**2

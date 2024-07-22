@@ -47,6 +47,7 @@ class default_parser:
             help="Frequency of recording information.",
         )
 
+        # Three different log modes can be specified
         parser.add_argument(
             "--extensive_metrics_mode",
             action="store_true",
@@ -56,6 +57,11 @@ class default_parser:
             "--performance_scores_mode",
             action="store_true",
             help="Performance Scores Mode: for correct inner forward pass loss calc even if forward pass is not needed",
+        )
+        parser.add_argument(
+            "--logging_mode",
+            action="store_true",
+            help="If we need console, output file logging, and in general a logger",
         )
 
         parser.add_argument("--start_epoch", type=int, default=0)
@@ -166,7 +172,15 @@ class default_parser:
         parser.add_argument(
             "--crt",
             type=str,
-            choices=["baseline", "naive", "random", "schedule", "variance"],
+            default="baseline",
+            choices=[
+                "baseline",
+                "naive",
+                "random",
+                "schedule",
+                "gSAMsharp",
+                "gSAMflat",
+            ],
         )
         parser.add_argument(
             "--crt_k",
@@ -181,10 +195,10 @@ class default_parser:
             help="Re-use of eps: new calculation with probability p in each iteration_step",
         )
         parser.add_argument(
-            "--zeta",
+            "--crt_z",
             type=float,
             default=1.0,
-            help="hyper parameter for decision on inner gradient calculation on gSAMNormEMA. Concretely, decision `tau_{t-1} <= zeta * ||g_{t,SAM}||`",
+            help="decision on `tau_{t-1} <= crt_z * ||g_{t,SAM}||`",
         )
         parser.add_argument(
             "--var_delta",
@@ -250,10 +264,10 @@ class default_parser:
                 output_name.extend(["k={}".format(args.crt_k)])
             elif crt == "random":
                 output_name.extend(["p={}".format(args.crt_p)])
-            elif crt == "gSAMNormEMA":
-                output_name.extend(["zeta={}".format(args.zeta)])
-            elif crt == "gSAMNormEMAInverted":
-                output_name.extend(["zeta={}".format(args.zeta)])
+            elif crt == "gSAMsharp":
+                output_name.extend(["crt_z={}".format(args.crt_z)])
+            elif crt == "gSAMflat":
+                output_name.extend(["crt_z={}".format(args.crt_z)])
 
         def sam_hyper_param(args):
             args_opt = args.opt.split("-")

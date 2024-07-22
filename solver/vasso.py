@@ -32,7 +32,10 @@ class VASSO(torch.optim.Optimizer):
         self.extensive_metrics_mode = extensive_metrics_mode
         self.performance_scores_mode = performance_scores_mode
 
+        # Counters to measure how much more backward passes etc.
         self.iteration_step_counter = 0
+        self.inner_gradient_calculation_counter = 0
+        self.inner_fwp_calculation_counter = 0
 
         if self.extensive_metrics_mode:
             self.logger = logger
@@ -150,6 +153,8 @@ class VASSO(torch.optim.Optimizer):
 
         with torch.enable_grad():
             innerOutput, innerLoss = closure(True, True)
+            self.inner_fwp_calculation_counter += 1
+            self.inner_gradient_calculation_counter += 1
         self.first_step()
         with torch.enable_grad():
             outerOutput, outerLoss = closure(True, True)

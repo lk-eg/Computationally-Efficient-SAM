@@ -20,6 +20,11 @@ class SAM(torch.optim.Optimizer):
         self.logger = logger
         super(SAM, self).__init__(params, dict(rho=rho))
 
+        # Counters to measure how much more backward passes etc.
+        self.iteration_step_counter = 0
+        self.inner_gradient_calculation_counter = 0
+        self.inner_fwp_calculation_counter = 0
+
         self.param_groups = self.base_optimizer.param_groups
         for group in self.param_groups:
             group["rho"] = rho
@@ -62,10 +67,14 @@ class SAM(torch.optim.Optimizer):
 
         with torch.enable_grad():
             innerOutput, innerLoss = closure(True, True)
+            self.inner_fwp_calculation_counter += 1
+            self.inner_gradient_calculation_counter += 1
         self.first_step()
         with torch.enable_grad():
             outerOutput, outerLoss = closure(True, True)
         self.second_step()
+
+        self.iteration_step_counter += 1
 
         return innerOutput, innerLoss
 

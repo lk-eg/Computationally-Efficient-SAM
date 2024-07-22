@@ -26,7 +26,7 @@ def comp_file_logging(
             elif reuse_method == "random":
                 f.write(f" - p={args.crt_p} \n")
             elif reuse_method[:11] == "gSAMNormEMA":
-                f.write(f" - zeta={args.zeta} \n")
+                f.write(f" - crt_z={args.crt_z} \n")
         f.write(
             f"Max Test Accuracy: {max_acc:.4f}, Last Train Accuracy: {train_acc1:.4f}, Difference (Train Accuracy - Test Accuracy) = {train_acc1 - max_acc:.4f} \n"
         )
@@ -49,6 +49,8 @@ def training_result_save(
     bwp_overhead_over_sgd,
     images_per_sec,
     runtime,
+    max_allocated_memory,
+    max_reserved_memory,
     lambda_1=None,
     lambda_5=None,
 ):
@@ -63,7 +65,7 @@ def training_result_save(
         criterium_parameter = criteria_parameters(args, criterion)
     else:
         criterium_parameter = None
-    
+
     exp_res = {
         "optimizer": args.opt,
         "criterion": criterion,
@@ -76,6 +78,8 @@ def training_result_save(
         "bwp_overhead": round(bwp_overhead_over_sgd, 4),
         "images/s": round(images_per_sec, 2),
         "runtime": round(runtime, 4),
+        "max_allocated_memory": max_allocated_memory,
+        "max_reserved_memory": max_reserved_memory,
         "epochs": args.epochs,
     }
     if args.crt == "none":

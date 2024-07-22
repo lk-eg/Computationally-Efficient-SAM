@@ -23,7 +23,7 @@ class VASSOREMU(VASSORE):
         crt,
         crt_k,
         crt_p,
-        zeta,
+        crt_z,
         var_delta,
     ) -> None:
         super().__init__(
@@ -38,7 +38,7 @@ class VASSOREMU(VASSORE):
             crt,
             crt_k,
             crt_p,
-            zeta,
+            crt_z,
             var_delta,
         )
 

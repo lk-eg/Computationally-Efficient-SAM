@@ -19,6 +19,7 @@ def train_one_epoch(
     need_closure,
     optimizer_argument,
     extensive_metrics_mode,
+    logging_mode,
 ):
     model.train()
 
@@ -34,7 +35,7 @@ def train_one_epoch(
         targets = targets.to(device, non_blocking=True)
 
         # Forard- and Backward-pass function.
-        # Efficiency is mainly about how often, and which part, of this function gets called.
+        # Efficiency is mainly about how often, and which part of, this function gets called.
         def closure(computeForward, computeBackprop):
             if computeForward:
                 output = model(images)
@@ -87,31 +88,32 @@ def train_one_epoch(
         _memory.update_meter("train_acc5", acc5.item(), n=batch_num)
         _memory.update_meter("images/s", batch_num / batch_t, n=1)
 
-        msg = " ".join(
-            [
-                "Epoch: {epoch}",
-                "[{batch_id}/{batch_len}]",
-                "lr:{lr:.6f}",
-                "Train Loss:{train_loss:.4f}",
-                "Train Acc1:{train_acc1:.4f}",
-                "Train Acc5:{train_acc5:.4f}",
-                "Time:{batch_time:.3f}s",
-            ]
-        )
-        if batch_idx % log_freq == 0:
-            logger.log(
-                msg.format(
-                    epoch=epoch,
-                    batch_id=batch_idx,
-                    batch_len=len(train_loader),
-                    lr=optimizer.param_groups[0]["lr"],
-                    train_loss=_memory.meters["train_loss"].global_avg,
-                    train_acc1=_memory.meters["train_acc1"].global_avg,
-                    train_acc5=_memory.meters["train_acc5"].global_avg,
-                    batch_time=batch_t,
-                )
+        if logging_mode:
+            msg = " ".join(
+                [
+                    "Epoch: {epoch}",
+                    "[{batch_id}/{batch_len}]",
+                    "lr:{lr:.6f}",
+                    "Train Loss:{train_loss:.4f}",
+                    "Train Acc1:{train_acc1:.4f}",
+                    "Train Acc5:{train_acc5:.4f}",
+                    "Time:{batch_time:.3f}s",
+                ]
             )
-        _memory.synchronize_between_processes()
+            if batch_idx % log_freq == 0:
+                logger.log(
+                    msg.format(
+                        epoch=epoch,
+                        batch_id=batch_idx,
+                        batch_len=len(train_loader),
+                        lr=optimizer.param_groups[0]["lr"],
+                        train_loss=_memory.meters["train_loss"].global_avg,
+                        train_acc1=_memory.meters["train_acc1"].global_avg,
+                        train_acc5=_memory.meters["train_acc5"].global_avg,
+                        batch_time=batch_t,
+                    )
+                )
+            _memory.synchronize_between_processes()
     return {name: meter.global_avg for name, meter in _memory.meters.items()}
 
 
