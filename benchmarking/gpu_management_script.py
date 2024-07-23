@@ -58,14 +58,14 @@ def worker(queue):
 
 
 def main(script_paths):
-    queue = Queue()
+    processes = []
     for script_path in script_paths:
-        queue.put(script_path)
+        p = Process(target=worker, args=(script_path,))
+        p.start()
+        processes.append(p)
 
-    process = Process(target=worker, args=(queue,))
-    process.start()
-    process.join()
-    queue.put(None)
+    for p in processes:
+        p.join()
 
 
 if __name__ == "__main__":
