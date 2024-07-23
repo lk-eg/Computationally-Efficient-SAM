@@ -3,7 +3,7 @@ import os
 import subprocess
 import time
 from multiprocessing import Process, Queue
-from .job_creation_benchmarking import benchmarking_experiments
+from job_creation_benchmarking import benchmarking_experiments
 
 
 def initialize_nvml():
