@@ -122,7 +122,7 @@ class default_parser:
             "--opt",
             type=str,
             default="sgd",
-            help="sgd, sam-sgd, vasso-sgd, sam-adam, vasso-adam, vassore-sgd, vassore-adam",
+            help="sgd, sam-sgd, vasso-sgd, sam-adamw, vasso-adamw, vassore-sgd, vassore-adamw",
         )
         parser.add_argument("--lr", type=float, default=0.05)
         parser.add_argument("--weight_decay", type=float, default=1e-3)

@@ -30,6 +30,8 @@ def build_base_optimizer(args, parameters):
     if base_opt == "sgd":
         base_optimizer = optim.SGD(params=parameters, **opt_kwargs)
     elif base_opt == "adamw":
+        del opt_kwargs["nesterov"]
+        del opt_kwargs["momentum"]
         base_optimizer = optim.AdamW(params=parameters, **opt_kwargs)
     else:
         raise ValueError("Incorrect base optimizer.")
