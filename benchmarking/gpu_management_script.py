@@ -44,17 +44,13 @@ def run_script(script_path, gpu_id):
 def worker(queue):
     initialize_nvml()
     while True:
-        script_path = queue.get()
-        if script_path is None:
+        gpu_id = get_free_gpu()
+        if gpu_id is not None:
+            run_script(script_path, gpu_id)
             break
-        while True:
-            gpu_id = get_free_gpu()
-            if gpu_id is not None:
-                run_script(script_path, gpu_id)
-                break
-            else:
-                print("No free GPU available, waiting...")
-                time.sleep(900)
+        else:
+            print("No free GPU available, waiting...")
+            time.sleep(900)
 
 
 def main(script_paths):
