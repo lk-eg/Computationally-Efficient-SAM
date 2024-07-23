@@ -31,7 +31,7 @@ class Logger:
         self.output_dir = output_dir
         self.output_name = output_name
         self.logger_path = os.path.join(output_dir, output_name)
-        Path(self.logger_path).mkdir(parents=True, exist_ok=True)
+        # Path(self.logger_path).mkdir(parents=True, exist_ok=True)
 
         self.enable_wandb = enable_wandb
         if enable_wandb:

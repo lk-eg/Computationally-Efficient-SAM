@@ -1,6 +1,6 @@
 import numpy as np
 
-WARMUP_CONSTANT = 100
+WARMUP_CONSTANT = 1
 
 """
 CRITERIA that tell us if inner gradient has to be calculated
@@ -29,10 +29,6 @@ def gSAMflat_criterion(self):
     return (
         not gSAMsharp_criterion(self) or self.iteration_step_counter <= WARMUP_CONSTANT
     )
-
-
-def scheduling_block(self, calculation_range_set):
-    return self.iteration_step_counter in calculation_range_set
 
 
 def variance_criterion(self):

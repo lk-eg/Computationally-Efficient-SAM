@@ -1,7 +1,7 @@
 def dict_creation(
     opt: str,
-    dataset: str = "CIFAR10_cutout",
-    model: str = "resnet18",
+    dataset: str = "CIFAR100_cutout",
+    model: str = "wideresnet28x10",
     rho: float = 0.2,
     t: float = 0.4,
     w: float = 1e-3,
@@ -10,8 +10,8 @@ def dict_creation(
     crt_p: float = 0.5,
     crt_z: float = 1.0,
     crt_s: str = "[100-200]",
-    epochs: int = 3,
-    dataset_nn_combination: str = "cifar10_rn18_benchmarking",
+    epochs: int = 200,
+    dataset_nn_combination: str = "cifar100_wrn28-10_benchmarking",
 ):
     d = {}
     d["dataset"] = dataset
