@@ -50,12 +50,13 @@ def worker(script_path):
             break
         else:
             print("No free GPU available, waiting...")
-            time.sleep(10)  # Wait for 10 seconds before checking again
+            time.sleep(900)
 
 
 def main(script_paths):
     processes = []
     for script_path in script_paths:
+        time.sleep(20)
         p = Process(target=worker, args=(script_path,))
         p.start()
         processes.append(p)
