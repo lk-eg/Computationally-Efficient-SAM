@@ -10,6 +10,18 @@ def need_closure_fn(args):
     )
 
 
+def hyperparameters(args):
+    hyperparameter_string = ""
+    if args.opt[:3] == "sgd" or args.opt[:5] == "adamw":
+        hyperparameter_string += "lr={args.lr}"
+    if args.opt[:3] == "sam":
+        hyperparameter_string += "rho={args.rho}"
+    if args.opt[:5] == "vasso":
+        hyperparameter_string += "theta={args.theta}"
+    # more cases have to be added later
+    return hyperparameter_string
+
+
 # Re: Scheduling optimizer
 # find the epochs in which VaSSO will be scheduled
 def schedule_epoch_ranges(input_string):

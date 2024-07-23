@@ -1,6 +1,9 @@
 import pandas as pd
 from solver.criteria_functions import criteria_parameters
-from utils.optimiser_based_selection import optimiser_overhead_calculation
+from utils.optimiser_based_selection import (
+    optimiser_overhead_calculation,
+    hyperparameters,
+)
 
 
 # Write global comparison txt file
@@ -68,6 +71,7 @@ def training_result_save(
 
     exp_res = {
         "optimizer": args.opt,
+        "hyperparameters": hyperparameters(args),
         "criterion": criterion,
         "crt_parameter": criterium_parameter,
         "top-1 test acc": top_1_test_acc,
@@ -82,6 +86,7 @@ def training_result_save(
         "max_allocated_memory": max_allocated_memory,
         "max_reserved_memory": max_reserved_memory,
         "epochs": args.epochs,
+        "exclusive_run": args.exclusive_run,
     }
     if args.crt == "none":
         exp_res["criterion"] = "none"

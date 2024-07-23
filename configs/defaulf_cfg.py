@@ -69,6 +69,11 @@ class default_parser:
             "--epochs", type=int, default=200, help="Epochs of training."
         )
         parser.add_argument("--dataset_nn_combination", type=str)
+        parser.add_argument(
+            "--exclusive_run",
+            action="store_true",
+            help="Run used for runtime and memory benchmarking purposes",
+        )
         return parser
 
     def dist_parser(self):
