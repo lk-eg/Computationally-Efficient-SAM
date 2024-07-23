@@ -59,7 +59,7 @@ def main(script_paths):
         p = Process(target=worker, args=(script_path,))
         p.start()
         processes.append(p)
-        time.sleep(10)
+        time.sleep(20)
 
     for p in processes:
         p.join()

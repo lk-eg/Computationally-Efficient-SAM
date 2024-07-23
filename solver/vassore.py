@@ -72,7 +72,8 @@ class VASSORE(VASSO):
                             p, requires_grad=False
                         ).to(p)
 
-        self.inner_gradient_calculation = criteria_functions[crt]
+        if not crt == "schedule":
+            self.inner_gradient_calculation = criteria_functions[crt]
 
         # outer gradient norm
         self.g_norm = 0
