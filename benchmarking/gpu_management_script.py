@@ -1,8 +1,9 @@
 import pynvml
 import os
+import subprocess
 import time
 from multiprocessing import Process, Queue
-from benchmarking.job_creation_benchmarking import benchmarking_experiments
+from .job_creation_benchmarking import benchmarking_experiments
 
 
 def initialize_nvml():
@@ -37,7 +38,7 @@ def run_script(script_path, gpu_id):
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
     print(f"Running script {script_path} on GPU {gpu_id}")
-    os.system(f"python3 ../train.py {script_path}", env=env)
+    subprocess.run(["python3", "../train.py", *script_path.split()], env=env)
 
 
 def worker(queue):
