@@ -11,11 +11,11 @@ def need_closure_fn(args):
 
 
 def hyperparameters(args):
-    hyperparameter_string = f"lr={args.lr}"
+    hyperparameter_string = f"lr={args.lr},"
     if need_closure_fn(args):
-        hyperparameter_string += f"rho={args.rho}"
+        hyperparameter_string += f"rho={args.rho},"
     if args.opt[:5] == "vasso":
-        hyperparameter_string += f"theta={args.theta}"
+        hyperparameter_string += f"theta={args.theta},"
 
     # more cases have to be added later
     return hyperparameter_string
