@@ -41,7 +41,7 @@ def run_script(script_path, gpu_id):
     subprocess.run(["python3", "../train.py", *script_path.split()], env=env)
 
 
-def worker(queue):
+def worker(script_path):
     initialize_nvml()
     while True:
         gpu_id = get_free_gpu()
@@ -50,7 +50,7 @@ def worker(queue):
             break
         else:
             print("No free GPU available, waiting...")
-            time.sleep(900)
+            time.sleep(10)  # Wait for 10 seconds before checking again
 
 
 def main(script_paths):
