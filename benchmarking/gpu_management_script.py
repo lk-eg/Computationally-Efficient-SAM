@@ -2,7 +2,7 @@ import pynvml
 import os
 import subprocess
 import time
-from multiprocessing import Process, Queue
+from multiprocessing import Process
 from job_creation_benchmarking import benchmarking_experiments
 
 
@@ -56,7 +56,7 @@ def worker(script_path):
 def main(script_paths):
     processes = []
     for script_path in script_paths:
-        time.sleep(20)
+        time.sleep(10)
         p = Process(target=worker, args=(script_path,))
         p.start()
         processes.append(p)
