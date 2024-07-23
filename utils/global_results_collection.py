@@ -57,7 +57,7 @@ def training_result_save(
     criterion = args.crt
     results = []
     if lambda_1 is not None:
-        jastr = lambda_1 / lambda_5
+        jastr = round(lambda_1 / lambda_5, 4)
     else:
         jastr = None
 
@@ -72,9 +72,9 @@ def training_result_save(
         "crt_parameter": criterium_parameter,
         "top-1 test acc": top_1_test_acc,
         "overfitting indicator": round(overfitting_indicator, 4),
-        "l1": round(lambda_1, 4),
-        "l5": round(lambda_5, 4),
-        "l1/l5": round(jastr, 4),
+        "l1": lambda_1,
+        "l5": lambda_5,
+        "l1/l5": jastr,
         "fwp_overhead": round(fwp_overhead_over_sgd, 4),
         "bwp_overhead": round(bwp_overhead_over_sgd, 4),
         "images/s": round(images_per_sec, 2),
