@@ -166,12 +166,12 @@ class default_parser:
         parser.add_argument(
             "--theta", type=float, default=0.4, help="Moving average for VASSO"
         )
-        parser.add_argument(
-            "--phi",
-            type=float,
-            default=1e-3,
-            help="Moving average for second moment in AdaVaSSO",
-        )
+        # parser.add_argument(
+        #     "--phi",
+        #     type=float,
+        #     default=1e-3,
+        #     help="Moving average for second moment in AdaVaSSO",
+        # )
 
         # Criteria for making SAM efficient
         parser.add_argument(
