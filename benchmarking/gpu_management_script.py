@@ -37,8 +37,15 @@ def get_free_gpu():
 def run_script(script_path, gpu_id):
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
-    print(f"Running script {script_path} on GPU {gpu_id}")
-    subprocess.run(["python3", "../train.py", *script_path.split()], env=env)
+
+    with open("gpu_doc_0.info", "a") as f:
+        f.write(f"Running script {script_path} on GPU {gpu_id}")
+        subprocess.run(
+            ["python3", "../train.py"] + script_path.split(),
+            env=env,
+            stdout=f,
+            stderr=f,
+        )
 
 
 def worker(script_path):
@@ -49,8 +56,8 @@ def worker(script_path):
             run_script(script_path, gpu_id)
             break
         else:
-            print("No free GPU available, waiting...")
-            time.sleep(900)
+            # print("No free GPU available, waiting...")
+            time.sleep(1800)
 
 
 def main(script_paths):

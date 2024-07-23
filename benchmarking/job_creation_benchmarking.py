@@ -10,8 +10,8 @@ def dict_creation(
     crt_p: float = 0.5,
     crt_z: float = 1.0,
     crt_s: str = "[100-200]",
-    epochs: int = 5,
-    dataset_nn_combination: str = "cifar10_rn18",
+    epochs: int = 3,
+    dataset_nn_combination: str = "cifar10_rn18_benchmarking",
 ):
     d = {}
     d["dataset"] = dataset
@@ -47,7 +47,7 @@ def filling_out_experiment_commands() -> list:
             experiments.append(dict_creation(baseline_opt, w=5e-4))
             continue
         experiments.append(dict_creation(baseline_opt))
-    experiments.append(dict_creation("vasso", t=0.2))
+    experiments.append(dict_creation("vasso-sgd", t=0.2))
 
     for crt_opt in crt_opts:
         for crt in crts:
@@ -57,9 +57,9 @@ def filling_out_experiment_commands() -> list:
             if crt == "random":
                 for p in ps:
                     experiments.append(dict_creation(crt_opt, crt=crt, crt_p=p))
-            if crt == "schedule":
-                for s in ss_endblock:
-                    experiments.append(dict_creation(crt_opt, crt=crt, crt_s=s))
+    if crt == "schedule":
+        for s in ss_endblock:
+            experiments.append(dict_creation("vasso-sgd", crt=crt, crt_s=s))
 
     return experiments
 
