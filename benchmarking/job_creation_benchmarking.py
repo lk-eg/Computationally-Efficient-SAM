@@ -33,9 +33,16 @@ def dict_creation(
 baseline_opts = ["sgd", "sam-sgd", "vasso-sgd", "adamw"]
 crt_opts = ["vassore-sgd", "vassoremu-sgd"]
 crts = ["naive", "random", "schedule"]
-ks = [2, 5, 10, 20, 100]
-ps = [0.5, 0.2, 0.1, 0.05, 0.01]
-ss_endblock = ["[100-200]", "[134-200]", "[160-200]", "[180-200]", "[198-200]"]
+ks = [2, 3, 5, 10, 20, 100]
+ps = [0.5, 0.33, 0.2, 0.1, 0.05, 0.01]
+ss_endblock = [
+    "[100-200]",
+    "[134-200]",
+    "[160-200]",
+    "[180-200]",
+    "[190-200]",
+    "[198-200]",
+]
 
 
 # Filling of experiment creation commands
