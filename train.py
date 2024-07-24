@@ -53,7 +53,7 @@ def main(args):
     val_loader = build_val_dataloader(val_dataset=val_data, args=args)
     args.n_classes = n_classes
     len_train_data = len(train_data)
-    logger.log(f"Train Data: {len_train_data}, Test Data: {len(val_data)}.")
+    # logger.log(f"Train Data: {len_train_data}, Test Data: {len(val_data)}.")
 
     # build model
     model = build_model(args)
@@ -61,7 +61,7 @@ def main(args):
     if args.distributed:
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
         model_without_ddp = model.module
-    logger.log(f"Model: {args.model}")
+    # logger.log(f"Model: {args.model}")
 
     # build loss
     criterion = torch.nn.CrossEntropyLoss()
@@ -72,8 +72,8 @@ def main(args):
     )
     use_optimizer = optimizer
     lr_scheduler = build_lr_scheduler(args, optimizer=base_optimizer)
-    logger.log(f"Optimizer: {type(optimizer)}")
-    logger.log(f"LR Scheduler: {type(lr_scheduler)}")
+    # logger.log(f"Optimizer: {type(optimizer)}")
+    # logger.log(f"LR Scheduler: {type(lr_scheduler)}")
 
     # just for SGD
     if args.extensive_metrics_mode:
@@ -207,7 +207,7 @@ def main(args):
     used_training = str(datetime.timedelta(seconds=end_training - start_training))
     training_duration = end_training - start_training
     training_duration_minutes = training_duration / 60
-    logger.log("Training Time:{}".format(used_training))
+    # logger.log("Training Time:{}".format(used_training))
 
     # taken from the last round
     overfitting_indicator = test_loss - train_loss
@@ -231,7 +231,7 @@ def main(args):
         fwp_overhead_over_sgd = 1 + optimizer.inner_fwp_calculation_counter / (
             total_iterations
         )
-        bwp_overhead_over_sgd = 1 + optimizer.inner_gradient_calculation_counter / (
+        bwp_overhead_over_sgd = 1 +  .inner_gradient_calculation_counter / (
             total_iterations
         )
         logger.log("Overhead over SGD: {:.2f}".format(bwp_overhead_over_sgd))
@@ -254,6 +254,8 @@ def main(args):
         hessian_spectrum = hessian_eigenthings[0]
         lambda_1 = round(hessian_spectrum[0], 4)
         lambda_5 = round(hessian_spectrum[4], 4)
+
+    
 
     if logging_mode:
         logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))

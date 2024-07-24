@@ -10,7 +10,7 @@ try:
 
     _has_wandb = True
 except Exception as e:
-    print(f"No wandb found. Exception: {e}")
+    # print(f"No wandb found. Exception: {e}")
     _has_wandb = False
 
 

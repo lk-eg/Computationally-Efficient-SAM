@@ -63,7 +63,7 @@ def init_distributed_model(args):
         args.world_size = int(os.environ["WORLD_SIZE"])
         args.gpu = int(os.environ["LOCAL_RANK"])
     else:
-        print("Not using distributed mode")
+        # print("Not using distributed mode")
         args.distributed = False
         return
 
