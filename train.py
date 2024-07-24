@@ -10,7 +10,6 @@ from data.build import (
     build_dataset,
     build_train_dataloader,
     build_val_dataloader,
-    build_full_train_dataloader,
 )
 from solver.build import build_optimizer, build_lr_scheduler
 
@@ -22,10 +21,8 @@ from utils.optimiser_based_selection import (
     need_closure_fn,
     schedule_epoch_ranges,
     scheduling,
-    optimiser_overhead_calculation,
 )
 from utils.global_results_collection import (
-    comp_file_logging,
     training_result_save,
 )
 from utils.device import onHPC
@@ -231,7 +228,7 @@ def main(args):
         fwp_overhead_over_sgd = 1 + optimizer.inner_fwp_calculation_counter / (
             total_iterations
         )
-        bwp_overhead_over_sgd = 1 +  .inner_gradient_calculation_counter / (
+        bwp_overhead_over_sgd = 1 + optimizer.inner_gradient_calculation_counter / (
             total_iterations
         )
         logger.log("Overhead over SGD: {:.2f}".format(bwp_overhead_over_sgd))
@@ -254,8 +251,6 @@ def main(args):
         hessian_spectrum = hessian_eigenthings[0]
         lambda_1 = round(hessian_spectrum[0], 4)
         lambda_5 = round(hessian_spectrum[4], 4)
-
-    
 
     if logging_mode:
         logger.mv("{}_{:.4f}".format(logger.logger_path, max_acc))
