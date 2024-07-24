@@ -12,7 +12,7 @@ def dict_creation(
     crt: str = "naive",
     crt_k: int = 2,
     crt_p: float = 0.5,
-    zeta: float = 1.0,
+    crt_z: float = 1.0,
 ):
     d = {}
     d["name"] = name
@@ -25,7 +25,7 @@ def dict_creation(
     d["crt"] = crt
     d["k"] = crt_k
     d["p"] = crt_p
-    d["zeta"] = zeta
+    d["crt_z"] = crt_z
     return d
 
 
@@ -101,7 +101,7 @@ for opt in opt_prefixes:
                                 "4G",
                                 theta,
                                 crt="gSAMNormEMA",
-                                zeta=z,
+                                crt_z=z,
                             )
                         )
                         experiments.append(
@@ -113,7 +113,7 @@ for opt in opt_prefixes:
                                 "4G",
                                 theta,
                                 crt="gSAMNormEMAInverted",
-                                zeta=z,
+                                crt_z=z,
                             )
                         )
 
@@ -144,7 +144,7 @@ python3 train.py \
         --crt {crt} \
         --crt_k {k} \
         --crt_p {p} \
-        --zeta {zeta}
+        --crt_z {crt_z}
 """
 
 for experiment in experiments:
