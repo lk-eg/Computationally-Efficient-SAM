@@ -139,6 +139,8 @@ slurm_template = """#!/bin/bash
 
 module load eth_proxy
 module load stack/2024-06
+module load python_cuda/3.11.6
+module load py-distro/1.8.0-4tnktx7
 
 cd ~/sam/VaSSO
 
