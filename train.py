@@ -25,7 +25,7 @@ from utils.optimiser_based_selection import (
 from utils.global_results_collection import (
     training_result_save,
 )
-from utils.device import onHPC
+from utils.device import onServer
 
 from hessian_eigenthings import compute_hessian_eigenthings
 
@@ -99,7 +99,7 @@ def main(args):
 
     # ====================
     # START TRAIN:
-    if onHPC():
+    if onServer():
         torch.cuda.reset_peak_memory_stats(device=None)
     logger.log(f"Start training for {args.epochs} Epochs.")
     start_training = time.time()
@@ -193,7 +193,7 @@ def main(args):
 
     # Memory measurements
     max_allocated_memory, max_reserved_memory = None, None
-    if onHPC():
+    if onServer():
         max_allocated_memory = int(
             torch.cuda.max_memory_allocated(device=None) / (1024**2)
         )

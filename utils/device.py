@@ -19,6 +19,13 @@ def onHPC():
         return False
 
 
+def onServer():
+    if distro.name() == "CentOS Linux":
+        return True
+    else:
+        return False
+
+
 def dataset_directory():
     if distro.name() == "CentOS Linux":
         return "/home/laltun/datasets"
