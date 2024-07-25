@@ -26,6 +26,8 @@ class VASSORE(VASSO):
         crt_k,
         crt_p,
         crt_z,
+        z_two,
+        lam,
         var_delta,
     ) -> None:
         super().__init__(
@@ -46,7 +48,14 @@ class VASSORE(VASSO):
         self.crt = crt
         self.k = crt_k
         self.p = crt_p
+
         self.crt_z = crt_z
+        self.lam = lam
+        self.phi = (1 - lam) * crt_z + lam
+        if crt == "gSAMratio":
+            self.phi_prime = (1 - lam) / z_two + lam
+        else:
+            self.phi_prime = (1 - lam) / crt_z + lam
 
         self.rndm = 0.0
 
@@ -64,6 +73,7 @@ class VASSORE(VASSO):
 
         if self.crt[:4] == "gSAM":
             self.tau = 0
+            self.logger.wandb_define_metrics_per_batch(["decision_type"])
             for group in self.param_groups:
                 for p in group["params"]:
                     itr_metric_keys = ["g_t"]
@@ -85,6 +95,8 @@ class VASSORE(VASSO):
         config["crt_k"] = args.crt_k
         config["crt_p"] = args.crt_p
         config["crt_z"] = args.crt_z
+        config["z_two"] = args.z_two
+        config["lam"] = args.lam
         # Also put it into defaulf_cfg.py as an input option
         config["var_delta"] = args.var_delta
         return config
@@ -125,7 +137,7 @@ class VASSORE(VASSO):
         # For gSAMsharp and gSAMflat
         if self.crt[:4] == "gSAM":
             self.g_norm = self._avg_grad_norm("g_t").item()
-            self.tau = (1 - self.theta) * self.tau + self.theta * self.g_norm
+            self.tau = (1 - self.lam) * self.tau + self.lam * self.g_norm
 
         # Variance or Chebyshev methods
         # ema calculation might be more preferable... how to decide btw statistical measures?

@@ -6,6 +6,7 @@ def dict_creation(
     dir: str,
     opt: str,
     seed: int,
+    lam: float,
     mem: str = "1G",
     dataset: str = "CIFAR100_cutout",
     model: str = "wideresnet28x10",
@@ -14,7 +15,8 @@ def dict_creation(
     w: float = 1e-3,
     crt: str = "gSAMflat",
     crt_z: float = 1.0,
-    dataset_nn_combination: str = "cifar100_wrn28-10_gSAM",
+    z_2: float = 1.1,
+    dataset_nn_combination: str = "cifar100_wrn2810_gSAM",
 ):
     d = {}
     d["name"] = name + "_" + str(seed)
@@ -27,19 +29,21 @@ def dict_creation(
     d["theta"] = t
     d["weight_decay"] = w
     d["crt"] = crt
+    d["lam"] = lam
     d["z"] = crt_z
+    d["z_2"] = z_2
     d["seed"] = seed
     d["dataset_nn_combination"] = dataset_nn_combination
     return d
 
 
-seeds = [3107, 1234, 42, 87283, 913248]
+seeds = [3107]
 crt_opts = ["vassore-sgd", "vassoremu-sgd"]
-crts = ["gSAMflat", "gSAMsharp"]
-phis = [0.4, 0.9]
-zs = [
-    1.0,
-]
+crts = ["gSAMflat", "gSAMsharp", "gSAMratio"]
+lambdas = [0.01, 0.1, 0.2, 0.4, 0.5, 0.9]
+zs = [1.0, 1.1, 1.2, 1.5, 2.0, 2.5]
+
+z_1s = [1.1, 1.2, 1.5, 2.0]
 
 
 # Filling of experiment creation commands
@@ -47,65 +51,42 @@ def filling_out_experiment_commands() -> list:
     experiments = []
 
     for seed in seeds:
-        for baseline_opt in baseline_opts:
-            name = baseline_opt + "_baseline"
-            if baseline_opt == "sgd":
-                experiments.append(
-                    dict_creation(
-                        name=name, dir="baseline", opt=baseline_opt, seed=seed, w=5e-4
-                    )
-                )
-                continue
-            experiments.append(
-                dict_creation(name=name, dir="baseline", opt=baseline_opt, seed=seed)
-            )
-        experiments.append(
-            dict_creation(
-                name="vasso_baseline_t=0.2",
-                dir="baseline",
-                opt="vasso-sgd",
-                seed=seed,
-                t=0.2,
-            )
-        )
-
-    for seed in seeds:
         for crt_opt in crt_opts:
             for crt in crts:
-                if crt == "naive":
-                    for k in ks:
-                        name = crt_opt + "_" + crt + "_" + "k=" + str(k)
+                for lam in lambdas:
+                    if crt == "gSAMratio":
+                        for z_1 in z_1s:
+                            for z_2inv in z_1s:
+                                z_1 = z_1
+                                z_2 = 1.0 / z_2inv
+                                name = "{}_{}_l={}_z1={}_z2={}".format(
+                                    crt_opt, crt, lam, z_1, z_2
+                                )
+                                experiments.append(
+                                    dict_creation(
+                                        name=name,
+                                        dir=crt,
+                                        opt=crt_opt,
+                                        seed=seed,
+                                        lam=lam,
+                                        crt=crt,
+                                        crt_z=z_1,
+                                        z_2=z_2,
+                                    )
+                                )
+                    for z in zs:
+                        name = crt_opt + "_" + crt + "_" + "l=" + lam + "_" + "z=" + z
                         experiments.append(
                             dict_creation(
                                 name=name,
                                 dir=crt,
                                 opt=crt_opt,
                                 seed=seed,
+                                lam=lam,
                                 crt=crt,
-                                crt_k=k,
+                                crt_z=z,
                             )
                         )
-                if crt == "random":
-                    for p in ps:
-                        name = crt_opt + "_" + crt + "_" + "p=" + str(p)
-                        experiments.append(
-                            dict_creation(
-                                name=name,
-                                dir=crt,
-                                opt=crt_opt,
-                                seed=seed,
-                                crt=crt,
-                                crt_p=p,
-                            )
-                        )
-        if crt == "schedule":
-            for s in ss_endblock:
-                name = "vasso-sgd" + "_" + crt + "_" + "s=" + s
-                experiments.append(
-                    dict_creation(
-                        name=name, dir=crt, opt="vasso_sgd", seed=seed, crt=crt, crt_s=s
-                    )
-                )
 
     return experiments
 
@@ -136,9 +117,14 @@ python3 train.py \
     --rho {rho} \
     --theta {theta} \
     --crt {crt} \
+    --lam {lam} \
     --crt_z {z} \
+    --z_two {z_two} \
     --seed {seed} \
-    --dataset_nn_combination {dataset_nn_combination}
+    --dataset_nn_combination {dataset_nn_combination} \
+    --wandb \
+    --wandb_project "gSAM TUNING" \
+    --wandb_name {name}
 """
 
 for experiment in filling_out_experiment_commands():

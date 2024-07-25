@@ -16,6 +16,10 @@ def hyperparameters(args):
         hyperparameter_string += f"rho={args.rho};"
     if args.opt[:5] == "vasso":
         hyperparameter_string += f"theta={args.theta};"
+    if args.crt[:4] == "gSAM":
+        hyperparameter_string += f"lam={args.lam};z={args.crt_z};"
+    if args.crt == "gSAMratio":
+        hyperparameter_string += f"z2={args.z_two};"
 
     # more cases have to be added later
     return hyperparameter_string
