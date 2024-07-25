@@ -6,7 +6,7 @@ def dict_creation(
     dir: str,
     opt: str,
     seed: int,
-    mem: str = "2G",
+    mem: str = "1G",
     dataset: str = "CIFAR100_cutout",
     model: str = "wideresnet28x10",
     rho: float = 0.2,
@@ -42,7 +42,10 @@ def dict_creation(
 
 
 seeds = [1234, 42, 87283, 913248]
-baseline_opts = ["sgd", "sam-sgd", "vasso-sgd", "adamw"]
+baseline_opts = [
+    "sam-sgd",
+    "vasso-sgd",
+]
 crt_opts = ["vassore-sgd", "vassoremu-sgd"]
 crts = ["naive", "random", "schedule"]
 ks = [2, 3, 5, 10, 20, 100]
@@ -64,19 +67,19 @@ def filling_out_experiment_commands() -> list:
     for seed in seeds:
         for baseline_opt in baseline_opts:
             name = baseline_opt + "_baseline"
-            if baseline_opt == "sgd":
-                experiments.append(
-                    dict_creation(
-                        name=name, dir="baseline", opt=baseline_opt, seed=seed, w=5e-4
-                    )
-                )
-                continue
+            # if baseline_opt == "sgd":
+            #     experiments.append(
+            #         dict_creation(
+            #             name=name, dir="baseline", opt=baseline_opt, seed=seed, w=5e-4
+            #         )
+            #     )
+            #     continue
             experiments.append(
                 dict_creation(name=name, dir="baseline", opt=baseline_opt, seed=seed)
             )
         experiments.append(
             dict_creation(
-                name="vasso_baseline_t=0.2",
+                name="vasso-sgd_baseline_t=0.2",
                 dir="baseline",
                 opt="vasso-sgd",
                 seed=seed,
@@ -84,52 +87,52 @@ def filling_out_experiment_commands() -> list:
             )
         )
 
-    for seed in seeds:
-        for crt_opt in crt_opts:
-            for crt in crts:
-                if crt == "naive":
-                    for k in ks:
-                        name = crt_opt + "_" + crt + "_" + "k=" + str(k)
-                        experiments.append(
-                            dict_creation(
-                                name=name,
-                                dir=crt,
-                                opt=crt_opt,
-                                seed=seed,
-                                crt=crt,
-                                crt_k=k,
-                            )
-                        )
-                if crt == "random":
-                    for p in ps:
-                        name = crt_opt + "_" + crt + "_" + "p=" + str(p)
-                        experiments.append(
-                            dict_creation(
-                                name=name,
-                                dir=crt,
-                                opt=crt_opt,
-                                seed=seed,
-                                crt=crt,
-                                crt_p=p,
-                            )
-                        )
-        if crt == "schedule":
-            for s in ss_endblock:
-                name = "vasso-sgd" + "_" + crt + "_" + "s=" + s
-                experiments.append(
-                    dict_creation(
-                        name=name, dir=crt, opt="vasso_sgd", seed=seed, crt=crt, crt_s=s
-                    )
-                )
+    # for seed in seeds:
+    #     for crt_opt in crt_opts:
+    #         for crt in crts:
+    #             if crt == "naive":
+    #                 for k in ks:
+    #                     name = crt_opt + "_" + crt + "_" + "k=" + str(k)
+    #                     experiments.append(
+    #                         dict_creation(
+    #                             name=name,
+    #                             dir=crt,
+    #                             opt=crt_opt,
+    #                             seed=seed,
+    #                             crt=crt,
+    #                             crt_k=k,
+    #                         )
+    #                     )
+    #             if crt == "random":
+    #                 for p in ps:
+    #                     name = crt_opt + "_" + crt + "_" + "p=" + str(p)
+    #                     experiments.append(
+    #                         dict_creation(
+    #                             name=name,
+    #                             dir=crt,
+    #                             opt=crt_opt,
+    #                             seed=seed,
+    #                             crt=crt,
+    #                             crt_p=p,
+    #                         )
+    #                     )
+    #     if crt == "schedule":
+    #         for s in ss_endblock:
+    #             name = "vasso-sgd" + "_" + crt + "_" + "s=" + s
+    #             experiments.append(
+    #                 dict_creation(
+    #                     name=name, dir=crt, opt="vasso_sgd", seed=seed, crt=crt, crt_s=s
+    #                 )
+    #             )
 
     return experiments
 
 
 slurm_template = """#!/bin/bash
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 #SBATCH --gpus=1
-#SBATCH --time=12:00:00
+#SBATCH --time=20:00:00
 #SBATCH --job-name={name}_c100_wrn2810
 #SBATCH --mem-per-cpu={memcpu}
 #SBATCH --output={output_dir}/outputs/{name}.out

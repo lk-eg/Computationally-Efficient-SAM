@@ -34,7 +34,7 @@ def train_one_epoch(
         images = images.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
 
-        # Forard- and Backward-pass function.
+        # Forward- and Backward-pass function.
         # Efficiency is mainly about how often, and which part of, this function gets called.
         def closure(computeForward, computeBackprop):
             if computeForward:
