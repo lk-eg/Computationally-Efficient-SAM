@@ -71,9 +71,12 @@ class VASSORE(VASSO):
         # Counts how often the current decision rule has decided TRUE
         self.decision_rule_counter = 0
 
+        self.logger = logger
+
         if self.crt[:4] == "gSAM":
             self.tau = 0
             self.logger.wandb_define_metrics_per_batch(["decision_type"])
+            self.gSAMema = []
             for group in self.param_groups:
                 for p in group["params"]:
                     itr_metric_keys = ["g_t"]
@@ -138,6 +141,7 @@ class VASSORE(VASSO):
         if self.crt[:4] == "gSAM":
             self.g_norm = self._avg_grad_norm("g_t").item()
             self.tau = (1 - self.lam) * self.tau + self.lam * self.g_norm
+            self.gSAMema.append({"gSAMnorm": self.g_norm, "tau": self.tau})
 
         # Variance or Chebyshev methods
         # ema calculation might be more preferable... how to decide btw statistical measures?

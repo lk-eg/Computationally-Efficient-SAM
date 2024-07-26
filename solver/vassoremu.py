@@ -24,6 +24,7 @@ class VASSOREMU(VASSORE):
         crt_k,
         crt_p,
         crt_z,
+        z_two,
         lam,
         var_delta,
     ) -> None:
@@ -40,6 +41,7 @@ class VASSOREMU(VASSORE):
             crt_k,
             crt_p,
             crt_z,
+            z_two,
             lam,
             var_delta,
         )

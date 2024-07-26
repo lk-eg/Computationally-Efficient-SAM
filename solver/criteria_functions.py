@@ -169,6 +169,7 @@ criteria_functions = {
     "random": random_criterion,
     "gSAMsharp": gSAMsharp_criterion,
     "gSAMflat": gSAMflat_criterion,
+    "gSAMratio": gSAMratio_criterion,
     "variance": variance_criterion,
     "chebyshev": chebyshev_criterion,
 }

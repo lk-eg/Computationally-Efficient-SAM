@@ -4,6 +4,8 @@ from utils.optimiser_based_selection import (
     optimiser_overhead_calculation,
     hyperparameters,
 )
+import csv
+import portalocker
 
 
 # Write global comparison txt file
@@ -106,3 +108,18 @@ def training_result_save(
         header=not file_exists,
         index=False,
     )
+
+
+# As I want to know the distribution of gradient norms
+def gSAM_save(optimizer):
+    gSAMema = optimizer.gSAMema
+    gSAMnorm_values = [entry["gSAMnorm"] for entry in gSAMema]
+    tau_values = [entry["tau"] for entry in gSAMema]
+    with open("gSAMstudy", "a", newline="") as file:
+        portalocker.lock(file, portalocker.LOCK_EX)
+        try:
+            writer = csv.writer(file)
+            writer.writerow(gSAMnorm_values)
+            writer.writerow(tau_values)
+        finally:
+            portalocker.unlock(file)

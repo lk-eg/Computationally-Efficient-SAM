@@ -22,9 +22,7 @@ from utils.optimiser_based_selection import (
     schedule_epoch_ranges,
     scheduling,
 )
-from utils.global_results_collection import (
-    training_result_save,
-)
+from utils.global_results_collection import training_result_save, gSAM_save
 from utils.device import onServer
 
 from hessian_eigenthings import compute_hessian_eigenthings
@@ -269,6 +267,9 @@ def main(args):
         lambda_1=lambda_1,
         lambda_5=lambda_5,
     )
+
+    if args.crt[:4] == "gSAM":
+        gSAM_save(optimizer)
 
 
 if __name__ == "__main__":
