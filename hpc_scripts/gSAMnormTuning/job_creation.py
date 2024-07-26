@@ -124,7 +124,7 @@ python3 train.py \
     --dataset_nn_combination {dataset_nn_combination} \
     --wandb \
     --wandb_project "gSAM TUNING" \
-    --wandb_name {name}
+    --wandb_name "{name}"
 """
 
 for experiment in filling_out_experiment_commands():
