@@ -115,7 +115,7 @@ def gSAM_save(optimizer):
     gSAMema = optimizer.gSAMema
     gSAMnorm_values = [entry["gSAMnorm"] for entry in gSAMema]
     tau_values = [entry["tau"] for entry in gSAMema]
-    with open("gSAMstudy", "a", newline="") as file:
+    with open("gSAMstudy.csv", "a", newline="") as file:
         fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
         try:
             writer = csv.writer(file)
