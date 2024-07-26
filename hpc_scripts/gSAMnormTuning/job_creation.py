@@ -60,7 +60,7 @@ def filling_out_experiment_commands() -> list:
                                 z_1 = z_1
                                 z_2 = 1.0 / z_2inv
                                 name = "{}_{}_l={}_z1={}_z2={}".format(
-                                    crt_opt, crt, lam, z_1, z_2
+                                    crt_opt, crt, lam, z_1, round(z_2, 2)
                                 )
                                 experiments.append(
                                     dict_creation(
@@ -122,9 +122,6 @@ python3 train.py \
     --z_two {z_two} \
     --seed {seed} \
     --dataset_nn_combination {dataset_nn_combination} \
-    --wandb \
-    --wandb_project "gSAM TUNING" \
-    --wandb_name "{name}"
 """
 
 for experiment in filling_out_experiment_commands():

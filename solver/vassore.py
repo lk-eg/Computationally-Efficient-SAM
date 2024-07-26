@@ -75,8 +75,8 @@ class VASSORE(VASSO):
 
         if self.crt[:4] == "gSAM":
             self.tau = 0
-            self.logger.wandb_define_metrics_per_batch(["decision_type"])
             self.gSAMema = []
+            self.criterion_logger = []
             for group in self.param_groups:
                 for p in group["params"]:
                     itr_metric_keys = ["g_t"]

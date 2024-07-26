@@ -21,21 +21,7 @@ def random_criterion(self):
 
 def gSAMsharp_criterion(self):
     criterion_trigger = self.tau < self.phi_prime * self.g_norm
-    if criterion_trigger:
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 1,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
-        self.decision_rule_counter += 1
-    else:
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 0,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
+    self.criterion_logger.append(criterion_trigger)
     return (
         criterion_trigger
         or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
@@ -44,21 +30,7 @@ def gSAMsharp_criterion(self):
 
 def gSAMflat_criterion(self):
     criterion_trigger = self.tau > self.phi * self.g_norm
-    if criterion_trigger:
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 1,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
-        self.decision_rule_counter += 1
-    else:
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 0,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
+    self.criterion_logger.append(criterion_trigger)
     return (
         criterion_trigger
         or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
@@ -69,21 +41,7 @@ def gSAMratio_criterion(self):
     criterion_trigger = (
         self.tau > self.phi * self.g_norm or self.tau < self.phi_prime * self.g_norm
     )
-    if criterion_trigger:
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 1,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
-        self.decision_rule_counter += 1
-    else:
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 0,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
+    self.criterion_logger.append(criterion_trigger)
     return (
         criterion_trigger
         or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
