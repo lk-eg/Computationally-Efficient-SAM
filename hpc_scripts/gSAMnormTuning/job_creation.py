@@ -75,7 +75,7 @@ def filling_out_experiment_commands() -> list:
                                     )
                                 )
                     for z in zs:
-                        name = crt_opt + "_" + crt + "_" + "l=" + lam + "_" + "z=" + z
+                        name = "{}_{}_l={}_z1={}".format(crt_opt, crt, lam, z_1)
                         experiments.append(
                             dict_creation(
                                 name=name,
