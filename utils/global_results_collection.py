@@ -5,7 +5,7 @@ from utils.optimiser_based_selection import (
     hyperparameters,
 )
 import csv
-import portalocker
+import fcntl
 
 
 # Write global comparison txt file
@@ -116,10 +116,10 @@ def gSAM_save(optimizer):
     gSAMnorm_values = [entry["gSAMnorm"] for entry in gSAMema]
     tau_values = [entry["tau"] for entry in gSAMema]
     with open("gSAMstudy", "a", newline="") as file:
-        portalocker.lock(file, portalocker.LOCK_EX)
+        fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
         try:
             writer = csv.writer(file)
             writer.writerow(gSAMnorm_values)
             writer.writerow(tau_values)
         finally:
-            portalocker.unlock(file)
+            fcntl.flock(file, fcntl.LOCK_UN)
