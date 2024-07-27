@@ -95,13 +95,12 @@ slurm_template = """#!/bin/bash
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --gpus=1
-#SBATCH --time=20:00:00
+#SBATCH --time=22:00:00
 #SBATCH --job-name={name}_c100_wrn2810
 #SBATCH --mem-per-cpu={memcpu}
 #SBATCH --output={output_dir}/outputs/{name}.out
 #SBATCH --error={output_dir}/errors/{name}.err
 #SBATCH --open-mode=truncate
-#SBATCH --mail-type=END
 
 module load eth_proxy
 module load stack/2024-06
