@@ -166,12 +166,6 @@ class default_parser:
         parser.add_argument(
             "--theta", type=float, default=0.4, help="Moving average for VASSO"
         )
-        # parser.add_argument(
-        #     "--phi",
-        #     type=float,
-        #     default=1e-3,
-        #     help="Moving average for second moment in AdaVaSSO",
-        # )
 
         # Criteria for making SAM efficient
         parser.add_argument(
@@ -184,6 +178,7 @@ class default_parser:
                 "random",
                 "gSAMsharp",
                 "gSAMflat",
+                "gSAMratio",
                 "schedule",
             ],
         )
@@ -199,11 +194,21 @@ class default_parser:
             default=0.5,
             help="Re-use of eps: new calculation with probability p in each iteration_step",
         )
+        # gSAMflat and gSAMsharp
+        parser.add_argument(
+            "--lam", type=float, default=0.4, help="parameter for weight for tau"
+        )
         parser.add_argument(
             "--crt_z",
             type=float,
             default=1.0,
-            help="decision on `tau_{t-1} <= crt_z * ||g_{t,SAM}||`",
+            help="comparison factor for tau-decision rule. For gSAMsharp <= 1.0, for gSAMflat >= 1.0",
+        )
+        parser.add_argument(
+            "--z_two",
+            type=float,
+            default=0.5,
+            help="second comparison factor for combined gSAMratio decision rule.",
         )
         parser.add_argument(
             "--var_delta",

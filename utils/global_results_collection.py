@@ -4,6 +4,8 @@ from utils.optimiser_based_selection import (
     optimiser_overhead_calculation,
     hyperparameters,
 )
+import csv
+import fcntl
 
 
 # Write global comparison txt file
@@ -106,3 +108,29 @@ def training_result_save(
         header=not file_exists,
         index=False,
     )
+
+
+# As I want to know the distribution of gradient norms
+def gSAM_save(args):
+    gSAMema = args.opt.gSAMema
+    gSAMnorm_values = [entry["gSAMnorm"] for entry in gSAMema]
+    tau_values = [entry["tau"] for entry in gSAMema]
+    with open("gSAMstudy.csv", "a", newline="") as file:
+        fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            writer = csv.writer(file)
+            writer.writerow(gSAMnorm_values)
+            writer.writerow(tau_values)
+        finally:
+            fcntl.flock(file, fcntl.LOCK_UN)
+
+    criterion_logger = args.opt.criterion_logger
+    name = f"crt={args.crt}_lam={args.lam}_z1={args.crt_z}_z2={args.z_two}"
+    criterion_logger.insert(0, name)
+    with open("criterion_logger.csv", "a", newline="") as file:
+        fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            writer = csv.writer(file)
+            writer.writerow(criterion_logger)
+        finally:
+            fcntl.flock(file, fcntl.LOCK_UN)

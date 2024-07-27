@@ -1,6 +1,7 @@
 import numpy as np
 
 WARMUP_CONSTANT = 1
+WARMUP_CONSTANT_MEAN_BASED_METHODS = 100
 
 """
 CRITERIA that tell us if inner gradient has to be calculated
@@ -19,15 +20,31 @@ def random_criterion(self):
 
 
 def gSAMsharp_criterion(self):
+    criterion_trigger = self.tau < self.phi_prime * self.g_norm
+    self.criterion_logger.append(criterion_trigger)
     return (
-        self.tau <= self.crt_z * self.g_norm
-        or self.iteration_step_counter <= WARMUP_CONSTANT
+        criterion_trigger
+        or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
     )
 
 
 def gSAMflat_criterion(self):
+    criterion_trigger = self.tau > self.phi * self.g_norm
+    self.criterion_logger.append(criterion_trigger)
     return (
-        not gSAMsharp_criterion(self) or self.iteration_step_counter <= WARMUP_CONSTANT
+        criterion_trigger
+        or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
+    )
+
+
+def gSAMratio_criterion(self):
+    criterion_trigger = (
+        self.tau > self.phi * self.g_norm or self.tau < self.phi_prime * self.g_norm
+    )
+    self.criterion_logger.append(criterion_trigger)
+    return (
+        criterion_trigger
+        or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
     )
 
 
@@ -110,6 +127,7 @@ criteria_functions = {
     "random": random_criterion,
     "gSAMsharp": gSAMsharp_criterion,
     "gSAMflat": gSAMflat_criterion,
+    "gSAMratio": gSAMratio_criterion,
     "variance": variance_criterion,
     "chebyshev": chebyshev_criterion,
 }
@@ -119,6 +137,7 @@ criteria_parameter_names = {
     "random": ("p", "crt_p"),
     "gSAMsharp": ("z", "crt_z"),
     "gSAMflat": ("z", "crt_z"),
+    "gSAMratio": ("z", "crt_z"),
     "schedule": ("s", "crt_s"),
 }
 

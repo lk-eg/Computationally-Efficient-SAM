@@ -17,4 +17,4 @@ module load python_gpu/3.8.5
 
 cd ~/sam/VaSSO
 
-python3 train.py         --opt vassoremu-sgd         --theta 0.4         --weight_decay 0.001         --crt random         --crt_k 2         --crt_p 0.5         --zeta 1.0
+python3 train.py         --opt vassoremu-sgd         --theta 0.4         --weight_decay 0.001         --crt random         --crt_k 2         --crt_p 0.5         --crt_z 1.0
