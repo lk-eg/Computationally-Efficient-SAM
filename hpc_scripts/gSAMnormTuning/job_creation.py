@@ -7,7 +7,7 @@ def dict_creation(
     opt: str,
     seed: int,
     lam: float,
-    mem: str = "3G",
+    mem: str = "2G",
     dataset: str = "CIFAR100_cutout",
     model: str = "wideresnet28x10",
     rho: float = 0.2,
@@ -93,9 +93,9 @@ def filling_out_experiment_commands() -> list:
 
 slurm_template = """#!/bin/bash
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=2
 #SBATCH --gpus=1
-#SBATCH --time=22:00:00
+#SBATCH --time=20:00:00
 #SBATCH --job-name={name}_c100_wrn2810
 #SBATCH --mem-per-cpu={memcpu}
 #SBATCH --output={output_dir}/outputs/{name}.out

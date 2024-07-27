@@ -21,7 +21,7 @@ def random_criterion(self):
 
 def gSAMsharp_criterion(self):
     criterion_trigger = self.tau < self.phi_prime * self.g_norm
-    self.criterion_logger.append(criterion_trigger)
+    self.criterion_logger.append(criterion_trigger + 0)
     return (
         criterion_trigger
         or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
@@ -30,7 +30,7 @@ def gSAMsharp_criterion(self):
 
 def gSAMflat_criterion(self):
     criterion_trigger = self.tau > self.phi * self.g_norm
-    self.criterion_logger.append(criterion_trigger)
+    self.criterion_logger.append(criterion_trigger + 0)
     return (
         criterion_trigger
         or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS
@@ -41,7 +41,7 @@ def gSAMratio_criterion(self):
     criterion_trigger = (
         self.tau > self.phi * self.g_norm or self.tau < self.phi_prime * self.g_norm
     )
-    self.criterion_logger.append(criterion_trigger)
+    self.criterion_logger.append(criterion_trigger + 0)
     return (
         criterion_trigger
         or self.iteration_step_counter <= WARMUP_CONSTANT_MEAN_BASED_METHODS

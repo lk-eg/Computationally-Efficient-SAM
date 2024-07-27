@@ -269,7 +269,7 @@ def main(args):
     )
 
     if args.crt[:4] == "gSAM":
-        gSAM_save(optimizer)
+        gSAM_save(args, optimizer)
 
 
 if __name__ == "__main__":
