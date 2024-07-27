@@ -180,6 +180,8 @@ class default_parser:
                 "gSAMflat",
                 "gSAMratio",
                 "schedule",
+                "cosSim",
+                "variance",
             ],
         )
         parser.add_argument(
@@ -213,6 +215,7 @@ class default_parser:
         parser.add_argument(
             "--var_delta",
             type=float,
+            default=1.0,
             help="threshold when the variance of outer gradient norms is too high so we trigger re-calculation of perturbation",
         )
         parser.add_argument(
@@ -220,6 +223,11 @@ class default_parser:
             type=str,
             default="[100-200]",
             help="Scheduling of VaSSO optimizer: Run VaSSO in input epochs, baseline optimizer in other epochs",
+        )
+        parser.add_argument(
+            "--crt_c",
+            action="store_true",
+            help="Check if cosSim criterion >0 or <0 (False)",
         )
         return parser
 

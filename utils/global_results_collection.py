@@ -111,23 +111,35 @@ def training_result_save(
 
 
 # As I want to know the distribution of gradient norms
-def gSAM_save(args, optimizer):
-    gSAMema = optimizer.gSAMema
-    gSAMnorm_values = [entry["gSAMnorm"] for entry in gSAMema]
-    tau_values = [entry["tau"] for entry in gSAMema]
-    with open("gSAMstudy.csv", "a", newline="") as file:
-        fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        try:
-            writer = csv.writer(file)
-            writer.writerow(gSAMnorm_values)
-            writer.writerow(tau_values)
-        finally:
-            fcntl.flock(file, fcntl.LOCK_UN)
+def decision_rule_save(args, optimizer):
+    if args.crt[:4] == "gSAM":
+        gSAMema = optimizer.gSAMema
+        gSAMnorm_values = [entry["gSAMnorm"] for entry in gSAMema]
+        tau_values = [entry["tau"] for entry in gSAMema]
+        with open("gSAMstudy.csv", "a", newline="") as file:
+            fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            try:
+                writer = csv.writer(file)
+                writer.writerow(gSAMnorm_values)
+                writer.writerow(tau_values)
+            finally:
+                fcntl.flock(file, fcntl.LOCK_UN)
+
+    if args.crt == "cosSim":
+        cossim_values = optimizer.cosSims
+        with open("cosSimsstudy.csv", "a", newline="") as file:
+            fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            try:
+                writer = csv.writer(file)
+                writer.writerow(cossim_values)
+            finally:
+                fcntl.flock(file, fcntl.LOCK_UN)
 
     criterion_logger = optimizer.criterion_logger
     name = f"crt={args.crt}_lam={args.lam}_z1={args.crt_z}_z2={args.z_two}"
     criterion_logger.insert(0, name)
-    with open("criterion_logger.csv", "a", newline="") as file:
+    file_name = f"criterion_logger_{args.crt}.csv"
+    with open(file_name, "a", newline="") as file:
         fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
         try:
             writer = csv.writer(file)

@@ -28,6 +28,7 @@ class VASSORE(VASSO):
         crt_z,
         z_two,
         lam,
+        crt_c,
         var_delta,
     ) -> None:
         super().__init__(
@@ -59,6 +60,8 @@ class VASSORE(VASSO):
 
         self.rndm = 0.0
 
+        self.crt_c = crt_c
+
         # Decision function indicators
         self.sum_gsam_norm = 0
         self.sum_gsam_norm_squared = 0
@@ -73,13 +76,16 @@ class VASSORE(VASSO):
 
         self.logger = logger
 
-        if self.crt[:4] == "gSAM":
+        if self.crt[:4] == "gSAM" or self.crt == "cosSim":
             self.tau = 0
             self.gSAMema = []
             self.criterion_logger = []
+            self.cosSims = []
             for group in self.param_groups:
                 for p in group["params"]:
                     itr_metric_keys = ["g_t"]
+                    if self.crt == "cosSim":
+                        itr_metric_keys.append("g_{t-1}")
                     for key in itr_metric_keys:
                         self.state[p][key] = torch.zeros_like(
                             p, requires_grad=False
@@ -100,6 +106,7 @@ class VASSORE(VASSO):
         config["crt_z"] = args.crt_z
         config["z_two"] = args.z_two
         config["lam"] = args.lam
+        config["crt_c"] = args.crt_c
         # Also put it into defaulf_cfg.py as an input option
         config["var_delta"] = args.var_delta
         return config
@@ -132,7 +139,7 @@ class VASSORE(VASSO):
                     continue
                 p.sub_(self.state[p]["e_t"])
 
-                if self.extensive_metrics_mode:
+                if self.crt == "cosSim" or self.extensive_metrics_mode:
                     # This is the outer gradient, g_{SAM}, not the inner gradient.
                     self.state[p]["g_{t-1}"] = self.state[p]["g_t"].clone()
                 self.state[p]["g_t"] = p.grad

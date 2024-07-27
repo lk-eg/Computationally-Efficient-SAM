@@ -20,6 +20,8 @@ def hyperparameters(args):
         hyperparameter_string += f"lam={args.lam};z={args.crt_z};"
     if args.crt == "gSAMratio":
         hyperparameter_string += f"z2={args.z_two};"
+    if args.crt == "cosSim":
+        hyperparameter_string += f">0?{args.crt_c}"
 
     # more cases have to be added later
     return hyperparameter_string
