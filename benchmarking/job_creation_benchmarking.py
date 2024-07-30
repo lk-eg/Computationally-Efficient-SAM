@@ -12,7 +12,7 @@ def dict_creation(
     crt_s: str = "[100-200]",
     c: float = 0,
     epochs: int = 200,
-    dataset_nn_combination: str = "cifar100_wrn28-10_benchmarking",
+    dataset_nn_combination: str = "cifar100_wrn28-10_cosSim",
 ):
     d = {}
     d["dataset"] = dataset
