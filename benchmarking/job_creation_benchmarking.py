@@ -88,6 +88,8 @@ def cosSim_experiments() -> list:
         for c in cs:
             experiments.append(dict_creation(crt_opt, crt="cosSim", c=c))
 
+    return experiments
+
 
 command = """
     --dataset {dataset} \
