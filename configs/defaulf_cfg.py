@@ -226,7 +226,8 @@ class default_parser:
         )
         parser.add_argument(
             "--crt_c",
-            action="store_true",
+            type=float,
+            default=0,
             help="Check if cosSim criterion >0 or <0 (False)",
         )
         return parser

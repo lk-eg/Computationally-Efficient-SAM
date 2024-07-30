@@ -94,6 +94,7 @@ class VASSORE(VASSO):
         if not crt == "schedule":
             self.inner_gradient_calculation = criteria_functions[crt]
 
+        self.inner_grad = True
         # outer gradient norm
         self.g_norm = 0
 
@@ -113,16 +114,16 @@ class VASSORE(VASSO):
 
     @torch.no_grad()
     def first_step(self, zero_grad=False):
-        if self.inner_gradient_calculation(self):
+        if self.inner_grad:
             self._ema_update()
 
         avg_grad_norm = self._avg_grad_norm("ema")
         for group in self.param_groups:
-            if self.inner_gradient_calculation(self):
+            if self.inner_grad:
                 scale = group["rho"] / (avg_grad_norm + 1e-16)
 
             for p in group["params"]:
-                if self.inner_gradient_calculation(self):
+                if self.inner_grad:
                     e_w = self._new_e_w_calculation(p, scale)
                 else:
                     e_w = self.state[p]["e_t"]
@@ -172,10 +173,9 @@ class VASSORE(VASSO):
         if self.crt == "random":
             self.rndm = random.random()
 
-        computeForward = (
-            self.performance_scores_mode or self.inner_gradient_calculation(self)
-        )
-        computeBackprop = self.inner_gradient_calculation(self)
+        self.inner_grad = self.inner_gradient_calculation(self)
+        computeForward = self.performance_scores_mode or self.inner_grad
+        computeBackprop = self.inner_grad
         self.inner_fwp_calculation_counter += computeForward
         self.inner_gradient_calculation_counter += computeBackprop
         with torch.enable_grad():

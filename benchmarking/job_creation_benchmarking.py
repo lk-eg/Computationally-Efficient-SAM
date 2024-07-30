@@ -5,11 +5,12 @@ def dict_creation(
     rho: float = 0.2,
     t: float = 0.4,
     w: float = 1e-3,
-    crt: str = "baseline",
+    crt: str = "cosSim",
     crt_k: int = 2,
     crt_p: float = 0.5,
     crt_z: float = 1.0,
     crt_s: str = "[100-200]",
+    c: float = 0,
     epochs: int = 200,
     dataset_nn_combination: str = "cifar100_wrn28-10_benchmarking",
 ):
@@ -25,6 +26,7 @@ def dict_creation(
     d["p"] = crt_p
     d["z"] = crt_z
     d["s"] = crt_s
+    d["c"] = c
     d["epochs"] = epochs
     d["dataset_nn_combination"] = dataset_nn_combination
     return d
@@ -32,7 +34,15 @@ def dict_creation(
 
 baseline_opts = ["sgd", "sam-sgd", "vasso-sgd", "adamw"]
 crt_opts = ["vassore-sgd", "vassoremu-sgd"]
-crts = ["naive", "random", "schedule"]
+crts = [
+    "naive",
+    "random",
+    "schedule",
+    "gSAMflat",
+    "gSAMsharp",
+    "gSAMratio",
+    "cosSim",
+]
 ks = [2, 3, 5, 10, 20, 100]
 ps = [0.5, 0.33, 0.2, 0.1, 0.05, 0.01]
 ss_endblock = [
@@ -43,6 +53,7 @@ ss_endblock = [
     "[190-200]",
     "[198-200]",
 ]
+cs = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
 
 
 # Filling of experiment creation commands
@@ -71,6 +82,13 @@ def filling_out_experiment_commands() -> list:
     return experiments
 
 
+def cosSim_experiments() -> list:
+    experiments = []
+    for crt_opt in crt_opts:
+        for c in cs:
+            experiments.append(dict_creation(crt_opt, crt="cosSim", c=c))
+
+
 command = """
     --dataset {dataset} \
     --model {model} \
@@ -83,6 +101,7 @@ command = """
     --crt_p {p} \
     --crt_z {z} \
     --crt_s {s} \
+    --crt_c {c} \
     --epochs {epochs} \
     --dataset_nn_combination {dataset_nn_combination} \
     --exclusive_run
@@ -91,7 +110,7 @@ command = """
 
 def benchmarking_experiments():
     script_commands = []
-    for experiment in filling_out_experiment_commands():
+    for experiment in cosSim_experiments():
         command_content = command.format(**experiment)
         script_commands.append(command_content)
 

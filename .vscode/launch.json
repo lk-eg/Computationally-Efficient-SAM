@@ -235,6 +235,8 @@
                 "0.4",
                 "--crt",
                 "cosSim",
+                "--crt_c",
+                "0.2",
                 "--epochs",
                 "1",
                 "--dataset_nn_combination",

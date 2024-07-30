@@ -38,13 +38,14 @@ def run_script(script_path, gpu_id):
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
 
-    with open("gpu_doc_0.info", "a") as f:
+    with open("gpu_doc_cosSim.info", "a") as f:
         f.write(f"Running script {script_path} on GPU {gpu_id}")
         subprocess.run(
-            ["python3", "../train.py"] + script_path.split(),
+            ["nohup", "python3", "../train.py"] + script_path.split(),
             env=env,
             stdout=f,
             stderr=f,
+            preexec_fn=os.setpgrp,
         )
 
 

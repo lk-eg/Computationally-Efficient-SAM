@@ -50,10 +50,7 @@ def gSAMratio_criterion(self):
 
 def cosSim_criterion(self):
     cos_sim = self._cosine_similarity("g_t", "g_{t-1}")
-    if not self.crt_c:
-        criterion_trigger = cos_sim < 0
-    else:
-        criterion_trigger = cos_sim > 0
+    criterion_trigger = cos_sim <= self.crt_c
     self.cosSims.append(cos_sim)
     self.criterion_logger.append(criterion_trigger + 0)
     return criterion_trigger or self.iteration_step_counter <= WARMUP_CONSTANT
