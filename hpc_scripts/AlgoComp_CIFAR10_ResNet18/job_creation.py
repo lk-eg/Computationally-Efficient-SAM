@@ -3,151 +3,194 @@ import os
 
 def dict_creation(
     name: str,
-    opt: str,
     dir: str,
-    gpu: str,
-    mem: str,
-    t: float = 0.2,
+    opt: str,
+    seed: int,
+    mem: str = "1G",
+    dataset: str = "CIFAR10_cutout",
+    model: str = "resnet18",
+    rho: float = 0.1,
+    t: float = 0.4,
     w: float = 1e-3,
-    crt: str = "naive",
+    crt: str = "baseline",
     crt_k: int = 2,
     crt_p: float = 0.5,
-    crt_z: float = 1.0,
+    crt_s: str = "[100-200]",
+    crt_c: float = 0,
+    epochs: int = 200,
+    dataset_nn_combination: str = "cifar10_rn18_mass",
 ):
     d = {}
-    d["name"] = name
-    d["opt"] = opt
+    d["name"] = name + "_" + str(seed)
     d["output_dir"] = dir
-    d["gpu_model"] = gpu
     d["memcpu"] = mem
+    d["dataset"] = dataset
+    d["model"] = model
+    d["opt"] = opt
+    d["rho"] = rho
     d["theta"] = t
     d["weight_decay"] = w
     d["crt"] = crt
     d["k"] = crt_k
     d["p"] = crt_p
-    d["crt_z"] = crt_z
+    d["s"] = crt_s
+    d["c"] = crt_c
+    d["epochs"] = epochs
+    d["seed"] = seed
+    d["dataset_nn_combination"] = dataset_nn_combination
     return d
 
 
-opt_prefixes = ["vasso", "vassore", "vassoremu"]
-crts = ["naive", "random", "gSAMNormEMA", "gSAMNormEMA"]
-thetas = [0.2, 0.4]
-ks = [2, 5, 10, 20]
-ps = [0.5, 0.2, 0.1, 0.05]
-zetas = [2.0, 1.0, 0.5, 0.1, 1e-2]
+seeds = [3107, 1234, 42, 87283, 913248]
+baseline_opts = [
+    "sgd",
+    "adamw",
+    "sam-sgd",
+    "vasso-sgd",
+]
+crt_opts = ["vassore-sgd", "vassoremu-sgd"]
+crts = ["baseline", "naive", "random", "schedule", "cosSim"]
+ks = [2, 3, 5, 10, 20, 100]
+ps = [0.5, 0.33, 0.2, 0.1, 0.05, 0.01]
+cs = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+ss_endblock = [
+    "[100-200]",
+    "[134-200]",
+    "[160-200]",
+    "[180-200]",
+    "[190-200]",
+    "[198-200]",
+]
 
-experiments = []
-experiments.append(dict_creation("sam", "sam-sgd", "base", "rtx_3090", "4G"))
-experiments.append(dict_creation("sgd", "sgd", "base", "rtx_3090", "4G", w=5e-4))
 
-for opt in opt_prefixes:
-    for theta in thetas:
-        base_name = name = opt + "_theta=" + str(theta)
-        if opt == "vasso":
-            gpu = "rtx_3090"
-            optm = opt + "-sgd"
+# Filling of experiment creation commands
+def filling_out_experiment_commands() -> list:
+    experiments = []
+
+    for seed in seeds:
+        for baseline_opt in baseline_opts:
+            name = baseline_opt + "_baseline" + "_seed=" + seed
+            if baseline_opt == "sgd" or baseline_opt == "adamw":
+                experiments.append(
+                    dict_creation(
+                        name=name, dir="baseline", opt=baseline_opt, seed=seed, w=5e-4
+                    )
+                )
+                continue
             experiments.append(
-                dict_creation(base_name, optm, "base", gpu, "6G", t=theta)
+                dict_creation(name=name, dir="baseline", opt=baseline_opt, seed=seed)
             )
-        else:
-            optm = opt + "-sgd"
+            experiments.append(
+                dict_creation(
+                    name=f"vasso-sgd_baseline_t=0.2_seed={seed}",
+                    dir="baseline",
+                    opt="vasso-sgd",
+                    seed=seed,
+                    t=0.2,
+                )
+            )
+
+    for seed in seeds:
+        for crt_opt in crt_opts:
             for crt in crts:
                 if crt == "naive":
                     for k in ks:
-                        full_name = base_name + "_k=" + str(k)
-                        gpu = "rtx_4090"
+                        name = (
+                            crt_opt + "_" + crt + "_" + "k=" + str(k) + "_seed=" + seed
+                        )
                         experiments.append(
                             dict_creation(
-                                full_name,
-                                optm,
-                                os.path.join(opt, crt),
-                                gpu,
-                                "4G",
-                                theta,
+                                name=name,
+                                dir=crt,
+                                opt=crt_opt,
+                                seed=seed,
                                 crt=crt,
                                 crt_k=k,
                             )
                         )
-                if crt == "random":
+                elif crt == "random":
                     for p in ps:
-                        full_name = base_name + "_p=" + str(p)
-                        gpu = "rtx_4090"
+                        name = (
+                            crt_opt + "_" + crt + "_" + "p=" + str(p) + "_seed=" + seed
+                        )
                         experiments.append(
                             dict_creation(
-                                full_name,
-                                optm,
-                                os.path.join(opt, crt),
-                                gpu,
-                                "4G",
-                                theta,
+                                name=name,
+                                dir=crt,
+                                opt=crt_opt,
+                                seed=seed,
                                 crt=crt,
                                 crt_p=p,
                             )
                         )
-                else:
-                    for z in zetas:
-                        full_name_normal = base_name + "_gSAMNormEMA_zeta=" + str(z)
-                        full_name_inv = (
-                            base_name + "_gSAMNormEMAInverted_zeta=" + str(z)
-                        )
-                        os_path_normal = os.path.join(opt, "gSAMNormEMA")
-                        os_path_inv = os.path.join(opt, "gSAMNorEMAInverted")
+                elif crt == "cosSim":
+                    for c in cs:
+                        name = f"{crt_opt}_{crt}_c={c}_seed={seed}"
                         experiments.append(
                             dict_creation(
-                                full_name_normal,
-                                optm,
-                                os_path_normal,
-                                "v100",
-                                "4G",
-                                theta,
-                                crt="gSAMNormEMA",
-                                crt_z=z,
+                                name=name,
+                                dir=crt,
+                                opt=crt_opt,
+                                seed=seed,
+                                crt=crt,
+                                crt_c=c,
                             )
                         )
-                        experiments.append(
-                            dict_creation(
-                                full_name_inv,
-                                optm,
-                                os_path_inv,
-                                "v100",
-                                "4G",
-                                theta,
-                                crt="gSAMNormEMAInverted",
-                                crt_z=z,
-                            )
-                        )
+
+        if crt == "schedule":
+            for s in ss_endblock:
+                name = "vasso-sgd" + "_" + crt + "_" + "s=" + s
+                experiments.append(
+                    dict_creation(
+                        name=name,
+                        dir=crt,
+                        opt="vasso-sgd",
+                        seed=seed,
+                        crt=crt,
+                        crt_s=s,
+                    )
+                )
+
+    return experiments
 
 
 slurm_template = """#!/bin/bash
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 #SBATCH --gpus=1
-#SBATCH --gpus={gpu_model}:1
-#SBATCH --time=6:00:00
-#SBATCH --job-name={name}_cifar10_resnet18
+#SBATCH --time=20:00:00
+#SBATCH --job-name={name}_c10_rn18
 #SBATCH --mem-per-cpu={memcpu}
-#SBATCH --output=./outputs/{name}.out
-#SBATCH --error=./errors/{name}.err
+#SBATCH --output={output_dir}/outputs/{name}.out
+#SBATCH --error={output_dir}/errors/{name}.err
 #SBATCH --open-mode=truncate
 #SBATCH --mail-type=END
 
 module load eth_proxy
-module load gcc/8.2.0
-module load python_gpu/3.8.5
+module load stack/2024-06
+module load python_cuda/3.11.6
+module load py-distro/1.8.0-4tnktx7
 
 cd ~/sam/VaSSO
 
 python3 train.py \
-        --opt {opt} \
-        --theta {theta} \
-        --weight_decay {weight_decay} \
-        --crt {crt} \
-        --crt_k {k} \
-        --crt_p {p} \
-        --crt_z {crt_z}
+    --dataset {dataset} \
+    --model {model} \
+    --opt {opt} \
+    --rho {rho} \
+    --theta {theta} \
+    --weight_decay {weight_decay} \
+    --crt {crt} \
+    --crt_k {k} \
+    --crt_p {p} \
+    --crt_s {s} \
+    --crt_c {c} \
+    --epochs {epochs} \
+    --seed {seed} \
+    --dataset_nn_combination {dataset_nn_combination}
 """
 
-for experiment in experiments:
+for experiment in filling_out_experiment_commands():
     script_content = slurm_template.format(**experiment)
     output_dir = experiment["output_dir"]
     os.makedirs(os.path.join(output_dir, "scripts"), exist_ok=True)
