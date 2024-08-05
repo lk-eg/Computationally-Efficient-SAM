@@ -27,7 +27,7 @@ def dict_creation(
     d["theta"] = t
     d["weight_decay"] = w
     d["crt"] = crt
-    d["crt_c"] = c
+    d["c"] = c
     d["seed"] = seed
     d["dataset_nn_combination"] = dataset_nn_combination
     return d
