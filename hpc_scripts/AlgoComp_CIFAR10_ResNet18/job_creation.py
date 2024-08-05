@@ -69,7 +69,7 @@ def filling_out_experiment_commands() -> list:
 
     for seed in seeds:
         for baseline_opt in baseline_opts:
-            name = baseline_opt + "_baseline" + "_seed=" + seed
+            name = f"{baseline_opt}_baseline_seed={seed}"
             if baseline_opt == "sgd" or baseline_opt == "adamw":
                 experiments.append(
                     dict_creation(
@@ -95,9 +95,8 @@ def filling_out_experiment_commands() -> list:
             for crt in crts:
                 if crt == "naive":
                     for k in ks:
-                        name = (
-                            crt_opt + "_" + crt + "_" + "k=" + str(k) + "_seed=" + seed
-                        )
+                        name = f"{crt_opt}_{crt}_k={k}_seed={seed}"
+
                         experiments.append(
                             dict_creation(
                                 name=name,
@@ -110,9 +109,7 @@ def filling_out_experiment_commands() -> list:
                         )
                 elif crt == "random":
                     for p in ps:
-                        name = (
-                            crt_opt + "_" + crt + "_" + "p=" + str(p) + "_seed=" + seed
-                        )
+                        name = f"{crt_opt}_{crt}_p={p}_seed={seed}"
                         experiments.append(
                             dict_creation(
                                 name=name,
