@@ -136,7 +136,10 @@ def decision_rule_save(args, optimizer):
                 fcntl.flock(file, fcntl.LOCK_UN)
 
     criterion_logger = optimizer.criterion_logger
-    name = f"crt={args.crt}_lam={args.lam}_z1={args.crt_z}_z2={args.z_two}"
+    if args.crt[:4] == "gSAM":
+        name = f"crt={args.crt}_lam={args.lam}_z1={args.crt_z}_z2={args.z_two}"
+    elif args.crt == "cosSim":
+        name = f"crt=cosSim_c={args.crt_c}_seed={args.seed}"
     criterion_logger.insert(0, name)
     file_name = f"criterion_logger_{args.crt}.csv"
     with open(file_name, "a", newline="") as file:
