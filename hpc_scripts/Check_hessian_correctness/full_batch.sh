@@ -1,11 +1,14 @@
 #!/bin/bash
-#SBATCH -n 1
-#SBATCH --cpus-per-task=1
+#SBATCH --ntasks=1
 #SBATCH --gpus=1
+#SBATCH --time=8
 
 module load eth_proxy
-module load gcc/8.2.0
-module load python_gpu/3.8.5
+module load stack/2024-06
+module load python_cuda/3.11.6
+module load py-distro/1.8.0-4tnktx7
+
+cd ~/sam/VaSSO
 
 python3 ../../train.py \
         --opt sam-sgd \
