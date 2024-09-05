@@ -1,6 +1,7 @@
 import torch
 import torchvision.datasets
 import torchvision.transforms
+from torchvision.transforms.functional import InterpolationMode
 import numpy as np
 
 from utils.configurable import configurable
@@ -143,13 +144,15 @@ class CIFAR100_cutout(CIFAR100_base):
         return train_transform
 
 
+# We are using TinyImageNet here
+# ADAPTED for TinyImageNet
 @DATASET_REGISTRY.register()
-class ImageNet_base:
+class TinyImageNet:
     @configurable
     def __init__(self, datadir) -> None:
         self.datadir = datadir
 
-        self.n_classes = 1000
+        self.n_classes = 200
         self.mean = np.array([0.485, 0.456, 0.406])
         self.std = np.array([0.229, 0.224, 0.225])
 
@@ -161,17 +164,22 @@ class ImageNet_base:
 
     def get_data(self):
         train_dataset = torchvision.datasets.ImageFolder(
-            root=self.datadir + "/train", transform=self._train_transform()
+            root=self.datadir + "/tiny-imagenet-200/train",
+            transform=self._train_transform(),
         )
         val_dataset = torchvision.datasets.ImageFolder(
-            root=self.datadir + "/val", transform=self._test_transform()
+            root=self.datadir + "/tiny-imagenet-200/val",
+            transform=self._test_transform(),
         )
         return train_dataset, val_dataset
 
     def _train_transform(self):
         train_transform = torchvision.transforms.Compose(
             [
-                torchvision.transforms.RandomResizedCrop(224),
+                torchvision.transforms.Resize(
+                    224, interpolation=InterpolationMode.BICUBIC
+                ),
+                torchvision.transforms.RandomCrop(size=(224, 224)),
                 torchvision.transforms.RandomHorizontalFlip(),
                 torchvision.transforms.ToTensor(),
                 torchvision.transforms.Normalize(self.mean, self.std),
@@ -183,8 +191,9 @@ class ImageNet_base:
     def _test_transform(self):
         test_transform = torchvision.transforms.Compose(
             [
-                torchvision.transforms.Resize(256),
-                torchvision.transforms.CenterCrop(224),
+                torchvision.transforms.Resize(
+                    224, interpolation=InterpolationMode.BICUBIC
+                ),
                 torchvision.transforms.ToTensor(),
                 torchvision.transforms.Normalize(self.mean, self.std),
             ]

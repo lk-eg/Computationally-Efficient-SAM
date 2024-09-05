@@ -19,3 +19,5 @@ from .vgg import (
     vgg16_bn,
     vgg19_bn,
 )
+
+from .vit import vit
