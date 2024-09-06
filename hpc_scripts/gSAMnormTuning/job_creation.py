@@ -16,7 +16,7 @@ def dict_creation(
     crt: str = "gSAMflat",
     crt_z: float = 1.0,
     z_2: float = 1.1,
-    dataset_nn_combination: str = "cifar100_wrn2810_gSAM",
+    dataset_nn_combination: str = "cifar100_wrn2810_gSAM_robust",
 ):
     d = {}
     d["name"] = name + "_" + str(seed)
@@ -37,13 +37,12 @@ def dict_creation(
     return d
 
 
-seeds = [3107]
-crt_opts = ["vassore-sgd", "vassoremu-sgd"]
+seeds = [1234, 42]
+crt_opts = ["vassoremu-sgd"]
 crts = ["gSAMflat", "gSAMsharp", "gSAMratio"]
-lambdas = [0.01, 0.1, 0.2, 0.4, 0.5, 0.9]
-zs = [1.0, 1.1, 1.2, 1.5, 2.0, 2.5]
+gSAMflat_sharp_l_z = [1.2, 1.5, 1.8, 2.0, 2.5]
 
-z_1s = [1.1, 1.2, 1.5, 2.0, 2.5]
+gSAMratio = [1.5, 1.6, 1.7, 1.8]
 
 
 # Filling of experiment creation commands
