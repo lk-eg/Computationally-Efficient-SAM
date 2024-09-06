@@ -106,6 +106,8 @@ module load py-distro/1.8.0-4tnktx7
 
 source ~/myenv/bin/activate
 
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 cd ~/sam/VaSSO
 
 python3 train.py \
