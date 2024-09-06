@@ -268,8 +268,8 @@ def main(args):
         lambda_5=lambda_5,
     )
 
-    if args.crt[:4] == "gSAM" or args.crt == "cosSim":
-        decision_rule_save(args, optimizer)
+    # if args.crt[:4] == "gSAM" or args.crt == "cosSim":
+    #     decision_rule_save(args, optimizer)
 
 
 if __name__ == "__main__":
