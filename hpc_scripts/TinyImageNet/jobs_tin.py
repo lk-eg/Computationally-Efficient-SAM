@@ -42,7 +42,7 @@ crt_opts = ["vassoremu-sgd"]
 crts = ["gSAMflat", "gSAMsharp", "gSAMratio"]
 gSAMflat_sharp_l_z = [1.2, 1.5, 1.8, 2.0, 2.5]
 
-gSAMratio = [1.5, 1.6, 1.7, 1.8]
+gSAMratio = [1.5, 1.75]
 
 
 # Filling of experiment creation commands
