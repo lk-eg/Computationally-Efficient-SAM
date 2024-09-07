@@ -7,9 +7,9 @@ def dict_creation(
     opt: str,
     seed: int,
     lam: float = 0.1,
-    mem: str = "6G",
+    mem: str = "4G",
     dataset: str = "TinyImageNet",
-    model: str = "resnet50",
+    model: str = "resnet34",
     rho: float = 0.075,
     t: float = 0.9,
     w: float = 1e-4,
@@ -88,13 +88,12 @@ def filling_out_experiment_commands() -> list:
 
 slurm_template = """#!/bin/bash
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=8
 #SBATCH --gpus=1
-#SBATCH --time=22:00:00
-#SBATCH --job-name={name}_tin_rn50
+#SBATCH --time=48:00:00
+#SBATCH --job-name={name}_tin_rn34
 #SBATCH --mem-per-cpu={memcpu}
-#SBATCH --gpus=rtx_3090:1
-#SBATCH --gres=gpumem:16384m
+#SBATCH --gres=gpumem:16G
 #SBATCH --output={output_dir}/outputs/{name}.out
 #SBATCH --error={output_dir}/errors/{name}.err
 #SBATCH --open-mode=truncate
