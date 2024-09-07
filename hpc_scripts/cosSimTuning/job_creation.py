@@ -6,7 +6,7 @@ def dict_creation(
     opt: str,
     seed: int,
     dir: str = "cosSim",
-    mem: str = "1G",
+    mem: str = "2G",
     dataset: str = "CIFAR10_cutout",
     model: str = "resnet18",
     rho: float = 0.1,
@@ -52,7 +52,7 @@ def cosSim_experiments() -> list:
 
 slurm_template = """#!/bin/bash
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=4
 #SBATCH --gpus=1
 #SBATCH --time=10:00:00
 #SBATCH --job-name={name}_c10_rn18
