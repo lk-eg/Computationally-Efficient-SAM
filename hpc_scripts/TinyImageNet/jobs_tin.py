@@ -16,7 +16,7 @@ def dict_creation(
     crt: str = "gSAMflat",
     crt_z: float = 1.0,
     z_2: float = 1.1,
-    dataset_nn_combination: str = "tin_rn50_gSAM",
+    dataset_nn_combination: str = "tin_rn34_gSAM",
 ):
     d = {}
     d["name"] = name + "_" + str(seed)
