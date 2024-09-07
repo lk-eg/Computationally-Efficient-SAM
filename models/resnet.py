@@ -126,7 +126,7 @@ class ResNet(nn.Module):
 
 
 def _cfg_to_resnet(args):
-    return {"num_classes": args.n_classes, "imagenet": args.dataset[:8] == "ImageNet"}
+    return {"num_classes": args.n_classes, "imagenet": args.dataset[-8:] == "ImageNet"}
 
 
 @MODELS_REGISTRY.register()
