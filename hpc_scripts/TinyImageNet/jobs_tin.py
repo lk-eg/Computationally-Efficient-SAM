@@ -7,7 +7,7 @@ def dict_creation(
     opt: str,
     seed: int,
     lam: float = 0.1,
-    mem: str = "4G",
+    mem: str = "1G",
     dataset: str = "TinyImageNet",
     model: str = "resnet34",
     rho: float = 0.075,
