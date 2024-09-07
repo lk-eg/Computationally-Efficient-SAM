@@ -6,15 +6,15 @@ def dict_creation(
     opt: str,
     seed: int,
     dir: str = "cosSim",
-    mem: str = "2G",
-    dataset: str = "CIFAR100_cutout",
-    model: str = "wideresnet28x10",
-    rho: float = 0.2,
+    mem: str = "1G",
+    dataset: str = "CIFAR10_cutout",
+    model: str = "resnet18",
+    rho: float = 0.1,
     t: float = 0.4,
     w: float = 1e-3,
     crt: str = "cosSim",
     c: float = 0,
-    dataset_nn_combination: str = "cifar100_wrn2810_cosSim",
+    dataset_nn_combination: str = "cifar10_rn18_cosSim",
 ):
     d = {}
     d["name"] = name + "_" + str(seed)
@@ -34,8 +34,8 @@ def dict_creation(
 
 
 seeds = [3107, 1234, 42, 87283, 913248]
-crt_opts = ["vassore-sgd", "vassoremu-sgd"]
-cs = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+crt_opts = ["vassoremu-sgd"]
+cs = [0]
 
 
 def cosSim_experiments() -> list:
@@ -54,8 +54,8 @@ slurm_template = """#!/bin/bash
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --gpus=1
-#SBATCH --time=22:00:00
-#SBATCH --job-name={name}_c100_wrn2810
+#SBATCH --time=10:00:00
+#SBATCH --job-name={name}_c10_rn18
 #SBATCH --mem-per-cpu={memcpu}
 #SBATCH --output={output_dir}/outputs/{name}.out
 #SBATCH --error={output_dir}/errors/{name}.err
@@ -65,6 +65,8 @@ module load eth_proxy
 module load stack/2024-06
 module load python_cuda/3.11.6
 module load py-distro/1.8.0-4tnktx7
+
+source ~/myenv/bin/activate
 
 cd ~/sam/VaSSO
 
