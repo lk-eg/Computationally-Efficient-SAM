@@ -117,6 +117,7 @@ python3 train.py \
     --rho {rho} \
     --theta {theta} \
     --batch_size 256 \
+    --epochs 300 \
     --crt {crt} \
     --lam {lam} \
     --crt_z {z} \
