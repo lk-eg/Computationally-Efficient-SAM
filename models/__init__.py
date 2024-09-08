@@ -23,3 +23,5 @@ from .vgg import (
 from .vit import vit
 
 from .densenet import densenet
+
+from .pyramidnet import pyramidnet110

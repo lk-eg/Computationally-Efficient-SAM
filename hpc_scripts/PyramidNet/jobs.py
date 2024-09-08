@@ -8,15 +8,15 @@ def dict_creation(
     seed: int,
     lam: float = 0.1,
     mem: str = "1G",
-    dataset: str = "TinyImageNet",
-    model: str = "resnet34",
-    rho: float = 0.075,
+    dataset: str = "CIFAR10_cutout",
+    model: str = "pyramidnet110",
+    rho: float = 0.2,
     t: float = 0.9,
-    w: float = 1e-4,
+    w: float = 1e-3,
     crt: str = "gSAMflat",
     crt_z: float = 1.0,
     z_2: float = 1.1,
-    dataset_nn_combination: str = "tin_rn34_gSAM",
+    dataset_nn_combination: str = "c10_pn_gSAM",
 ):
     d = {}
     d["name"] = name + "_" + str(seed)
@@ -112,14 +112,17 @@ cd ~/sam/VaSSO
 python3 train.py \
     --dataset {dataset} \
     --model {model} \
+    --lr 0.1 \
     --opt {opt} \
     --rho {rho} \
     --theta {theta} \
+    --batch_size 256 \
     --crt {crt} \
     --lam {lam} \
     --crt_z {z} \
     --z_two {z_two} \
     --seed {seed} \
+    --logging_mode \
     --dataset_nn_combination {dataset_nn_combination} \
 """
 
