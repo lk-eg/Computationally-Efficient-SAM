@@ -139,7 +139,7 @@ def resnet18(num_classes=10, imagenet=False):
 
 @MODELS_REGISTRY.register()
 @configurable(from_config=_cfg_to_resnet)
-def resnet34(num_classes=10, imagenet=False):
+def resnet34(num_classes=200, imagenet=False):
     if imagenet:
         return torchvision.models.resnet34(pretrained=False)
     return ResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_classes)

@@ -176,9 +176,9 @@ class TinyImageNet:
     def _train_transform(self):
         train_transform = torchvision.transforms.Compose(
             [
-                torchvision.transforms.Resize(
-                    224, interpolation=InterpolationMode.BICUBIC
-                ),
+                # torchvision.transforms.Resize(
+                #     224, interpolation=InterpolationMode.BICUBIC
+                # ),
                 torchvision.transforms.RandomCrop(size=(64, 64)),
                 torchvision.transforms.RandomHorizontalFlip(),
                 torchvision.transforms.ToTensor(),
@@ -191,9 +191,9 @@ class TinyImageNet:
     def _test_transform(self):
         test_transform = torchvision.transforms.Compose(
             [
-                torchvision.transforms.Resize(
-                    224, interpolation=InterpolationMode.BICUBIC
-                ),
+                # torchvision.transforms.Resize(
+                #     224, interpolation=InterpolationMode.BICUBIC
+                # ),
                 torchvision.transforms.ToTensor(),
                 torchvision.transforms.Normalize(self.mean, self.std),
             ]
