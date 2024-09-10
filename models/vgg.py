@@ -112,7 +112,7 @@ def _cfg_to_vgg(args):
 
 @MODELS_REGISTRY.register()
 @configurable(from_config=_cfg_to_vgg)
-def vgg11_bn(num_classes=200):
+def vgg11_bn(num_classes=10):
     return VGG(make_layers(cfg["A"], batch_norm=True), num_class=num_classes)
 
 
