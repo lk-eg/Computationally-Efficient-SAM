@@ -128,9 +128,8 @@ python3 train.py \
     --lam {lam} \
     --crt_z {z} \
     --z_two {z_two} \
-    --crt_c {crt_c}
+    --crt_c {crt_c} \
     --seed {seed} \
-    --logging_mode \
     --dataset_nn_combination {dataset_nn_combination} \
 """
 
