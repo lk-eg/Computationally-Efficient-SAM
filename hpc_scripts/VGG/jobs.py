@@ -88,7 +88,13 @@ def filling_out_experiment_commands() -> list:
                     name = "{}_{}_c={}".format(crt_opt, crt, 0)
                     experiments.append(
                         dict_creation(
-                            name=name, dir=crt, opt=crt_opt, seed=seed, crt=crt, crt_c=0
+                            name=name,
+                            dir=crt,
+                            opt=crt_opt,
+                            seed=seed,
+                            crt=crt,
+                            crt_c=0,
+                            dataset_nn_combination="c10_vgg_cosSim",
                         )
                     )
 
@@ -100,7 +106,7 @@ slurm_template = """#!/bin/bash
 #SBATCH --cpus-per-task=8
 #SBATCH --gpus=1
 #SBATCH --time=34:00:00
-#SBATCH --job-name={name}_c10_pn
+#SBATCH --job-name={name}_c10_vgg
 #SBATCH --mem-per-cpu={memcpu}
 #SBATCH --output={output_dir}/outputs/{name}.out
 #SBATCH --error={output_dir}/errors/{name}.err
