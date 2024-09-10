@@ -33,7 +33,7 @@ def dict_creation(
     d["lam"] = lam
     d["z"] = crt_z
     d["z_two"] = z_2
-    d["c"] = crt_c
+    d["crt_c"] = crt_c
     d["seed"] = seed
     d["dataset_nn_combination"] = dataset_nn_combination
     return d
