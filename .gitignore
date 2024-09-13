@@ -16,3 +16,4 @@ hpc_scripts/archive
 .ipynb_checkpoints
 sam_environment.yml
 .vscode/
+hpc_scripts/
