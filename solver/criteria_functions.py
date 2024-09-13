@@ -56,57 +56,61 @@ def cosSim_criterion(self):
     return criterion_trigger or self.iteration_step_counter <= WARMUP_CONSTANT
 
 
-def variance_criterion(self):
-    if self.iteration_step_counter <= WARMUP_CONSTANT:
-        reset_stat_metrics(self)
-        return True
-    elif not self.iteration_step_counter % 100:
-        reset_stat_metrics(self)
-        return True
-    elif self.var_gsam_norm >= self.var_delta:
-        return True
-    return False
+# ---------------------------------------------------------------------------
+# Further proposed decision rules (commented out)
+# ---------------------------------------------------------------------------
+
+# def variance_criterion(self):
+#     if self.iteration_step_counter <= WARMUP_CONSTANT:
+#         reset_stat_metrics(self)
+#         return True
+#     elif not self.iteration_step_counter % 100:
+#         reset_stat_metrics(self)
+#         return True
+#     elif self.var_gsam_norm >= self.var_delta:
+#         return True
+#     return False
 
 
-def chebyshev_criterion(self):
-    if self.iteration_step_counter <= WARMUP_CONSTANT:
-        reset_stat_metrics(self)
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 0,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
-        return True
-    elif not self.iteration_step_conuter % 100:
-        reset_stat_metrics(self)
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 1,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
-        return True
-    # By Chebyshev, the probability for the following event is bounded by 0.5
-    elif abs(self.g_norm - self.mean_gsam_norm) >= np.sqrt(2) * np.sqrt(
-        self.var_gsam_norm
-    ):
-        self.logger.wandb_log_batch(
-            **{
-                "decision_type": 2,
-                "global_batch_counter": self.iteration_step_counter,
-            }
-        )
-        self.decision_rule_counter += 1
-        return True
-    return False
+# def chebyshev_criterion(self):
+#     if self.iteration_step_counter <= WARMUP_CONSTANT:
+#         reset_stat_metrics(self)
+#         self.logger.wandb_log_batch(
+#             **{
+#                 "decision_type": 0,
+#                 "global_batch_counter": self.iteration_step_counter,
+#             }
+#         )
+#         return True
+#     elif not self.iteration_step_conuter % 100:
+#         reset_stat_metrics(self)
+#         self.logger.wandb_log_batch(
+#             **{
+#                 "decision_type": 1,
+#                 "global_batch_counter": self.iteration_step_counter,
+#             }
+#         )
+#         return True
+#     # By Chebyshev, the probability for the following event is bounded by 0.5
+#     elif abs(self.g_norm - self.mean_gsam_norm) >= np.sqrt(2) * np.sqrt(
+#         self.var_gsam_norm
+#     ):
+#         self.logger.wandb_log_batch(
+#             **{
+#                 "decision_type": 2,
+#                 "global_batch_counter": self.iteration_step_counter,
+#             }
+#         )
+#         self.decision_rule_counter += 1
+#         return True
+#     return False
 
 
-def reset_stat_metrics(self):
-    self.sum_gsam_norm = 0
-    self.sum_gsam_norm_squared = 0
-    self.mean_gsam_norm = 0
-    self.var_gsam_norm = 0
+# def reset_stat_metrics(self):
+#     self.sum_gsam_norm = 0
+#     self.sum_gsam_norm_squared = 0
+#     self.mean_gsam_norm = 0
+#     self.var_gsam_norm = 0
 
 
 # collect all possible criteria for inner gradient calculation
@@ -116,9 +120,9 @@ criteria_functions = {
     "gSAMsharp": gSAMsharp_criterion,
     "gSAMflat": gSAMflat_criterion,
     "gSAMratio": gSAMratio_criterion,
-    "variance": variance_criterion,
+    # "variance": variance_criterion,
     "cosSim": cosSim_criterion,
-    "chebyshev": chebyshev_criterion,
+    # "chebyshev": chebyshev_criterion,
 }
 
 criteria_parameter_names = {
@@ -128,7 +132,7 @@ criteria_parameter_names = {
     "gSAMflat": ("z", "crt_z"),
     "gSAMratio": ("z", "crt_z"),
     "schedule": ("s", "crt_s"),
-    "variance": ("v", "var_delta"),
+    # "variance": ("v", "var_delta"),
     "cosSim": (">0?", "crt_c"),
 }
 

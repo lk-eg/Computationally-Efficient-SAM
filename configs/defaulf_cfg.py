@@ -198,7 +198,7 @@ class default_parser:
         )
         # gSAMflat and gSAMsharp
         parser.add_argument(
-            "--lam", type=float, default=0.4, help="parameter for weight for tau"
+            "--lam", type=float, default=0.1, help="parameter for weight for tau"
         )
         parser.add_argument(
             "--crt_z",

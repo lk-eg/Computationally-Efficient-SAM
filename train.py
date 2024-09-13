@@ -268,6 +268,7 @@ def main(args):
         lambda_5=lambda_5,
     )
 
+    # Takes up a lot of memory!!
     # if args.crt[:4] == "gSAM" or args.crt == "cosSim":
     #     decision_rule_save(args, optimizer)
 

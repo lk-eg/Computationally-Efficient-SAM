@@ -6,7 +6,6 @@ def need_closure_fn(args):
         or args.opt[:5] == "vasso"
         or args.opt[:7] == "vassore"
         or args.opt[:9] == "vassoremu"
-        # or args.opt[:8] == "adavasso"
     )
 
 

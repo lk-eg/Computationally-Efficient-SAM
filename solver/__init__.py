@@ -4,7 +4,6 @@ from .sam import SAM
 from .vasso import VASSO
 from .vassore import VASSORE
 from .vassoremu import VASSOREMU
-from .adavasso import ADAVASSO
 
 from .lr_scheduler import (
     CosineLRscheduler,
@@ -18,7 +17,6 @@ __all__ = [
     "VASSO",
     "VASSORE",
     "VASSOREMU",
-    "ADAVASSO",
     "CosineLRscheduler",
     "MultiStepLRscheduler",
 ]
